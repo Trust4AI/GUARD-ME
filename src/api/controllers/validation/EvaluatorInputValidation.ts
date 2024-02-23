@@ -5,9 +5,12 @@ const generate = [
         .isString()
         .isLength({ min: 1, max: 30 })
         .trim()
-        .withMessage(
-            'Role is optional must be a string with length between 1 and 30'
-        ),
+        .withMessage('Role must be a string with length between 1 and 30'),
+    check('type')
+        .isString()
+        .isLength({ min: 1, max: 30 })
+        .trim()
+        .withMessage('Type must be a string with length between 1 and 30'),
     check('prompt1')
         .isString()
         .isLength({ min: 1, max: 2000 })

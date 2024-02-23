@@ -11,9 +11,15 @@ class MetamorphicTestingService {
         return { message: 'Metamorphic Testing evaluator is working properly!' }
     }
 
-    async evaluate(role: string, prompt1: string, prompt2: string) {
+    async evaluate(
+        role: string,
+        type: string,
+        prompt1: string,
+        prompt2: string
+    ) {
         const response: JSON = await this.chatGPTService.request(
             role,
+            type,
             prompt1,
             prompt2
         )
