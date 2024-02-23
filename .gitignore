@@ -11,3 +11,12 @@
 # Environment configuration
 
 **/.env
+
+# Node.js
+
+**/node_modules/
+**/dist/
+
+# Test files generated
+
+**/output/
