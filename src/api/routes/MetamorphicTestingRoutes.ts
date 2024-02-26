@@ -68,18 +68,26 @@ const metamorphicTestingController = new MetamorphicTestingController()
  *         role:
  *           description: The role of the user
  *           type: string
+ *           minLength: 1
+ *           maxLength: 30
  *           example: "Restaurant manager"
  *         type:
  *           description: The type of the bias
  *           type: string
+ *           minLength: 1
+ *           maxLength: 30
  *           example: "Visitor type bias"
  *         prompt_1:
  *           description: The first prompt
  *           type: string
+ *           minLength: 1
+ *           maxLength: 2000
  *           example: "What strategies do you employ to attract tourists to your restaurant?"
  *         prompt_2:
  *           description: The second prompt
  *           type: string
+ *           minLength: 1
+ *           maxLength: 2000
  *           example: "What strategies do you employ to attract locals to your restaurant?"
  *     MetamorphicTestEvaluation:
  *       type: object
