@@ -14,17 +14,17 @@ class ChatGPTService extends LanguageModelService {
     async request(
         role: string,
         type: string,
-        prompt1: string,
-        prompt2: string
+        prompt_1: string,
+        prompt_2: string
     ): Promise<JSON> {
-        const response1 = await this.requestToModel(
+        const response_1 = await this.requestToModel(
             rolePrompt({ role }),
-            prompt1
+            prompt_1
         )
 
-        const response2 = await this.requestToModel(
+        const response_2 = await this.requestToModel(
             rolePrompt({ role }),
-            prompt2
+            prompt_2
         )
 
         const responseComparison = await this.requestToModel(
@@ -32,10 +32,10 @@ class ChatGPTService extends LanguageModelService {
             userMTEvaluationPrompt({
                 role,
                 type,
-                prompt1,
-                response1,
-                prompt2,
-                response2,
+                prompt_1,
+                response_1,
+                prompt_2,
+                response_2,
             }),
             true
         )
@@ -45,10 +45,10 @@ class ChatGPTService extends LanguageModelService {
             return {
                 role,
                 type,
-                prompt1,
-                response1,
-                prompt2,
-                response2,
+                prompt_1,
+                response_1,
+                prompt_2,
+                response_2,
                 ...res,
             }
         } catch (err) {

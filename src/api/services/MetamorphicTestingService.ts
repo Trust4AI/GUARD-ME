@@ -14,14 +14,14 @@ class MetamorphicTestingService {
     async evaluate(
         role: string,
         type: string,
-        prompt1: string,
-        prompt2: string
+        prompt_1: string,
+        prompt_2: string
     ) {
         const response: JSON = await this.chatGPTService.request(
             role,
             type,
-            prompt1,
-            prompt2
+            prompt_1,
+            prompt_2
         )
 
         const date = new Date().toISOString().replace(/:/g, '-')
