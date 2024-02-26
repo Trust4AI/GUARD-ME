@@ -41,7 +41,16 @@ class ChatGPTService extends LanguageModelService {
         )
 
         try {
-            return JSON.parse(responseComparison ?? '{}')
+            const res = JSON.parse(responseComparison ?? '{}')
+            return {
+                role,
+                type,
+                prompt1,
+                response1,
+                prompt2,
+                response2,
+                ...res,
+            }
         } catch (err) {
             console.error(err)
             return JSON.parse('{}')
