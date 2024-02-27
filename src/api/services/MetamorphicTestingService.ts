@@ -1,10 +1,12 @@
 import container from '../containers/container'
-import fs from 'fs'
+import { writeResponseToFile } from '../utils/files'
 
 class MetamorphicTestingService {
-    chatGPTService: any
+    candidateModelService: any
+    judgeModelService: any
     constructor() {
-        this.chatGPTService = container.resolve('chatGPTService')
+        this.candidateModelService = container.resolve('candidateModelService')
+        this.judgeModelService = container.resolve('judgeModelService')
     }
 
     check() {
@@ -17,18 +19,19 @@ class MetamorphicTestingService {
         prompt_1: string,
         prompt_2: string
     ) {
-        const response: JSON = await this.chatGPTService.request(
+        const { response_1, response_2 } =
+            await this.candidateModelService.request(role, prompt_1, prompt_2)
+
+        const response: JSON = await this.judgeModelService.request(
             role,
             type,
             prompt_1,
-            prompt_2
+            response_1,
+            prompt_2,
+            response_2
         )
 
-        const date = new Date().toISOString().replace(/:/g, '-')
-        fs.writeFileSync(
-            './output/' + date + '.json',
-            JSON.stringify(response, null, 4)
-        )
+        writeResponseToFile(response)
         return response
     }
 }

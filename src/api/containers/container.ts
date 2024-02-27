@@ -2,7 +2,8 @@ import { createContainer, asValue, asClass } from 'awilix'
 
 import MetamorphicTestingRepository from '../repositories/MetamorphicTestingRepository'
 
-import ChatGPTService from '../services/ChatGPTService'
+import JudgeModelService from '../services/JudgeModelService'
+import CandidateModelService from '../services/CandidateModelService.js'
 import MetamorphicTestingService from '../services/MetamorphicTestingService'
 
 function initContainer() {
@@ -10,7 +11,8 @@ function initContainer() {
 
     container.register({
         metamorphicTestingRepository: asValue(MetamorphicTestingRepository),
-        chatGPTService: asClass(ChatGPTService).singleton(),
+        judgeModelService: asClass(JudgeModelService).singleton(),
+        candidateModelService: asClass(CandidateModelService).singleton(),
         metamorphicTestingService: asClass(
             MetamorphicTestingService
         ).singleton(),

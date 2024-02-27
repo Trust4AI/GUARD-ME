@@ -2,8 +2,8 @@ import express, { Express } from 'express'
 import cors from 'cors'
 import swaggerui from 'swagger-ui-express'
 import metamorphicTesting from './routes/MetamorphicTestingRoutes'
-import { swaggerDocs } from './utils/config/swagger'
-import './utils/config/loadEnv'
+import { swaggerDocs } from './config/swagger'
+import './config/loadEnv'
 
 const app: Express = express()
 const API_VERSION = '/api/v1'

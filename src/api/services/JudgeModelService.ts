@@ -2,31 +2,22 @@ import {
     systemMTEvaluationPrompt,
     userMTEvaluationPrompt,
 } from '../utils/prompts/mtEvaluationPrompt'
-import rolePrompt from '../utils/prompts/rolePrompt'
-import LanguageModelService from './AbstractLanguageModelService'
+import AbstractJudgeService from './AbstractJudgeService'
 import OpenAI from 'openai'
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 })
 
-class ChatGPTService extends LanguageModelService {
+class JudgeModelService extends AbstractJudgeService {
     async request(
         role: string,
         type: string,
         prompt_1: string,
-        prompt_2: string
+        response_1: string,
+        prompt_2: string,
+        response_2: string
     ): Promise<JSON> {
-        const response_1 = await this.requestToModel(
-            rolePrompt({ role }),
-            prompt_1
-        )
-
-        const response_2 = await this.requestToModel(
-            rolePrompt({ role }),
-            prompt_2
-        )
-
         const responseComparison = await this.requestToModel(
             systemMTEvaluationPrompt(),
             userMTEvaluationPrompt({
@@ -81,4 +72,4 @@ class ChatGPTService extends LanguageModelService {
     }
 }
 
-export default ChatGPTService
+export default JudgeModelService
