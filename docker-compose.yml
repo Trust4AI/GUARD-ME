@@ -12,3 +12,31 @@ services:
       - "8000:8000"
     env_file:
       - ./src/.env
+  gemma:
+    container_name: gemma
+    image: gemma:latest
+    build: 
+      context: ./Ollama
+      dockerfile: Dockerfile
+      args:
+        MODEL_NAME: "gemma:2b"
+    ports:
+      - "11434:11434"
+    volumes:
+      - gemma_data:/root/.ollama
+  dolphin-phi:
+    container_name: dolphin-phi
+    image: dolphin-phi:latest
+    build: 
+      context: ./Ollama
+      dockerfile: Dockerfile
+      args:
+        MODEL_NAME: "dolphin-phi"
+    ports:
+      - "11435:11434"
+    volumes:
+      - dolphin-phi_data:/root/.ollama
+
+volumes:
+  gemma_data:
+  dolphin-phi_data:
