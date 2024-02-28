@@ -13,10 +13,10 @@ app.use(express.json())
 app.use(cors())
 
 app.use(
-    API_VERSION + '/metamorphicTesting/docs',
+    API_VERSION + '/metamorphic-tests/docs',
     swaggerUI.serve,
     swaggerUI.setup(swaggerDocs, { explorer: true })
 )
-app.use(API_VERSION + '/metamorphicTesting', metamorphicTesting)
+app.use(API_VERSION + '/metamorphic-tests', metamorphicTesting)
 
 module.exports = app

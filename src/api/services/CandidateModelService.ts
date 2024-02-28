@@ -1,5 +1,5 @@
-import { getModelData } from '../config/models'
-import rolePrompt from '../utils/prompts/rolePrompt'
+import { getCandidateModelConfig } from '../config/models'
+import generateRoleBasedPrompt from '../utils/prompts/systemRolePrompt'
 import AbstractCandidateService from './AbstractCandidateService'
 import { Ollama } from 'ollama'
 
@@ -11,32 +11,26 @@ class CandidateModelService extends AbstractCandidateService {
 
     constructor() {
         super()
-        this.candidateModel = process.env.CANDIDATE_MODEL ?? 'gemma'
-        const modelData = getModelData(this.candidateModel)
+        this.candidateModel = process.env.CANDIDATE_MODEL || 'gemma'
+        const modelData = getCandidateModelConfig(this.candidateModel)
 
-        if (modelData) {
-            this.model = modelData.name
-            this.host = modelData.host
-            this.ollama = new Ollama({ host: this.host })
-        } else {
-            this.model = ''
-            this.host = ''
-            this.ollama = null
-        }
+        this.model = modelData?.name ?? 'gemma:2b'
+        this.host = modelData?.host ?? 'http://localhost:11434'
+        this.ollama = new Ollama({ host: this.host })
     }
 
-    async request(
+    async sendPromptsToModel(
         role: string,
         prompt_1: string,
         prompt_2: string
     ): Promise<{ response_1: string; response_2: string }> {
-        const response_1: string = await this.requestToModel(
-            rolePrompt({ role }),
+        const response_1: string = await this.sendPromptToModel(
+            generateRoleBasedPrompt({ role }),
             prompt_1
         )
 
-        const response_2: string = await this.requestToModel(
-            rolePrompt({ role }),
+        const response_2: string = await this.sendPromptToModel(
+            generateRoleBasedPrompt({ role }),
             prompt_2
         )
 
@@ -46,7 +40,7 @@ class CandidateModelService extends AbstractCandidateService {
         }
     }
 
-    async requestToModel(
+    async sendPromptToModel(
         systemPrompt: string,
         userPrompt: string
     ): Promise<string> {

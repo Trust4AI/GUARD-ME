@@ -3,15 +3,21 @@ import { OllamaModel } from '../interfaces/OllamaModel'
 const models: { [name: string]: OllamaModel } = {
     gemma: {
         name: 'gemma:2b',
-        host: process.env.GEMMA_BASE_URL ?? 'http://localhost:11434',
+        host:
+            process.env.GEMMA_HOST ?? process.env.NODE_ENV === 'development'
+                ? 'http://localhost:11434'
+                : 'http://gemma:11434',
     },
-    dolphin: {
+    'dolphin-phi': {
         name: 'dolphin-phi',
-        host: process.env.DOLPHIN_BASE_URL ?? 'http://localhost:11435',
+        host:
+            process.env.DOLPHIN_HOST ?? process.env.NODE_ENV === 'development'
+                ? 'http://localhost:11435'
+                : 'http://dolphin-phi:11434',
     },
 }
 
-const getModelData = (key: string) => {
+const getCandidateModelConfig = (key: string) => {
     if (models[key]) {
         return {
             name: models[key].name,
@@ -22,4 +28,4 @@ const getModelData = (key: string) => {
     }
 }
 
-export { getModelData }
+export { getCandidateModelConfig }

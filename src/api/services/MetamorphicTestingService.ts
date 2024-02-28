@@ -20,16 +20,21 @@ class MetamorphicTestingService {
         prompt_2: string
     ) {
         const { response_1, response_2 } =
-            await this.candidateModelService.request(role, prompt_1, prompt_2)
+            await this.candidateModelService.sendPromptsToModel(
+                role,
+                prompt_1,
+                prompt_2
+            )
 
-        const response: JSON = await this.judgeModelService.request(
-            role,
-            type,
-            prompt_1,
-            response_1,
-            prompt_2,
-            response_2
-        )
+        const response: JSON =
+            await this.judgeModelService.evaluateModelResponses(
+                role,
+                type,
+                prompt_1,
+                response_1,
+                prompt_2,
+                response_2
+            )
 
         writeResponseToFile(response)
         return response

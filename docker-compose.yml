@@ -2,7 +2,6 @@ version: '3'
 
 services:
   server:
-    restart: always
     container_name: trust4ai-bias-evaluator-llm
     image: trust4ai-bias-evaluator-llm:latest
     build: 
@@ -12,6 +11,8 @@ services:
       - "8000:8000"
     env_file:
       - ./src/.env
+    networks:
+      - trust4ai-bias-evaluator-llm-network
   gemma:
     container_name: gemma
     image: gemma:latest
@@ -24,6 +25,8 @@ services:
       - "11434:11434"
     volumes:
       - gemma_data:/root/.ollama
+    networks:
+      - trust4ai-bias-evaluator-llm-network
   dolphin-phi:
     container_name: dolphin-phi
     image: dolphin-phi:latest
@@ -36,7 +39,13 @@ services:
       - "11435:11434"
     volumes:
       - dolphin-phi_data:/root/.ollama
+    networks:
+      - trust4ai-bias-evaluator-llm-network
 
 volumes:
   gemma_data:
   dolphin-phi_data:
+
+networks:
+  trust4ai-bias-evaluator-llm-network:
+    driver: bridge

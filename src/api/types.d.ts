@@ -7,6 +7,6 @@ export type UserMTPromptParams = {
     response_2: string
 }
 
-export type RolePromptParams = {
+export type SystemRolePromptParams = {
     role: string
 }

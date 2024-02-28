@@ -24,7 +24,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:8000/v1/metamorphicTesting/',
+                url: 'http://localhost:8000/v1/metamorphic-tests/',
             },
         ],
     },

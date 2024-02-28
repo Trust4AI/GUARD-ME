@@ -10,7 +10,7 @@ const openai = new OpenAI({
 })
 
 class JudgeModelService extends AbstractJudgeService {
-    async request(
+    async evaluateModelResponses(
         role: string,
         type: string,
         prompt_1: string,
@@ -18,7 +18,7 @@ class JudgeModelService extends AbstractJudgeService {
         prompt_2: string,
         response_2: string
     ): Promise<JSON> {
-        const responseComparison = await this.requestToModel(
+        const responseComparison = await this.fetchModelComparison(
             systemMTEvaluationPrompt(),
             userMTEvaluationPrompt({
                 role,
@@ -48,7 +48,7 @@ class JudgeModelService extends AbstractJudgeService {
         }
     }
 
-    async requestToModel(
+    async fetchModelComparison(
         systemPrompt: string,
         userPrompt: string,
         jsonFormat = false
