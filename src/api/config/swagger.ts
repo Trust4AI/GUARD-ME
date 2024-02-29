@@ -2,6 +2,7 @@ import swaggerjsdoc from 'swagger-jsdoc'
 import yaml from 'yaml'
 import fs from 'fs'
 
+const port = process.env.PORT || 8000
 const swaggerJsDoc = swaggerjsdoc
 
 const swaggerOptions = {
@@ -24,7 +25,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:8000/api/v1/metamorphic-tests/',
+                url: 'http://localhost:' + port + '/api/v1/metamorphic-tests/',
             },
         ],
     },
