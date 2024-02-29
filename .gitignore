@@ -20,3 +20,7 @@
 # Test files generated
 
 **/output/
+
+# Models used for testing
+
+/Ollama/models/

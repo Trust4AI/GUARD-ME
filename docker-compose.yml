@@ -41,10 +41,43 @@ services:
       - dolphin-phi_data:/root/.ollama
     networks:
       - trust4ai-bias-evaluator-llm-network
+  # mario:
+  #   container_name: mario
+  #   image: mario:latest
+  #   build: 
+  #     context: ./Ollama
+  #     dockerfile: Dockerfile
+  #     args:
+  #       MODEL_NAME: "mario"
+  #       MODELFILE_PATH: "modelfiles/Modelfile-mario"
+  #   ports:
+  #     - "11436:11434"
+  #   volumes:
+  #     - mario_data:/root/.ollama
+  #   networks:
+  #     - trust4ai-bias-evaluator-llm-network
+  # mistral:
+  #   container_name: mistral
+  #   image: mistral:latest
+  #   build: 
+  #     context: ./Ollama
+  #     dockerfile: Dockerfile
+  #     args:
+  #       MODEL_NAME: "mistral"
+  #       MODELFILE_PATH: "modelfiles/Modelfile-mistral"
+  #       MODEL_PATH: "models/mistral-7b-instruct-v0.2.Q2_K.gguf"
+  #   ports:
+  #     - "11437:11434"
+  #   volumes:
+  #     - mistral_data:/root/.ollama
+  #   networks:
+  #     - trust4ai-bias-evaluator-llm-network
 
 volumes:
   gemma_data:
   dolphin-phi_data:
+  # mario_data:
+  # mistral_data:
 
 networks:
   trust4ai-bias-evaluator-llm-network:
