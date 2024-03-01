@@ -18,7 +18,7 @@ services:
     image: gemma:latest
     build: 
       context: ./Ollama
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.predefined-model
       args:
         MODEL_NAME: "gemma:2b"
     ports:
@@ -32,7 +32,7 @@ services:
     image: dolphin-phi:latest
     build: 
       context: ./Ollama
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.predefined-model
       args:
         MODEL_NAME: "dolphin-phi"
     ports:
@@ -46,7 +46,7 @@ services:
   #   image: mario:latest
   #   build: 
   #     context: ./Ollama
-  #     dockerfile: Dockerfile
+  #     dockerfile: Dockerfile.predefined-model-modelfile
   #     args:
   #       MODEL_NAME: "mario"
   #       MODELFILE_PATH: "modelfiles/Modelfile-mario"
@@ -61,7 +61,7 @@ services:
   #   image: mistral:latest
   #   build: 
   #     context: ./Ollama
-  #     dockerfile: Dockerfile
+  #     dockerfile: Dockerfile.own-model
   #     args:
   #       MODEL_NAME: "mistral"
   #       MODELFILE_PATH: "modelfiles/Modelfile-mistral"
