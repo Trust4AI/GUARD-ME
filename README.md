@@ -2,7 +2,118 @@
 
 This project provides a evaluator of prompts/search strings for testing the bias of AI-enabled Search Engines using LLMs as sources of information.
 
-This repository contains the following structure:
+## Index
+
+1. [Usage](#usage)
+2. [Deployment](#deployment)
+   1. [Local deployment](#local-deployment)
+   2. [Docker deployment](#docker-deployment)
+3. [Repository structure](#repository-structure)
+4. [License and funding](#license-and-funding)
+
+## Usage
+
+<p align="right">[<a href="#trust4ai-bias-evaluator-component-based-on-the-use-of-llms">Back to top</a>]</p>
+
+## Deployment
+
+### Local deployment
+
+To deploy the Bias Evaluator Component locally, please follow these steps carefully:
+
+1. Prepare the necessary environment variables:
+    1. Rename the `.env.local` file to `.env`.
+    2. Open the `.env` file and update the following entries:
+        1. `OPENAI_API_KEY`: Your OpenAI API key.
+        2. `CANDIDATE_MODEL`: The name of the candidate model to be used. The available options are `gemma`. In case you want to use a deployed GEMMA instance, fill the `GEMMA_HOST` environment variable with the host of the GEMMA instance, otherwise, leave it empty.
+
+    The `.env` file should look like this:
+
+        ```.env
+        PORT=8000
+        OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
+        CANDIDATE_MODEL=gemma
+        GEMMA_HOST=
+        NODE_ENV=local
+        ```
+
+2. (If applicable) To use **GEMMA** as local model, you need to execute the following Docker Compose instruction to deploy a instance:
+
+    ```bash
+    docker-compose up gemma -d
+    ```
+
+3. Install the component dependencies:
+    1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your system (version 16.x or newer is recommended). You can check your Node.js version by running `node -v` in your terminal.
+    2. Navigate to the `src` directory and install the required dependencies:
+
+        ```bash
+        cd src
+        npm install
+        ```
+
+4. Compile the source code and start the server:
+
+    ```bash
+    npm run build
+    npm start
+    ```
+
+5. To verify that the Bias Evaluator Component is running, you can check the status of the server by running the following command:
+
+    ```bash
+    curl -X GET "http://localhost:8000/api/v1/metamorphic-tests/check" -H  "accept: application/json"
+    ```
+
+6. Finally, you can access the API documentation by visiting the following URL in your web browser:
+
+    ```
+    http://localhost:8000/api/v1/metamorphic-tests/docs
+    ```
+
+### Docker deployment
+
+To deploy the Bias Evaluator Component using Docker, please follow these steps carefully:
+
+1. Prepare the necessary environment variables:
+    1. Rename the `.env.docker` file to `.env`.
+    2. Open the `.env` file and update the following entries:
+        1. `OPENAI_API_KEY`: Your OpenAI API key.
+        2. `CANDIDATE_MODEL`: The name of the candidate model to be used. The available options are `gemma`. In case you want to use a deployed GEMMA instance, fill the `GEMMA_HOST` environment variable with the host of the GEMMA instance, otherwise, leave it empty.
+
+    The `.env` file should look like this:
+
+        ```.env
+        PORT=8000
+        OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
+        CANDIDATE_MODEL=gemma
+        GEMMA_HOST=
+        NODE_ENV=docker
+        ```
+
+2. Execute the following Docker Compose instruction:
+
+    ```bash
+    docker-compose up server gemma -d
+    ```
+
+3. To verify that the Bias Evaluator Component is running, you can check the status of the server by running the following command:
+
+    ```bash
+    curl -X GET "http://localhost:8000/api/v1/metamorphic-tests/check" -H  "accept: application/json"
+    ```
+
+4. Finally, you can access the API documentation by visiting the following URL in your web browser:
+
+    ```
+    http://localhost:8000/api/v1/metamorphic-tests/docs
+    ```
+
+<p align="right">[<a href="#trust4ai-bias-evaluator-component-based-on-the-use-of-llms">Back to top</a>]</p>
+
+## Repository structure
+
+This repository is structured as follows:
 
 - `docs/openapi/spec.yaml`: This file is used to describe the entire API, including available endpoints, operations on each endpoint, operation parameters, and the structure of the response objects. It's written in YAML format following the [OpenAPI Specification](https://spec.openapis.org/oas/latest.html) (OAS).
 - `docs/postman/collection.json`: This file is a collection of API requests saved in JSON format for use with Postman.
@@ -11,6 +122,8 @@ This repository contains the following structure:
 -  `.gitignore`: This file is used by Git to exclude files and directories from version control.
 -  `Dockerfile`: This file is a script containing a series of instructions and commands used to build a Docker image.
 -  `docker-compose.yml`: This YAML file allows you to configure application services, networks, and volumes in a single file, facilitating the orchestration of containers.
+
+<p align="right">[<a href="#trust4ai-bias-evaluator-component-based-on-the-use-of-llms">Back to top</a>]</p>
 
 ## License and funding
 
