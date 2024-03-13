@@ -5,6 +5,7 @@ import MetamorphicTestingRepository from '../repositories/MetamorphicTestingRepo
 import JudgeModelService from '../services/JudgeModelService'
 import CandidateModelService from '../services/CandidateModelService.js'
 import MetamorphicTestingService from '../services/MetamorphicTestingService'
+import HttpClient from '../services/HttpClient'
 
 function initContainer() {
     const container = createContainer()
@@ -16,6 +17,7 @@ function initContainer() {
         metamorphicTestingService: asClass(
             MetamorphicTestingService
         ).singleton(),
+        httpClient: asClass(HttpClient).singleton(),
     })
     return container
 }

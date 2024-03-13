@@ -21,11 +21,11 @@
   "homepage": "https://github.com/Trust4AI/trust4ai-bias-evaluator-llm#readme",
   "dependencies": {
     "awilix": "10.0.1",
+    "axios": "1.6.7",
     "cors": "2.8.5",
     "dotenv": "16.4.4",
     "express": "4.18.2",
     "express-validator": "7.0.1",
-    "ollama": "./dependencies/ollama-0.0.0.tgz",
     "openai": "4.28.0",
     "swagger-jsdoc": "6.2.8",
     "swagger-ui-express": "5.0.0"

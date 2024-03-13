@@ -1,63 +1,38 @@
-import { getCandidateModelConfig } from '../config/models'
-import generateRoleBasedPrompt from '../utils/prompts/systemRolePrompt'
+import { delay } from '../utils/time'
 import AbstractCandidateService from './AbstractCandidateService'
-import { Ollama } from 'ollama'
+
+const RESPONSE_MAX_LENGTH = 150
 
 class CandidateModelService extends AbstractCandidateService {
-    candidateModel: string
-    model: string
-    host: string
-    ollama: any
-
-    constructor() {
-        super()
-        this.candidateModel = process.env.CANDIDATE_MODEL || 'gemma'
-        const modelData = getCandidateModelConfig(this.candidateModel)
-
-        this.model = modelData?.name ?? 'gemma:2b'
-        this.host = modelData?.host ?? 'http://localhost:11434'
-        this.ollama = new Ollama({ host: this.host })
-    }
-
     async sendPromptsToModel(
         role: string,
         prompt_1: string,
         prompt_2: string
     ): Promise<{ response_1: string; response_2: string }> {
-        const response_1: string = await this.sendPromptToModel(
-            generateRoleBasedPrompt({ role }),
-            prompt_1
-        )
+        const modelName = process.env.CANDIDATE_MODEL
+        const endpoint =
+            process.env.EXECUTOR_COMPONENT_HOST + '/v1/models/request'
 
-        const response_2: string = await this.sendPromptToModel(
-            generateRoleBasedPrompt({ role }),
-            prompt_2
-        )
+        const response_1: string = await this.httpClient.post(endpoint, {
+            role: role,
+            prompt: prompt_1,
+            model_name: modelName,
+            max_length: RESPONSE_MAX_LENGTH,
+        })
+
+        await delay(1000)
+
+        const response_2: string = await this.httpClient.post(endpoint, {
+            role: role,
+            prompt: prompt_2,
+            model_name: modelName,
+            max_length: RESPONSE_MAX_LENGTH,
+        })
 
         return {
             response_1,
             response_2,
         }
-    }
-
-    async sendPromptToModel(
-        systemPrompt: string,
-        userPrompt: string
-    ): Promise<string> {
-        const response = await this.ollama.chat({
-            model: this.model,
-            messages: [
-                {
-                    role: 'system',
-                    content: systemPrompt,
-                },
-                {
-                    role: 'user',
-                    content: userPrompt,
-                },
-            ],
-        })
-        return response.message.content
     }
 }
 

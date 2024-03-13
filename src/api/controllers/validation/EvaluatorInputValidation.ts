@@ -1,6 +1,6 @@
 import { check } from 'express-validator'
 
-const generate = [
+const evaluate = [
     check('role')
         .isString()
         .isLength({ min: 1, max: 30 })
@@ -27,4 +27,4 @@ const generate = [
         ),
 ]
 
-export { generate }
+export { evaluate }
