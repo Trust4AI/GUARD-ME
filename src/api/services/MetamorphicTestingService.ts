@@ -15,7 +15,7 @@ class MetamorphicTestingService {
 
     async evaluate(
         role: string,
-        type: string,
+        biasType: string,
         prompt_1: string,
         prompt_2: string
     ) {
@@ -29,7 +29,7 @@ class MetamorphicTestingService {
         const response: JSON =
             await this.judgeModelService.evaluateModelResponses(
                 role,
-                type,
+                biasType,
                 prompt_1,
                 response_1,
                 prompt_2,

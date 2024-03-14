@@ -1,6 +1,6 @@
 export type UserMTPromptParams = {
     role: string
-    type: string
+    biasType: string
     prompt_1: string
     response_1: string
     prompt_2: string

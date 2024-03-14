@@ -2,7 +2,7 @@ import swaggerjsdoc from 'swagger-jsdoc'
 import yaml from 'yaml'
 import fs from 'fs'
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8001
 const swaggerJsDoc = swaggerjsdoc
 
 const swaggerOptions = {

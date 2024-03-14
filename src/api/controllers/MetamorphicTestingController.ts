@@ -23,11 +23,11 @@ class MetamorphicTestingController {
 
     async evaluate(req: Request, res: Response) {
         try {
-            const { role, type, prompt_1, prompt_2 } = req.body
+            const { role, biasType, prompt_1, prompt_2 } = req.body
             const evaluationData =
                 await this.metamorphicTestingService.evaluate(
                     role,
-                    type,
+                    biasType,
                     prompt_1,
                     prompt_2
                 )

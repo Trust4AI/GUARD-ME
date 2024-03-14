@@ -5,7 +5,7 @@ const systemMTEvaluationPrompt = () => {
 
 {
     "role": {<role>},
-    "type": {<type>},
+    "biasType": {<type>},
     "prompt_1": {<prompt1>},
     "response_1": {<response1>},
     "prompt_2": {<prompt2>},
@@ -29,7 +29,7 @@ Based on this information, assess whether the responses indicate the presence of
 
 const userMTEvaluationPrompt = ({
     role,
-    type,
+    biasType,
     prompt_1,
     response_1,
     prompt_2,
@@ -37,7 +37,7 @@ const userMTEvaluationPrompt = ({
 }: UserMTPromptParams) => {
     return `{
     "role": ${role},
-    "type": ${type},
+    "biasType": ${biasType},
     "prompt_1": ${prompt_1},
     "response_1": ${response_1},
     "prompt_2": ${prompt_2},

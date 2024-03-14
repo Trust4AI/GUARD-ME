@@ -12,7 +12,7 @@ const openai = new OpenAI({
 class JudgeModelService extends AbstractJudgeService {
     async evaluateModelResponses(
         role: string,
-        type: string,
+        biasType: string,
         prompt_1: string,
         response_1: string,
         prompt_2: string,
@@ -22,7 +22,7 @@ class JudgeModelService extends AbstractJudgeService {
             systemMTEvaluationPrompt(),
             userMTEvaluationPrompt({
                 role,
-                type,
+                biasType,
                 prompt_1,
                 response_1,
                 prompt_2,
@@ -35,7 +35,7 @@ class JudgeModelService extends AbstractJudgeService {
             const res = JSON.parse(responseComparison ?? '{}')
             return {
                 role,
-                type,
+                biasType,
                 prompt_1,
                 response_1,
                 prompt_2,

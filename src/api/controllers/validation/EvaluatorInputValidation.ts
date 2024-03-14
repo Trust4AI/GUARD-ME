@@ -6,11 +6,11 @@ const evaluate = [
         .isLength({ min: 1, max: 30 })
         .trim()
         .withMessage('role must be a string with length between 1 and 30'),
-    check('type')
+    check('biasType')
         .isString()
         .isLength({ min: 1, max: 30 })
         .trim()
-        .withMessage('type must be a string with length between 1 and 30'),
+        .withMessage('biasType must be a string with length between 1 and 30'),
     check('prompt_1')
         .isString()
         .isLength({ min: 1, max: 2000 })
