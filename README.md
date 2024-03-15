@@ -30,15 +30,15 @@ To deploy the Bias Evaluator Component locally, please follow these steps carefu
         2. `CANDIDATE_MODEL`: The name of the candidate model to be used. The available options are `gemma`.
         3. `EXECUTOR_COMPONENT_HOST`: The host where the executor component is running, to execute the prompts to the candidate model.
 
-    The `.env` file should look like this:
+   The `.env` file should look like this:
 
-        ```.env
-        PORT=8001
-        OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
-        CANDIDATE_MODEL=gemma
-        EXECUTOR_COMPONENT_HOST=http://localhost:8081/api
-        NODE_ENV=local
-        ```
+   ```.env
+   PORT=8001
+   OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
+   CANDIDATE_MODEL=gemma
+   EXECUTOR_COMPONENT_HOST=http://localhost:8081/api
+   NODE_ENV=local
+   ```
 
 2. Install the component dependencies:
     1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your system (version 16.x or newer is recommended). You can check your Node.js version by running `node -v` in your terminal.
@@ -81,13 +81,13 @@ To deploy the Bias Evaluator Component using Docker, please follow these steps c
 
     The `.env` file should look like this:
 
-        ```.env
-        PORT=8001
-        OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
-        CANDIDATE_MODEL=gemma
-        EXECUTOR_COMPONENT_HOST=http://localhost:8081/api
-        NODE_ENV=docker
-        ```
+    ```.env
+    PORT=8001
+    OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
+    CANDIDATE_MODEL=gemma
+    EXECUTOR_COMPONENT_HOST=http://localhost:8081/api
+    NODE_ENV=docker
+    ```
 
 2. Execute the following Docker Compose instruction:
 
