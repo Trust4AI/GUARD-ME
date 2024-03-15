@@ -1,4 +1,4 @@
-import { createContainer, asValue, asClass } from 'awilix'
+import { createContainer, asClass } from 'awilix'
 
 import JudgeModelService from '../services/JudgeModelService'
 import CandidateModelService from '../services/CandidateModelService.js'
