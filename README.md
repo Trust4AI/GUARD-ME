@@ -17,6 +17,8 @@ This project provides a evaluator of prompts/search strings for testing the bias
 
 ## Deployment
 
+For the correct operation, it is necessary to previously deploy the [executor component](https://github.com/Trust4AI/executor-component), in charge, as its name indicates, of executing the test cases on the models.
+
 ### Local deployment
 
 To deploy the Bias Evaluator Component locally, please follow these steps carefully:
@@ -25,25 +27,20 @@ To deploy the Bias Evaluator Component locally, please follow these steps carefu
     1. Rename the `.env.local` file to `.env`.
     2. Open the `.env` file and update the following entries:
         1. `OPENAI_API_KEY`: Your OpenAI API key.
-        2. `CANDIDATE_MODEL`: The name of the candidate model to be used. The available options are `gemma`. In case you want to use a deployed GEMMA instance, fill the `GEMMA_HOST` environment variable with the host of the GEMMA instance, otherwise, leave it empty.
+        2. `CANDIDATE_MODEL`: The name of the candidate model to be used. The available options are `gemma`.
+        3. `EXECUTOR_COMPONENT_HOST`: The host where the executor component is running, to execute the prompts to the candidate model.
 
     The `.env` file should look like this:
 
         ```.env
-        PORT=8000
+        PORT=8001
         OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
         CANDIDATE_MODEL=gemma
-        GEMMA_HOST=
+        EXECUTOR_COMPONENT_HOST=http://localhost:8081/api
         NODE_ENV=local
         ```
 
-2. (If applicable) To use **GEMMA** as local model, you need to execute the following Docker Compose instruction to deploy a instance:
-
-    ```bash
-    docker-compose up gemma -d
-    ```
-
-3. Install the component dependencies:
+2. Install the component dependencies:
     1. Ensure you have [Node.js](https://nodejs.org/en/download) installed on your system (version 16.x or newer is recommended). You can check your Node.js version by running `node -v` in your terminal.
     2. Navigate to the `src` directory and install the required dependencies:
 
@@ -52,23 +49,23 @@ To deploy the Bias Evaluator Component locally, please follow these steps carefu
         npm install
         ```
 
-4. Compile the source code and start the server:
+3. Compile the source code and start the server:
 
     ```bash
     npm run build
     npm start
     ```
 
-5. To verify that the Bias Evaluator Component is running, you can check the status of the server by running the following command:
+4. To verify that the Bias Evaluator Component is running, you can check the status of the server by running the following command:
 
     ```bash
-    curl -X GET "http://localhost:8000/api/v1/metamorphic-tests/check" -H  "accept: application/json"
+    curl -X GET "http://localhost:8001/api/v1/metamorphic-tests/check" -H  "accept: application/json"
     ```
 
-6. Finally, you can access the API documentation by visiting the following URL in your web browser:
+5. Finally, you can access the API documentation by visiting the following URL in your web browser:
 
     ```
-    http://localhost:8000/api/v1/metamorphic-tests/docs
+    http://localhost:8001/api/v1/metamorphic-tests/docs
     ```
 
 ### Docker deployment
@@ -79,34 +76,35 @@ To deploy the Bias Evaluator Component using Docker, please follow these steps c
     1. Rename the `.env.docker` file to `.env`.
     2. Open the `.env` file and update the following entries:
         1. `OPENAI_API_KEY`: Your OpenAI API key.
-        2. `CANDIDATE_MODEL`: The name of the candidate model to be used. The available options are `gemma`. In case you want to use a deployed GEMMA instance, fill the `GEMMA_HOST` environment variable with the host of the GEMMA instance, otherwise, leave it empty.
+        2. `CANDIDATE_MODEL`: The name of the candidate model to be used. The available options are `gemma`.
+        3. `EXECUTOR_COMPONENT_HOST`: The host where the executor component is running, to execute the prompts to the candidate model.
 
     The `.env` file should look like this:
 
         ```.env
-        PORT=8000
+        PORT=8001
         OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
         CANDIDATE_MODEL=gemma
-        GEMMA_HOST=
+        EXECUTOR_COMPONENT_HOST=http://localhost:8081/api
         NODE_ENV=docker
         ```
 
 2. Execute the following Docker Compose instruction:
 
     ```bash
-    docker-compose up server gemma -d
+    docker-compose up -d
     ```
 
 3. To verify that the Bias Evaluator Component is running, you can check the status of the server by running the following command:
 
     ```bash
-    curl -X GET "http://localhost:8000/api/v1/metamorphic-tests/check" -H  "accept: application/json"
+    curl -X GET "http://localhost:8001/api/v1/metamorphic-tests/check" -H  "accept: application/json"
     ```
 
 4. Finally, you can access the API documentation by visiting the following URL in your web browser:
 
     ```
-    http://localhost:8000/api/v1/metamorphic-tests/docs
+    http://localhost:8001/api/v1/metamorphic-tests/docs
     ```
 
 <p align="right">[<a href="#trust4ai-bias-evaluator-component-based-on-the-use-of-llms">Back to top</a>]</p>
