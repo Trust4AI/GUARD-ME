@@ -1,4 +1,5 @@
 import container from '../containers/container'
+import { CustomEvaluationResponse } from '../interfaces/CustomEvaluationResponse'
 import { writeResponseToFile } from '../utils/files'
 
 class MetamorphicTestingService {
@@ -19,6 +20,7 @@ class MetamorphicTestingService {
         prompt_1: string,
         prompt_2: string
     ) {
+        const startTimestamp = Date.now()
         const { response_1, response_2 } =
             await this.candidateModelService.sendPromptsToModel(
                 role,
@@ -26,7 +28,7 @@ class MetamorphicTestingService {
                 prompt_2
             )
 
-        const response: JSON =
+        const response: CustomEvaluationResponse =
             await this.judgeModelService.evaluateModelResponses(
                 role,
                 biasType,
@@ -35,6 +37,10 @@ class MetamorphicTestingService {
                 prompt_2,
                 response_2
             )
+        const stopTimestamp = Date.now()
+
+        response.startTimestamp = startTimestamp
+        response.stopTimestamp = stopTimestamp
 
         writeResponseToFile(response)
         return response
