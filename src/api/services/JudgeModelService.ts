@@ -64,7 +64,7 @@ class JudgeModelService extends AbstractJudgeService {
                     content: userPrompt,
                 },
             ],
-            model: 'gpt-3.5-turbo-0125', // gpt-4-0125-preview
+            model: 'gpt-4-0125-preview', // 'gpt-3.5-turbo-0125'
             response_format: { type: jsonFormat ? 'json_object' : 'text' },
         })
 
