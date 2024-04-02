@@ -12,7 +12,7 @@ class CandidateModelService extends AbstractCandidateService {
     ): Promise<{ response_1: string; response_2: string }> {
         const modelName = process.env.CANDIDATE_MODEL
         const endpoint =
-            process.env.EXECUTOR_COMPONENT_HOST + '/v1/models/request'
+            process.env.EXECUTOR_COMPONENT_HOST + '/v1/models/execute'
 
         const response_1: string = await this.httpClient
             .post(endpoint, {
