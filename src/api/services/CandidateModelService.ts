@@ -1,3 +1,4 @@
+import { CustomModelResponse } from '../interfaces/CustomModelResponse'
 import { delay } from '../utils/time'
 import AbstractCandidateService from './AbstractCandidateService'
 
@@ -13,21 +14,25 @@ class CandidateModelService extends AbstractCandidateService {
         const endpoint =
             process.env.EXECUTOR_COMPONENT_HOST + '/v1/models/request'
 
-        const response_1: string = await this.httpClient.post(endpoint, {
-            role: role,
-            prompt: prompt_1,
-            model_name: modelName,
-            max_length: RESPONSE_MAX_LENGTH,
-        })
+        const response_1: string = await this.httpClient
+            .post(endpoint, {
+                role: role,
+                prompt: prompt_1,
+                model_name: modelName,
+                max_length: RESPONSE_MAX_LENGTH,
+            })
+            .then((res: CustomModelResponse) => res.response)
 
         await delay(1000)
 
-        const response_2: string = await this.httpClient.post(endpoint, {
-            role: role,
-            prompt: prompt_2,
-            model_name: modelName,
-            max_length: RESPONSE_MAX_LENGTH,
-        })
+        const response_2: string = await this.httpClient
+            .post(endpoint, {
+                role: role,
+                prompt: prompt_2,
+                model_name: modelName,
+                max_length: RESPONSE_MAX_LENGTH,
+            })
+            .then((res: CustomModelResponse) => res.response)
 
         return {
             response_1,
