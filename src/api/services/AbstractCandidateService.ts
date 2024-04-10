@@ -7,9 +7,9 @@ abstract class AbstractCandidateService {
     }
     abstract sendPromptsToModel(
         role: string,
-        prompt_1: string,
-        prompt_2: string
-    ): Promise<{ response_1: string; response_2: string }>
+        prompt1: string,
+        prompt2: string
+    ): Promise<{ response1: string; response2: string }>
 }
 
 export default AbstractCandidateService

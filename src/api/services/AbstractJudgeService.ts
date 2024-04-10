@@ -2,10 +2,11 @@ abstract class AbstractJudgeService {
     abstract evaluateModelResponses(
         role: string,
         biasType: string,
-        prompt_1: string,
-        response_1: string,
-        prompt_2: string,
-        response_2: string
+        prompt1: string,
+        response1: string,
+        prompt2: string,
+        response2: string,
+        generationExplanation: string
     ): Promise<JSON>
 
     abstract fetchModelComparison(

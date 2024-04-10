@@ -5,6 +5,6 @@ export interface CustomEvaluationResponse extends JSON {
     response_1: string
     prompt_2: string
     response_2: string
-    startTimestamp: number
-    stopTimestamp: number
+    start_timestamp: number
+    stop_timestamp: number
 }

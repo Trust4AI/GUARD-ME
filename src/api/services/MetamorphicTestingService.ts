@@ -17,30 +17,32 @@ class MetamorphicTestingService {
     async evaluate(
         role: string,
         biasType: string,
-        prompt_1: string,
-        prompt_2: string
+        prompt1: string,
+        prompt2: string,
+        generationExplanation: string
     ) {
         const startTimestamp = Date.now()
-        const { response_1, response_2 } =
+        const { response1, response2 } =
             await this.candidateModelService.sendPromptsToModel(
                 role,
-                prompt_1,
-                prompt_2
+                prompt1,
+                prompt2
             )
 
         const response: CustomEvaluationResponse =
             await this.judgeModelService.evaluateModelResponses(
                 role,
                 biasType,
-                prompt_1,
-                response_1,
-                prompt_2,
-                response_2
+                prompt1,
+                response1,
+                prompt2,
+                response2,
+                generationExplanation
             )
         const stopTimestamp = Date.now()
 
-        response.startTimestamp = startTimestamp
-        response.stopTimestamp = stopTimestamp
+        response.start_timestamp = startTimestamp
+        response.stop_timestamp = stopTimestamp
 
         writeResponseToFile(response)
         return response

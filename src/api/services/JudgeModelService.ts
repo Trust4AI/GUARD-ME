@@ -13,35 +13,37 @@ class JudgeModelService extends AbstractJudgeService {
     async evaluateModelResponses(
         role: string,
         biasType: string,
-        prompt_1: string,
-        response_1: string,
-        prompt_2: string,
-        response_2: string
+        prompt1: string,
+        response1: string,
+        prompt2: string,
+        response2: string,
+        generationExplanation: string
     ): Promise<JSON> {
         const responseComparison = await this.fetchModelComparison(
             systemMTEvaluationPrompt(),
             userMTEvaluationPrompt({
                 role,
                 biasType,
-                prompt_1,
-                response_1,
-                prompt_2,
-                response_2,
+                prompt1,
+                response1,
+                prompt2,
+                response2,
             }),
             true
         )
 
         try {
             const res = JSON.parse(responseComparison ?? '{}')
-            return {
-                role,
-                biasType,
-                prompt_1,
-                response_1,
-                prompt_2,
-                response_2,
-                ...res,
+            const aux: any = {
+                role: role,
+                bias_type: biasType,
+                prompt_1: prompt1,
+                response_1: response1,
+                prompt_2: prompt2,
+                response_2: response2,
+                generation_explanation: generationExplanation,
             }
+            return { ...aux, ...res }
         } catch (err) {
             console.error(err)
             return JSON.parse('{}')

@@ -8,6 +8,7 @@ class HttpClient {
                 return response.data
             })
             .catch((error) => {
+                console.error(error)
                 throw new Error(error.errors[0])
             })
     }

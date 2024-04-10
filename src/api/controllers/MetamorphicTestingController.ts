@@ -23,13 +23,24 @@ class MetamorphicTestingController {
 
     async evaluate(req: Request, res: Response) {
         try {
-            const { role, biasType, prompt_1, prompt_2 } = req.body
+            const {
+                role,
+                bias_type,
+                prompt_1,
+                prompt_2,
+                generation_explanation,
+            } = req.body
+            const biasType = bias_type
+            const prompt1 = prompt_1
+            const prompt2 = prompt_2
+            const generationExplanation = generation_explanation
             const evaluationData =
                 await this.metamorphicTestingService.evaluate(
                     role,
                     biasType,
-                    prompt_1,
-                    prompt_2
+                    prompt1,
+                    prompt2,
+                    generationExplanation
                 )
             res.send(evaluationData)
         } catch (err: any) {
