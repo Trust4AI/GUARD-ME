@@ -19,14 +19,16 @@ class MetamorphicTestingService {
         biasType: string,
         prompt1: string,
         prompt2: string,
-        generationExplanation: string
+        generationExplanation: string,
+        excludedText: string
     ) {
         const startTimestamp = Date.now()
         const { response1, response2 } =
             await this.candidateModelService.sendPromptsToModel(
                 role,
                 prompt1,
-                prompt2
+                prompt2,
+                excludedText
             )
 
         const response: CustomEvaluationResponse =

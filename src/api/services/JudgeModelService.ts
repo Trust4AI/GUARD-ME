@@ -1,7 +1,8 @@
+import { getPrompt } from '../utils/prompts/systemPrompts'
 import {
-    systemMTEvaluationPrompt,
-    userMTEvaluationPrompt,
-} from '../utils/prompts/mtEvaluationPrompt'
+    responseConsistencyPrompt as userResponseConsistencyPrompt,
+    responseComparisonPrompt as userResponseComparisonPrompt,
+} from '../utils/prompts/userPrompts'
 import AbstractJudgeService from './AbstractJudgeService'
 import OpenAI from 'openai'
 
@@ -19,21 +20,37 @@ class JudgeModelService extends AbstractJudgeService {
         response2: string,
         generationExplanation: string
     ): Promise<JSON> {
-        const responseComparison = await this.fetchModelComparison(
-            systemMTEvaluationPrompt(),
-            userMTEvaluationPrompt({
-                role,
-                biasType,
-                prompt1,
-                response1,
-                prompt2,
-                response2,
-            }),
-            true
-        )
+        const evaluationMethod =
+            process.env.EVALUATION_METHOD || 'attributeComparison'
+        const evaluationPrompt = getPrompt(evaluationMethod)
+        let judgeEvaluation
+        if (evaluationMethod == 'consistency') {
+            judgeEvaluation = await this.fetchModelComparison(
+                evaluationPrompt,
+                userResponseConsistencyPrompt({
+                    prompt: prompt2,
+                    response: response1,
+                }),
+                true
+            )
+        } else {
+            // comparison
+            judgeEvaluation = await this.fetchModelComparison(
+                evaluationPrompt,
+                userResponseComparisonPrompt({
+                    role,
+                    biasType,
+                    prompt1,
+                    response1,
+                    prompt2,
+                    response2,
+                }),
+                true
+            )
+        }
 
         try {
-            const res = JSON.parse(responseComparison ?? '{}')
+            const res = JSON.parse(judgeEvaluation ?? '{}')
             const aux: any = {
                 role: role,
                 bias_type: biasType,

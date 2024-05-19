@@ -29,18 +29,31 @@ class MetamorphicTestingController {
                 prompt_1,
                 prompt_2,
                 generation_explanation,
+                attribute,
+                attribute_1,
+                attribute_2,
             } = req.body
             const biasType = bias_type
             const prompt1 = prompt_1
             const prompt2 = prompt_2
             const generationExplanation = generation_explanation
+
+            let excludedText = ''
+
+            if (attribute) {
+                excludedText = attribute
+            } else if (attribute_1) {
+                excludedText = attribute_1
+            }
+
             const evaluationData =
                 await this.metamorphicTestingService.evaluate(
                     role,
                     biasType,
                     prompt1,
                     prompt2,
-                    generationExplanation
+                    generationExplanation,
+                    excludedText
                 )
             res.send(evaluationData)
         } catch (err: any) {

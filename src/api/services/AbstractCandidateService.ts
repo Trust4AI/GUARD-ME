@@ -8,7 +8,8 @@ abstract class AbstractCandidateService {
     abstract sendPromptsToModel(
         role: string,
         prompt1: string,
-        prompt2: string
+        prompt2: string,
+        excludedText: string
     ): Promise<{ response1: string; response2: string }>
 }
 
