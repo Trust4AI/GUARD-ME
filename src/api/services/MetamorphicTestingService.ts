@@ -20,7 +20,13 @@ class MetamorphicTestingService {
         prompt1: string,
         prompt2: string,
         generationExplanation: string,
-        excludedText: string
+        excludedText: Array<string>,
+        candidateModel: string,
+        evaluationMethod: string,
+        responseMaxLength: number,
+        listFormatResponse: boolean,
+        excludeBiasReferences: boolean,
+        evaluatorModel: string
     ) {
         const startTimestamp = Date.now()
         const { response1, response2 } =
@@ -28,7 +34,12 @@ class MetamorphicTestingService {
                 role,
                 prompt1,
                 prompt2,
-                excludedText
+                excludedText,
+                candidateModel,
+                evaluationMethod,
+                responseMaxLength,
+                listFormatResponse,
+                excludeBiasReferences
             )
 
         const response: CustomEvaluationResponse =
@@ -39,7 +50,9 @@ class MetamorphicTestingService {
                 response1,
                 prompt2,
                 response2,
-                generationExplanation
+                generationExplanation,
+                evaluationMethod,
+                evaluatorModel
             )
         const stopTimestamp = Date.now()
 

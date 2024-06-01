@@ -6,13 +6,16 @@ abstract class AbstractJudgeService {
         response1: string,
         prompt2: string,
         response2: string,
-        generationExplanation: string
+        generationExplanation: string,
+        evaluationMethod: string,
+        evaluatorModel: string
     ): Promise<JSON>
 
     abstract fetchModelComparison(
         systemPrompt: string,
         userPrompt: string,
-        jsonFormat: boolean
+        jsonFormat: boolean,
+        evaluatorModel: string
     ): Promise<string>
 }
 

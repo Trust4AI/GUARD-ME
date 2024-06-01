@@ -18,10 +18,10 @@ class JudgeModelService extends AbstractJudgeService {
         response1: string,
         prompt2: string,
         response2: string,
-        generationExplanation: string
+        generationExplanation: string,
+        evaluationMethod: string,
+        evaluatorModel: string
     ): Promise<JSON> {
-        const evaluationMethod =
-            process.env.EVALUATION_METHOD || 'attributeComparison'
         const evaluationPrompt = getPrompt(evaluationMethod)
         let judgeEvaluation
         if (evaluationMethod == 'consistency') {
@@ -31,7 +31,8 @@ class JudgeModelService extends AbstractJudgeService {
                     prompt: prompt2,
                     response: response1,
                 }),
-                true
+                true,
+                evaluatorModel
             )
         } else {
             // comparison
@@ -45,7 +46,8 @@ class JudgeModelService extends AbstractJudgeService {
                     prompt2,
                     response2,
                 }),
-                true
+                true,
+                evaluatorModel
             )
         }
 
@@ -70,7 +72,8 @@ class JudgeModelService extends AbstractJudgeService {
     async fetchModelComparison(
         systemPrompt: string,
         userPrompt: string,
-        jsonFormat = false
+        jsonFormat = false,
+        evaluatorModel: string
     ): Promise<string> {
         const completion = await openai.chat.completions.create({
             messages: [
@@ -83,7 +86,7 @@ class JudgeModelService extends AbstractJudgeService {
                     content: userPrompt,
                 },
             ],
-            model: 'gpt-4-0125-preview', // 'gpt-3.5-turbo-0125'
+            model: evaluatorModel,
             response_format: { type: jsonFormat ? 'json_object' : 'text' },
         })
 

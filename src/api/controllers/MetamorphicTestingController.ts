@@ -29,21 +29,36 @@ class MetamorphicTestingController {
                 prompt_1,
                 prompt_2,
                 generation_explanation,
-                attribute,
-                attribute_1,
-                attribute_2,
+                attribute = '',
+                attribute_1 = '',
+                attribute_2 = '',
+                candidate_model,
+                evaluation_method = 'attributeComparison',
+                response_max_length = 100,
+                list_format_response = false,
+                exclude_bias_references = true,
+                evaluator_model = 'gpt-4-0125-preview',
             } = req.body
             const biasType = bias_type
             const prompt1 = prompt_1
             const prompt2 = prompt_2
             const generationExplanation = generation_explanation
+            const candidateModel = candidate_model
+            const evaluationMethod = evaluation_method
+            const responseMaxLength = response_max_length
+            const listFormatResponse = list_format_response
+            const evaluatorModel = evaluator_model
+            const excludeBiasReferences = exclude_bias_references
 
-            let excludedText = ''
+            let excludedText
 
             if (attribute) {
-                excludedText = attribute
-            } else if (attribute_1) {
-                excludedText = attribute_1
+                excludedText = [
+                    prompt1.includes(attribute) ? attribute : '',
+                    prompt2.includes(attribute) ? attribute : '',
+                ]
+            } else {
+                excludedText = [attribute_1 || '', attribute_2 || '']
             }
 
             const evaluationData =
@@ -53,7 +68,13 @@ class MetamorphicTestingController {
                     prompt1,
                     prompt2,
                     generationExplanation,
-                    excludedText
+                    excludedText,
+                    candidateModel,
+                    evaluationMethod,
+                    responseMaxLength,
+                    listFormatResponse,
+                    excludeBiasReferences,
+                    evaluatorModel
                 )
             res.send(evaluationData)
         } catch (err: any) {

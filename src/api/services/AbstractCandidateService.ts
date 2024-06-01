@@ -9,7 +9,12 @@ abstract class AbstractCandidateService {
         role: string,
         prompt1: string,
         prompt2: string,
-        excludedText: string
+        excludedText: Array<string>,
+        candidateModel: string,
+        evaluationMethod: string,
+        responseMaxLength: number,
+        listFormatResponse: boolean,
+        excludeBiasReferences: boolean
     ): Promise<{ response1: string; response2: string }>
 }
 

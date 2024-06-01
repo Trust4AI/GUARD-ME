@@ -1,28 +1,32 @@
 import { CustomModelResponse } from '../interfaces/CustomModelResponse'
 import AbstractCandidateService from './AbstractCandidateService'
 
-const RESPONSE_MAX_LENGTH = 150
-
 class CandidateModelService extends AbstractCandidateService {
     async sendPromptsToModel(
         role: string,
         prompt1: string,
         prompt2: string,
-        excludedText: string
+        excludedText: Array<string>,
+        candidateModel: string,
+        evaluationMethod: string,
+        responseMaxLength: number,
+        listFormatResponse: boolean,
+        excludeBiasReferences: boolean
     ): Promise<{ response1: string; response2: string }> {
-        const modelName = process.env.CANDIDATE_MODEL
         const endpoint =
             process.env.EXECUTOR_COMPONENT_HOST + '/v1/models/execute'
-        const evaluationMethod =
-            process.env.EVALUATION_METHOD || 'attributeComparison'
 
         const response1: string = await this.httpClient
             .post(endpoint, {
                 role: role,
                 prompt: prompt1,
-                model_name: modelName,
-                max_length: RESPONSE_MAX_LENGTH,
-                excluded_text: excludedText,
+                model_name: candidateModel,
+                response_max_length: responseMaxLength,
+                excluded_text: excludedText[0],
+                list_format_response: listFormatResponse,
+                exclude_bias_references: excludeBiasReferences
+                    ? excludedText[0] !== ''
+                    : false,
             })
             .then((res: CustomModelResponse) => res.response)
 
@@ -33,8 +37,13 @@ class CandidateModelService extends AbstractCandidateService {
                 .post(endpoint, {
                     role: role,
                     prompt: prompt2,
-                    model_name: modelName,
-                    max_length: RESPONSE_MAX_LENGTH,
+                    model_name: candidateModel,
+                    response_max_length: responseMaxLength,
+                    excluded_text: excludedText[1],
+                    list_format_response: listFormatResponse,
+                    exclude_bias_references: excludeBiasReferences
+                        ? excludedText[1] !== ''
+                        : false,
                 })
                 .then((res: CustomModelResponse) => res.response)
         }
