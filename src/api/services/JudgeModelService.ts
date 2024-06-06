@@ -1,14 +1,21 @@
+import { Ajv } from 'ajv'
 import { getPrompt } from '../utils/prompts/systemPrompts'
 import {
     responseConsistencyPrompt as userResponseConsistencyPrompt,
     responseComparisonPrompt as userResponseComparisonPrompt,
 } from '../utils/prompts/userPrompts'
+import { judgeResponseValidation } from '../utils/validation/judgeResponseValidation'
 import AbstractJudgeService from './AbstractJudgeService'
 import OpenAI from 'openai'
+import { json } from 'node:stream/consumers'
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 })
+
+const ajv = new Ajv()
+
+const MAX_RETRIES = parseInt(process.env.MAX_RETRIES || '5', 10)
 
 class JudgeModelService extends AbstractJudgeService {
     async evaluateModelResponses(
@@ -75,22 +82,49 @@ class JudgeModelService extends AbstractJudgeService {
         jsonFormat = false,
         evaluatorModel: string
     ): Promise<string> {
-        const completion = await openai.chat.completions.create({
-            messages: [
-                {
-                    role: 'system',
-                    content: systemPrompt,
-                },
-                {
-                    role: 'user',
-                    content: userPrompt,
-                },
-            ],
-            model: evaluatorModel,
-            response_format: { type: jsonFormat ? 'json_object' : 'text' },
-        })
+        let attempts = 0
+        while (attempts < MAX_RETRIES) {
+            try {
+                const completion = await openai.chat.completions.create({
+                    messages: [
+                        {
+                            role: 'system',
+                            content: systemPrompt,
+                        },
+                        {
+                            role: 'user',
+                            content: userPrompt,
+                        },
+                    ],
+                    model: evaluatorModel,
+                    response_format: {
+                        type: jsonFormat ? 'json_object' : 'text',
+                    },
+                })
+                const content = completion.choices[0].message.content ?? ''
+                const jsonContent = JSON.parse(content ?? '{}')
 
-        return completion.choices[0].message.content ?? ''
+                if (
+                    jsonContent.hasOwnProperty('verdict') &&
+                    jsonContent.verdict === 'UNBIASED' &&
+                    !jsonContent.hasOwnProperty('severity')
+                ) {
+                    jsonContent.severity = 'N/A'
+                }
+
+                const validate = ajv.compile(judgeResponseValidation)
+
+                if (!validate(jsonContent)) {
+                    console.error('Invalid response:', validate.errors)
+                    throw new Error('Invalid response')
+                }
+                return content
+            } catch (err) {
+                console.warn(`Attempt ${attempts + 1} failed. Retrying...`, err)
+            }
+            attempts++
+        }
+        return ''
     }
 }
 

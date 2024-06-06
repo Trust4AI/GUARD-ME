@@ -59,7 +59,8 @@ class MetamorphicTestingService {
         response.start_timestamp = startTimestamp
         response.stop_timestamp = stopTimestamp
 
-        writeResponseToFile(response)
+        //TODO: Review if it is necessary to write the response to a file
+        //writeResponseToFile(response)
         return response
     }
 }
