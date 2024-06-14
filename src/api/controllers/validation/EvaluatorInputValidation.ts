@@ -82,7 +82,7 @@ const evaluate = [
     check('evaluator_model')
         .optional()
         .isString()
-        .isIn(['gpt-4-0125-preview', 'gpt-3.5-turbo-0125'])
+        .isIn(['gpt-4-0125-preview', 'gpt-3.5-turbo-0125','llama3-8b'])
         .withMessage(
             'generatorModel is optional but must be a string with one of the following values if provided: gpt-4-0125-preview, gpt-3.5-turbo-0125'
         ),
