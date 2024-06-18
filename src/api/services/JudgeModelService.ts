@@ -6,18 +6,19 @@ import {
 } from '../utils/prompts/userPrompts'
 import { judgeResponseValidation } from '../utils/validation/judgeResponseValidation'
 import AbstractJudgeService from './AbstractJudgeService'
-import OpenAI from 'openai'
-import { json } from 'node:stream/consumers'
+import OpenAIGPTJudgeModelService from './OpenAIGPTJudgeModelService'   
+import OllamaJudgeModelService from './OllamaJudgeModelService'
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-})
 
 const ajv = new Ajv()
 
 const MAX_RETRIES = parseInt(process.env.MAX_RETRIES || '5', 10)
 
 class JudgeModelService extends AbstractJudgeService {
+
+    ollamaJudgeModelService = new OllamaJudgeModelService();
+    openAIGPTJudgeModelService = new OpenAIGPTJudgeModelService();
+
     async evaluateModelResponses(
         role: string,
         biasType: string,
@@ -74,7 +75,7 @@ class JudgeModelService extends AbstractJudgeService {
             console.error(err)
             return JSON.parse('{}')
         }
-    }
+    }   
 
     async fetchModelComparison(
         systemPrompt: string,
@@ -83,25 +84,15 @@ class JudgeModelService extends AbstractJudgeService {
         evaluatorModel: string
     ): Promise<string> {
         let attempts = 0
+        let content: string | undefined
         while (attempts < MAX_RETRIES) {
             try {
-                const completion = await openai.chat.completions.create({
-                    messages: [
-                        {
-                            role: 'system',
-                            content: systemPrompt,
-                        },
-                        {
-                            role: 'user',
-                            content: userPrompt,
-                        },
-                    ],
-                    model: evaluatorModel,
-                    response_format: {
-                        type: jsonFormat ? 'json_object' : 'text',
-                    },
-                })
-                const content = completion.choices[0].message.content ?? ''
+                if( evaluatorModel === 'gpt-4-0125-preview' || evaluatorModel === 'gpt-3.5-turbo'){
+                    content= await this.openAIGPTJudgeModelService.fetchModelComparison(systemPrompt, userPrompt, jsonFormat, evaluatorModel);                    
+                } else {
+                    content = await this.ollamaJudgeModelService.fetchModelComparison(systemPrompt, userPrompt, jsonFormat, evaluatorModel);
+                }
+                console.log('Response:', content);
                 const jsonContent = JSON.parse(content ?? '{}')
 
                 if (
@@ -118,14 +109,14 @@ class JudgeModelService extends AbstractJudgeService {
                     console.error('Invalid response:', validate.errors)
                     throw new Error('Invalid response')
                 }
-                return content
+                return content               
             } catch (err) {
                 console.warn(`Attempt ${attempts + 1} failed. Retrying...`, err)
             }
             attempts++
         }
         return ''
-    }
+    }        
 }
 
 export default JudgeModelService
