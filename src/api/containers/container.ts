@@ -4,6 +4,8 @@ import JudgeModelService from '../services/JudgeModelService'
 import CandidateModelService from '../services/CandidateModelService.js'
 import MetamorphicTestingService from '../services/MetamorphicTestingService'
 import HttpClient from '../services/HttpClient'
+import OllamaJudgeModelService from '../services/OllamaJudgeModelService'
+import OpenAIGPTJudgeModelService from '../services/OpenAIGPTJudgeModelService'
 
 function initContainer() {
     const container = createContainer()
@@ -15,6 +17,10 @@ function initContainer() {
             MetamorphicTestingService
         ).singleton(),
         httpClient: asClass(HttpClient).singleton(),
+        ollamaJudgeModelService: asClass(OllamaJudgeModelService).singleton(),
+        openAIGPTJudgeModelService: asClass(
+            OpenAIGPTJudgeModelService
+        ).singleton(),
     })
     return container
 }

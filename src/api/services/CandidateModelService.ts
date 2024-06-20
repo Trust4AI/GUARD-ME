@@ -19,7 +19,7 @@ class CandidateModelService extends AbstractCandidateService {
         const response1: string = await this.httpClient
             .post(endpoint, {
                 role: role,
-                prompt: prompt1,
+                user_prompt: prompt1,
                 model_name: candidateModel,
                 response_max_length: responseMaxLength,
                 excluded_text: excludedText[0],
@@ -36,7 +36,7 @@ class CandidateModelService extends AbstractCandidateService {
             response2 = await this.httpClient
                 .post(endpoint, {
                     role: role,
-                    prompt: prompt2,
+                    user_prompt: prompt2,
                     model_name: candidateModel,
                     response_max_length: responseMaxLength,
                     excluded_text: excludedText[1],

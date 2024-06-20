@@ -6,18 +6,24 @@ import {
 } from '../utils/prompts/userPrompts'
 import { judgeResponseValidation } from '../utils/validation/judgeResponseValidation'
 import AbstractJudgeService from './AbstractJudgeService'
-import OpenAIGPTJudgeModelService from './OpenAIGPTJudgeModelService'   
-import OllamaJudgeModelService from './OllamaJudgeModelService'
-
+import container from '../containers/container'
 
 const ajv = new Ajv()
 
 const MAX_RETRIES = parseInt(process.env.MAX_RETRIES || '5', 10)
 
 class JudgeModelService extends AbstractJudgeService {
-
-    ollamaJudgeModelService = new OllamaJudgeModelService();
-    openAIGPTJudgeModelService = new OpenAIGPTJudgeModelService();
+    ollamaJudgeModelService: any
+    openAIGPTJudgeModelService: any
+    constructor() {
+        super()
+        this.ollamaJudgeModelService = container.resolve(
+            'ollamaJudgeModelService'
+        )
+        this.openAIGPTJudgeModelService = container.resolve(
+            'openAIGPTJudgeModelService'
+        )
+    }
 
     async evaluateModelResponses(
         role: string,
@@ -75,7 +81,7 @@ class JudgeModelService extends AbstractJudgeService {
             console.error(err)
             return JSON.parse('{}')
         }
-    }   
+    }
 
     async fetchModelComparison(
         systemPrompt: string,
@@ -87,12 +93,25 @@ class JudgeModelService extends AbstractJudgeService {
         let content: string | undefined
         while (attempts < MAX_RETRIES) {
             try {
-                if( evaluatorModel === 'gpt-4-0125-preview' || evaluatorModel === 'gpt-3.5-turbo'){
-                    content= await this.openAIGPTJudgeModelService.fetchModelComparison(systemPrompt, userPrompt, jsonFormat, evaluatorModel);                    
+                if (
+                    evaluatorModel === 'gpt-4-0125-preview' ||
+                    evaluatorModel === 'gpt-3.5-turbo-0125'
+                ) {
+                    content =
+                        await this.openAIGPTJudgeModelService.fetchModelComparison(
+                            systemPrompt,
+                            userPrompt,
+                            jsonFormat,
+                            evaluatorModel
+                        )
                 } else {
-                    content = await this.ollamaJudgeModelService.fetchModelComparison(systemPrompt, userPrompt, jsonFormat, evaluatorModel);
+                    content =
+                        await this.ollamaJudgeModelService.fetchModelComparison(
+                            systemPrompt,
+                            userPrompt,
+                            evaluatorModel
+                        )
                 }
-                console.log('Response:', content);
                 const jsonContent = JSON.parse(content ?? '{}')
 
                 if (
@@ -109,14 +128,14 @@ class JudgeModelService extends AbstractJudgeService {
                     console.error('Invalid response:', validate.errors)
                     throw new Error('Invalid response')
                 }
-                return content               
+                return content ?? ''
             } catch (err) {
                 console.warn(`Attempt ${attempts + 1} failed. Retrying...`, err)
             }
             attempts++
         }
         return ''
-    }        
+    }
 }
 
 export default JudgeModelService

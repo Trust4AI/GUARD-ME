@@ -1,57 +1,35 @@
-import { getModelConfig } from '../config/models'
-import { Ollama } from 'ollama'
+import container from '../containers/container'
+import { CustomModelResponse } from '../interfaces/CustomModelResponse'
 
-class OllamaJudgeModelService{
-    
+class OllamaJudgeModelService {
     async fetchModelComparison(
         systemPrompt: string,
         userPrompt: string,
-        jsonFormat = false,
-        evaluatorModel: string        
-    ): Promise<string> {       
-        const modelData = getModelConfig(evaluatorModel)
-        const model = modelData?.name ?? 'gemma:2b'
-        const host = modelData?.host ?? 'http://172.0.0.1:11434'
-        const ollama = new Ollama({ host })        
-        console.log('Host:', host);
-        console.log('Model:', model);
-        console.log('User Prompt:', userPrompt);
-        
-        const requestbody={
-            model: model,
-            stream: false,
-            messages: [
-                {
-                    role: 'system',
-                    content: systemPrompt
-                },
-                {
-                    role: 'user',
-                    content: userPrompt,
-                },
-            ]
+        evaluatorModel: string
+    ): Promise<string> {
+        const endpoint =
+            process.env.EXECUTOR_COMPONENT_HOST + '/v1/models/execute'
+        const httpClient = container.resolve('httpClient')
+
+        const requestBody = {
+            user_prompt: userPrompt,
+            system_prompt: systemPrompt,
+            model_name: evaluatorModel,
+            list_format_response: false,
+            exclude_bias_references: false,
+            response_max_length: -1,
         }
-        console.log("Request body: "+JSON.stringify(requestbody));
-        try {
-            const response = await fetch(host+"/api/chat", {
-                method: "POST",                
-                body: JSON.stringify(requestbody)
-            });
-    
-            if (response.ok) {
-                const jsonResponse = await response.json();
-                console.log("Chat posted successfully!");
-                console.log("Response from Ollama:", jsonResponse);
-                return jsonResponse.message.content
-            } else {
-                console.error("Failed to post chat to Ollama", response.status, response.statusText);
-            }
-        } catch (error) {
-            console.error("Error posting chat to Ollama:", error);
-        }        
-        return "Error posting chat to Ollama";
+
+        const response: string = await httpClient
+            .post(endpoint, requestBody)
+            .then((res: CustomModelResponse) => res.response)
+            .catch((error: any) => {
+                console.error('Error posting to executor component:', error)
+                return 'Error posting to executor component'
+            })
+
+        return response
     }
-    
 }
 
 export default OllamaJudgeModelService

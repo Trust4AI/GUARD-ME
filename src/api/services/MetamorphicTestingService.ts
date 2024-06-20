@@ -1,6 +1,5 @@
 import container from '../containers/container'
 import { CustomEvaluationResponse } from '../interfaces/CustomEvaluationResponse'
-import { writeResponseToFile } from '../utils/files'
 
 class MetamorphicTestingService {
     candidateModelService: any
