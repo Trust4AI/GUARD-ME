@@ -26,7 +26,7 @@ class OllamaJudgeModelService {
                 requestBody
             )
             debugLog('Request sent to executor successfully!', 'info')
-            debugLog('Response from executor: ' + response, 'info')
+            debugLog(`Response from executor: ${response}`, 'info')
             return response
         } catch (error: any) {
             debugLog('Error sending request!', 'error')
