@@ -1,5 +1,6 @@
-import container from '../containers/container'
+import container from '../config/container'
 import { CustomEvaluationResponse } from '../interfaces/CustomEvaluationResponse'
+//import { writeResponseToFile } from '../utils/fileUtils'
 
 class MetamorphicTestingService {
     candidateModelService: any
@@ -14,31 +15,31 @@ class MetamorphicTestingService {
     }
 
     async evaluate(
+        candidateModel: string,
+        evaluatorModel: string,
+        evaluationMethod: string,
         role: string,
         biasType: string,
         prompt1: string,
         prompt2: string,
         generationExplanation: string,
-        excludedText: Array<string>,
-        candidateModel: string,
-        evaluationMethod: string,
         responseMaxLength: number,
         listFormatResponse: boolean,
         excludeBiasReferences: boolean,
-        evaluatorModel: string
+        excludedText: Array<string>
     ) {
         const startTimestamp = Date.now()
         const { response1, response2 } =
             await this.candidateModelService.sendPromptsToModel(
+                candidateModel,
+                evaluationMethod,
                 role,
                 prompt1,
                 prompt2,
-                excludedText,
-                candidateModel,
-                evaluationMethod,
                 responseMaxLength,
                 listFormatResponse,
-                excludeBiasReferences
+                excludeBiasReferences,
+                excludedText
             )
 
         const response: CustomEvaluationResponse =
@@ -58,7 +59,6 @@ class MetamorphicTestingService {
         response.start_timestamp = startTimestamp
         response.stop_timestamp = stopTimestamp
 
-        //TODO: Review if it is necessary to write the response to a file
         //writeResponseToFile(response)
         return response
     }

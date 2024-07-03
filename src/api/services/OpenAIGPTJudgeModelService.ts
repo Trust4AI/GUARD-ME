@@ -8,7 +8,6 @@ class OpenAIGPTJudgeModelService {
     async fetchModelComparison(
         systemPrompt: string,
         userPrompt: string,
-        jsonFormat = false,
         evaluatorModel: string
     ): Promise<string> {
         const completion = await openai.chat.completions.create({
@@ -24,11 +23,15 @@ class OpenAIGPTJudgeModelService {
             ],
             model: evaluatorModel,
             response_format: {
-                type: jsonFormat ? 'json_object' : 'text',
+                type: 'json_object',
             },
         })
-        const content = completion.choices[0].message.content ?? ''
-        return content
+        const content = completion.choices[0].message.content
+
+        if (content) {
+            return content
+        }
+        throw new Error('[EVALUATOR] No content found in OpenAI GPT response')
     }
 }
 

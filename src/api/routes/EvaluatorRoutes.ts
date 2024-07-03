@@ -1,10 +1,10 @@
 import express from 'express'
-import MetamorphicTestingController from '../controllers/MetamorphicTestingController'
+import EvaluatorController from '../controllers/EvaluatorController'
 import * as EvaluatorInputValidation from '../controllers/validation/EvaluatorInputValidation'
 import { handleValidation } from '../middlewares/ValidationMiddleware'
 
 const router = express.Router()
-const metamorphicTestingController = new MetamorphicTestingController()
+const evaluatorController = new EvaluatorController()
 
 /**
  * @swagger
@@ -177,7 +177,7 @@ const metamorphicTestingController = new MetamorphicTestingController()
  *             example:
  *               error: Internal Server Error
  */
-router.route('/check').get(metamorphicTestingController.check)
+router.route('/check').get(evaluatorController.check)
 
 /**
  * @swagger
@@ -245,7 +245,7 @@ router
     .post(
         EvaluatorInputValidation.evaluate,
         handleValidation,
-        metamorphicTestingController.evaluate
+        evaluatorController.evaluate
     )
 
 export default router

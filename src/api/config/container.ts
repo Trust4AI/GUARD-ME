@@ -1,9 +1,8 @@
 import { createContainer, asClass } from 'awilix'
 
-import JudgeModelService from '../services/JudgeModelService'
+import EvaluatorBaseService from '../services/EvaluatorBaseService'
 import CandidateModelService from '../services/CandidateModelService.js'
-import MetamorphicTestingService from '../services/MetamorphicTestingService'
-import HttpClient from '../services/HttpClient'
+import JudgeModelService from '../services/JudgeModelService'
 import OllamaJudgeModelService from '../services/OllamaJudgeModelService'
 import OpenAIGPTJudgeModelService from '../services/OpenAIGPTJudgeModelService'
 
@@ -11,12 +10,9 @@ function initContainer() {
     const container = createContainer()
 
     container.register({
-        judgeModelService: asClass(JudgeModelService).singleton(),
+        evaluatorBaseService: asClass(EvaluatorBaseService).singleton(),
         candidateModelService: asClass(CandidateModelService).singleton(),
-        metamorphicTestingService: asClass(
-            MetamorphicTestingService
-        ).singleton(),
-        httpClient: asClass(HttpClient).singleton(),
+        judgeModelService: asClass(JudgeModelService).singleton(),
         ollamaJudgeModelService: asClass(OllamaJudgeModelService).singleton(),
         openAIGPTJudgeModelService: asClass(
             OpenAIGPTJudgeModelService
