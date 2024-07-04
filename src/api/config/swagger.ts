@@ -29,7 +29,7 @@ const swaggerOptions = {
             },
         ],
     },
-    apis: ['./api/routes/MetamorphicTestingRoutes.ts'],
+    apis: ['./api/routes/EvaluatorRoutes.ts'],
 }
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
