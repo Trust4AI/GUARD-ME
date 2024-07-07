@@ -12,7 +12,7 @@ const swaggerOptions = {
             version: '1.0.0',
             title: 'Bias Evaluator LLM - API',
             description:
-                'Prompt/search term evaluator for bias testing based on the use of LLMs.',
+                'The Trust4AI bias evaluator component provides an evaluator of prompts/search strings for testing the bias of AI-enabled Search Engines using LLMs as sources of information. This component is part of the Trust4AI research project.',
             contact: {
                 name: 'Trust4AI Team',
                 email: '',
