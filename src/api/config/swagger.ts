@@ -2,7 +2,7 @@ import swaggerjsdoc from 'swagger-jsdoc'
 import yaml from 'yaml'
 import fs from 'fs'
 
-const port = process.env.PORT || 8001
+const port: string = process.env.PORT || '8001'
 const swaggerJsDoc = swaggerjsdoc
 
 const swaggerOptions = {
@@ -12,7 +12,7 @@ const swaggerOptions = {
             version: '1.0.0',
             title: 'Bias Evaluator LLM - API',
             description:
-                'Prompt/search term evaluator for bias testing based on the use of LLMs.',
+                'The Trust4AI bias evaluator component provides an evaluator of prompts/search strings for testing the bias of AI-enabled Search Engines using LLMs as sources of information. This component is part of the Trust4AI research project.',
             contact: {
                 name: 'Trust4AI Team',
                 email: '',
@@ -25,11 +25,11 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:' + port + '/api/v1/metamorphic-tests/',
+                url: `http://localhost:${port}/api/v1/metamorphic-tests/`,
             },
         ],
     },
-    apis: ['./api/routes/MetamorphicTestingRoutes.ts'],
+    apis: ['./api/routes/EvaluatorRoutes.ts'],
 }
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions)

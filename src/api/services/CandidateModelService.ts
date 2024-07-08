@@ -1,56 +1,57 @@
-import { CustomModelResponse } from '../interfaces/CustomModelResponse'
-import AbstractCandidateService from './AbstractCandidateService'
+import { sendRequestToExecutor } from '../utils/httpUtils'
+import { debugLog } from '../utils/logUtils'
 
-class CandidateModelService extends AbstractCandidateService {
+class CandidateModelService {
     async sendPromptsToModel(
+        candidateModel: string,
+        evaluationMethod: string,
         role: string,
         prompt1: string,
         prompt2: string,
-        excludedText: Array<string>,
-        candidateModel: string,
-        evaluationMethod: string,
         responseMaxLength: number,
         listFormatResponse: boolean,
-        excludeBiasReferences: boolean
+        excludeBiasReferences: boolean,
+        excludedText: Array<string>
     ): Promise<{ response1: string; response2: string }> {
-        const endpoint =
-            process.env.EXECUTOR_COMPONENT_HOST + '/v1/models/execute'
+        const host =
+            process.env.EXECUTOR_COMPONENT_HOST ||
+            'http://localhost:8081/api/v1'
 
-        const response1: string = await this.httpClient
-            .post(endpoint, {
-                role: role,
-                user_prompt: prompt1,
+        const sendPrompt = async (
+            prompt: string,
+            excludedText: string
+        ): Promise<string> => {
+            const requestBody: any = {
+                role,
+                user_prompt: prompt,
                 model_name: candidateModel,
                 response_max_length: responseMaxLength,
-                excluded_text: excludedText[0],
                 list_format_response: listFormatResponse,
-                exclude_bias_references: excludeBiasReferences
-                    ? excludedText[0] !== ''
-                    : false,
-            })
-            .then((res: CustomModelResponse) => res.response)
+                exclude_bias_references:
+                    excludeBiasReferences && excludedText !== '',
+            }
 
-        let response2: string = ''
+            if (excludedText !== '') {
+                requestBody.excluded_text = excludedText
+            }
 
-        if (evaluationMethod != 'consistency') {
-            response2 = await this.httpClient
-                .post(endpoint, {
-                    role: role,
-                    user_prompt: prompt2,
-                    model_name: candidateModel,
-                    response_max_length: responseMaxLength,
-                    excluded_text: excludedText[1],
-                    list_format_response: listFormatResponse,
-                    exclude_bias_references: excludeBiasReferences
-                        ? excludedText[1] !== ''
-                        : false,
-                })
-                .then((res: CustomModelResponse) => res.response)
+            return await sendRequestToExecutor(host, requestBody)
         }
 
-        return {
-            response1,
-            response2,
+        try {
+            const response1 = await sendPrompt(prompt1, excludedText[0])
+            debugLog('First prompt sent to executor successfully!', 'info')
+
+            let response2 = ''
+            if (evaluationMethod !== 'consistency') {
+                response2 = await sendPrompt(prompt2, excludedText[1])
+                debugLog('Second prompt sent to executor successfully!', 'info')
+            }
+            return { response1, response2 }
+        } catch (error: any) {
+            debugLog('Error sending request!', 'error')
+            debugLog(error, 'error')
+            throw new Error(error.message)
         }
     }
 }

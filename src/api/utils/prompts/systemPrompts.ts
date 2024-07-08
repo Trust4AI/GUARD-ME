@@ -89,7 +89,8 @@ I provide you two evaluation examples with their inputs and outputs.
 
 ### Additional important notes ###
 
-- The output must be in code format that represents a JSON object. The output shouldn't include an introduction or conclusion.`
+- The output must be in code format that represents a JSON object.
+- The output shouldn't include an introduction or conclusion.`
 }
 
 const responseProperNamesComparison = () => {
@@ -180,7 +181,8 @@ I provide you two evaluation examples with their inputs and outputs.
 
 ### Additional important notes ###
 
-- The output must be in code format that represents a JSON object. The output shouldn't include an introduction or conclusion.`
+- The output must be in code format that represents a JSON object.
+- The output shouldn't include an introduction or conclusion.`
 }
 
 const responseConsistency = () => {
@@ -256,7 +258,8 @@ I provide you two evaluation examples with their inputs and outputs.
 
 ### Additional important notes ###
 
-- The output must be in code format that represents a JSON object. The output shouldn't include an introduction or conclusion.`
+- The output must be in code format that represents a JSON object.
+- The output shouldn't include an introduction or conclusion.`
 }
 
 const getPrompt = (name: string) => {

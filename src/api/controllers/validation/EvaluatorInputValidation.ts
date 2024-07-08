@@ -1,12 +1,45 @@
 import { check } from 'express-validator'
+import { evaluatorModels } from '../../config/evaluatorModels'
+import { evaluationMethods } from '../../config/evaluationMethods'
+import { candidateModels } from '../../config/candidateModels'
 
 const evaluate = [
+    check('candidate_model')
+        .isString()
+        .isIn(candidateModels)
+        .trim()
+        .withMessage(
+            `candidate_model must be a string with one of the following values: ${candidateModels.join(
+                ', '
+            )}`
+        ),
+    check('evaluator_model')
+        .isString()
+        .isIn(evaluatorModels)
+        .trim()
+        .withMessage(
+            `evaluator_model must be a string with one of the following values: ${evaluatorModels.join(
+                ', '
+            )}`
+        ),
+    check('evaluation_method')
+        .optional()
+        .isString()
+        .isIn(evaluationMethods)
+        .trim()
+        .withMessage(
+            `evaluation_method is optional but if provided must be a string with one of the values: ${evaluationMethods.join(
+                ', '
+            )}`
+        ),
     check('role')
+        .optional()
         .isString()
         .isLength({ min: 1, max: 30 })
         .trim()
-        .withMessage('role must be a string with length between 1 and 30')
-        .optional(),
+        .withMessage(
+            'role is optional but if provided must be a string with length between 1 and 30'
+        ),
     check('bias_type')
         .isString()
         .isLength({ min: 1, max: 30 })
@@ -27,49 +60,38 @@ const evaluate = [
             'prompt_2 must be a string with length between 1 and 2000'
         ),
     check('attribute')
+        .optional()
         .isString()
         .isLength({ min: 1, max: 30 })
         .trim()
         .withMessage(
             'attribute is optional but if provided must be a string with length between 1 and 30'
-        )
-        .optional(),
+        ),
     check('attribute_1')
+        .optional()
         .isString()
         .isLength({ min: 1, max: 30 })
         .trim()
         .withMessage(
             'attribute_1 is optional but if provided must be a string with length between 1 and 30'
-        )
-        .optional(),
+        ),
     check('attribute_2')
+        .optional()
         .isString()
         .isLength({ min: 1, max: 30 })
         .trim()
         .withMessage(
             'attribute_2 is optional but if provided must be a string with length between 1 and 30'
-        )
-        .optional(),
-    check('candidate_model')
-        .isString()
-        .isLength({ min: 1, max: 30 })
-        .trim()
-        .withMessage(
-            'candidate_model must be a string with length between 1 and 30'
-        ),
-    check('evaluation_method')
-        .optional()
-        .isString()
-        .isIn(['attributeComparison', 'properNamesComparison', 'consistency'])
-        .trim()
-        .withMessage(
-            'evaluation_method is optional but if provided must be a string with one of the values: attributeComparison, properNamesComparison, consistency'
         ),
     check('response_max_length')
         .optional()
-        .isInt({ min: 1, max: 2000 })
+        .custom(
+            (value) =>
+                value === -1 ||
+                (Number.isInteger(value) && value >= 1 && value <= 2000)
+        )
         .withMessage(
-            'response_max_length is optional but must be an integer between 1 and 2000 if provided'
+            'response_max_length is optional but must be an integer between 1 and 2000 or -1 if provided'
         ),
     check('list_format_response')
         .optional()
@@ -82,18 +104,6 @@ const evaluate = [
         .isBoolean()
         .withMessage(
             'exclude_bias_references is optional but must be a boolean if provided'
-        ),
-    check('evaluator_model')
-        .optional()
-        .isString()
-        .isIn([
-            'gpt-4-0125-preview',
-            'gpt-3.5-turbo-0125',
-            'llama3-8b',
-            'gemma-7b',
-        ])
-        .withMessage(
-            'evaluator_model is optional but must be a string with one of the following values if provided: gpt-4-0125-preview, gpt-3.5-turbo-0125, llama3-8b, gemma-7b'
         ),
 ]
 
