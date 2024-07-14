@@ -5,6 +5,7 @@ import CandidateModelService from '../services/CandidateModelService.js'
 import JudgeModelService from '../services/JudgeModelService'
 import OllamaJudgeModelService from '../services/OllamaJudgeModelService'
 import OpenAIGPTJudgeModelService from '../services/OpenAIGPTJudgeModelService'
+import GeminiJudgeModelService from '../services/GeminiJudgeModelService'
 
 function initContainer() {
     const container = createContainer()
@@ -17,6 +18,7 @@ function initContainer() {
         openAIGPTJudgeModelService: asClass(
             OpenAIGPTJudgeModelService
         ).singleton(),
+        geminiJudgeModelService: asClass(GeminiJudgeModelService).singleton(),
     })
     return container
 }

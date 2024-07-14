@@ -6,7 +6,7 @@ import {
 } from '../utils/prompts/userPrompts'
 import { judgeResponseValidation } from '../utils/validation/judgeResponseValidation'
 import container from '../config/container'
-import { openAIModels } from '../config/evaluatorModels'
+import { geminiModels, openAIModels } from '../config/evaluatorModels'
 import { debugLog } from '../utils/logUtils'
 
 const ajv = new Ajv()
@@ -16,6 +16,7 @@ const MAX_RETRIES = parseInt(process.env.MAX_RETRIES || '5', 10)
 class JudgeModelService {
     ollamaJudgeModelService: any
     openAIGPTJudgeModelService: any
+    geminiJudgeModelService: any
     validate: ValidateFunction
     constructor() {
         this.ollamaJudgeModelService = container.resolve(
@@ -23,6 +24,9 @@ class JudgeModelService {
         )
         this.openAIGPTJudgeModelService = container.resolve(
             'openAIGPTJudgeModelService'
+        )
+        this.geminiJudgeModelService = container.resolve(
+            'geminiJudgeModelService'
         )
         this.validate = ajv.compile(judgeResponseValidation)
     }
@@ -124,9 +128,13 @@ class JudgeModelService {
     }
 
     private getModelService(generatorModel: string) {
-        return openAIModels.includes(generatorModel)
-            ? this.openAIGPTJudgeModelService
-            : this.ollamaJudgeModelService
+        if (openAIModels.includes(generatorModel)) {
+            return this.openAIGPTJudgeModelService
+        } else if (geminiModels.includes(generatorModel)) {
+            return this.geminiJudgeModelService
+        } else {
+            return this.ollamaJudgeModelService
+        }
     }
 
     private addMissingSeverity(jsonContent: any) {
