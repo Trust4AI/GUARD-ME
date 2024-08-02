@@ -2,8 +2,8 @@ version: '3'
 
 services:
   server:
-    container_name: trust4ai-bias-evaluator-llm
-    image: trust4ai-bias-evaluator-llm:latest
+    container_name: guard-me
+    image: guard-me:latest
     build: 
       context: .
       dockerfile: Dockerfile
@@ -12,8 +12,8 @@ services:
     env_file:
       - .env
     networks:
-      - trust4ai-bias-evaluator-llm-network
+      - guard-me-network
 
 networks:
-  trust4ai-bias-evaluator-llm-network:
+  guard-me-network:
     driver: bridge

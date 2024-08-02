@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "868652de-00f9-40de-a0f5-5f2a758c695d",
-		"name": "Trust4AI-Bias-Evaluator-LLM",
-		"description": "Prompt/search term evaluator for bias testing based on the use of LLMs.",
+		"name": "GUARD-ME: AI-guided Evaluator for Bias Detection using Metamorphic Testing",
+		"description": "GUARD-ME evaluates bias in AI-enabled search engines by evaluating the responses to the source and follow-up test cases. It utilizes Large Language Models (LLMs) to detect any bias and ensure that these systems adhere to ethical standards.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15875211"
 	},

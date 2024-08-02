@@ -1,7 +1,7 @@
 {
-  "name": "trust4ai-bias-evaluator-llm",
+  "name": "guard-me",
   "version": "1.0.0",
-  "description": "Prompt/search term evaluator for bias testing based on the use of LLMs.",
+  "description": "GUARD-ME evaluates bias in AI-enabled search engines by evaluating the responses to the source and follow-up test cases. It utilizes Large Language Models (LLMs) to detect any bias and ensure that these systems adhere to ethical standards.",
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Trust4AI/trust4ai-bias-evaluator-llm.git"
+    "url": "git+https://github.com/Trust4AI/GUARD-ME.git"
   },
   "author": "Trust4AI",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/Trust4AI/trust4ai-bias-evaluator-llm/issues"
+    "url": "https://github.com/Trust4AI/GUARD-ME/issues"
   },
-  "homepage": "https://github.com/Trust4AI/trust4ai-bias-evaluator-llm#readme",
+  "homepage": "https://github.com/Trust4AI/GUARD-ME#readme",
   "dependencies": {
     "@google/generative-ai": "0.14.1",
     "ajv": "8.14.0",
