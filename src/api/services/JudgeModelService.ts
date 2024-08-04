@@ -108,7 +108,7 @@ class JudgeModelService {
                     const jsonContent = JSON.parse(content)
 
                     this.addMissingSeverity(jsonContent)
-                    this.validateResponse(jsonContent)
+                    await this.validateResponse(jsonContent)
                     return content
                 }
                 throw new Error(
@@ -148,9 +148,13 @@ class JudgeModelService {
 
     private async validateResponse(jsonContent: any): Promise<void> {
         if (!this.validate(jsonContent)) {
+            const errorMessages = this.validate.errors?.map(
+                (error) => error.message
+            )
+
             throw new Error(
-                `[EVALUATOR] Invalid response from model: ${JSON.stringify(
-                    this.validate.errors
+                `[EVALUATOR] Invalid JSON response from model: ${errorMessages?.join(
+                    ', '
                 )}`
             )
         }

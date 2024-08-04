@@ -9,7 +9,7 @@ class OllamaJudgeModelService {
     ): Promise<string> {
         const host =
             process.env.EXECUTOR_COMPONENT_HOST ||
-            'http://localhost:8081/api/v1'
+            'http://127.0.0.1:8081/api/v1'
 
         const requestBody = {
             user_prompt: userPrompt,
