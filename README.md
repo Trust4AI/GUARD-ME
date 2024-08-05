@@ -1,3 +1,7 @@
+<div align = center>
+   <img src="https://github.com/Trust4AI/GUARD-ME/blob/assets/GUARD-ME_logo.png?raw=true" width="150" />
+</div>
+
 ## GUARD-ME: AI-guided Evaluator for Bias Detection using Metamorphic Testing
 
 GUARD-ME evaluates bias in AI-enabled search engines by evaluating the responses to the source and follow-up test cases. It utilizes Large Language Models (LLMs) to detect any bias and ensure that these systems adhere to ethical standards. This tool is complementary to [MUSE](https://github.com/Trust4AI/MUSE), which generates the test cases used, and [GENIE](https://github.com/Trust4AI/GENIE), which facilitates communication with LLMs. 
@@ -13,6 +17,7 @@ Integration options include a Docker image that launches a REST API with interac
 3. [Usage](#3-usage)
    1. [Request using _attributeComparison_ as the evaluation method](#i-request-using-attributecomparison-as-the-evaluation-method)
 4. [License and funding](#4-license-and-funding)
+   1. [Logo credits](#logo-credits)
 
 ## 1. Repository structure
 
@@ -202,5 +207,9 @@ Funded by the European Union. Views and opinions expressed are however those of 
 <img src="https://github.com/Trust4AI/trust4ai/blob/main/funding_logos/NGI_Search-rgb_Plan-de-travail-1-2048x410.png" width="400">
 <img src="https://github.com/Trust4AI/trust4ai/blob/main/funding_logos/EU_funding_logo.png" width="200">
 </p>
+
+### Logo credits
+
+The GUARD-ME logo image was created with the assistance of [DALL·E 3](https://openai.com/index/dall-e-3/).
 
 <p align="right">[⬆️ <a href="#guard-me-ai-guided-evaluator-for-bias-detection-using-metamorphic-testing">Back to top</a>]</p>
