@@ -7,7 +7,7 @@ import { checkModelExists } from '../middlewares/EntityMiddleware'
 
 const router = express.Router()
 const modelController = new ModelController()
-const executorBaseService = container.resolve('modelBaseService')
+const modelBaseService = container.resolve('modelBaseService')
 
 /**
  * @swagger
@@ -249,7 +249,7 @@ router
 router
     .route('/candidate/:id')
     .delete(
-        checkModelExists(executorBaseService, 'candidate', 'id'),
+        checkModelExists(modelBaseService, 'candidate', 'id'),
         modelController.removeCandidateModel
     )
 
@@ -349,7 +349,7 @@ router
 router
     .route('/judge/:id')
     .delete(
-        checkModelExists(executorBaseService, 'judge', 'id'),
+        checkModelExists(modelBaseService, 'judge', 'id'),
         modelController.removeJudgeModel
     )
 
