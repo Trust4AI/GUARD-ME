@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Model routes",
+			"name": "Model operations",
 			"item": [
 				{
 					"name": "GET endpoints",
@@ -81,7 +81,7 @@
 										},
 										{
 											"key": "Date",
-											"value": "Thu, 08 Aug 2024 14:09:56 GMT"
+											"value": "Thu, 08 Aug 2024 17:23:38 GMT"
 										},
 										{
 											"key": "Connection",
@@ -115,7 +115,8 @@
 										"models",
 										"candidate"
 									]
-								}
+								},
+								"description": "Obtains a list of candidate models available for evaluation."
 							},
 							"response": [
 								{
@@ -198,7 +199,8 @@
 										"models",
 										"judge"
 									]
-								}
+								},
+								"description": "Obtains a list of judge models available for evaluation."
 							},
 							"response": [
 								{
@@ -287,7 +289,8 @@
 										"models",
 										"candidate"
 									]
-								}
+								},
+								"description": "This endpoint is used to add a new candidate model to the models configuration file."
 							},
 							"response": [
 								{
@@ -448,7 +451,8 @@
 										"models",
 										"judge"
 									]
-								}
+								},
+								"description": "This endpoint is used to add a new judge model to the models configuration file."
 							},
 							"response": [
 								{
@@ -688,10 +692,12 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": ""
+											"value": "",
+											"description": "The unique identifier of the model"
 										}
 									]
-								}
+								},
+								"description": "This endpoint is used to remove a candidate model from the models configuration file."
 							},
 							"response": [
 								{
@@ -852,10 +858,12 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": ""
+											"value": "",
+											"description": "The unique identifier of the model"
 										}
 									]
-								}
+								},
+								"description": "This endpoint is used to remove a judge model from the models configuration file."
 							},
 							"response": [
 								{
@@ -997,10 +1005,11 @@
 					],
 					"description": "Folder containing the API endpoints that use POST as request method."
 				}
-			]
+			],
+			"description": "Operations related to the management of LLMs used by GUARD-ME."
 		},
 		{
-			"name": "Metamorphic Testing routes",
+			"name": "Metamorphic Testing operations",
 			"item": [
 				{
 					"name": "GET endpoints",
@@ -1674,7 +1683,8 @@
 					],
 					"description": "Folder containing the API endpoints that use POST as request method."
 				}
-			]
+			],
+			"description": "Operations related to the execution of metamorphic tests on LLMs under tests."
 		}
 	]
 }

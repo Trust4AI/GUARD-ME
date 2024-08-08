@@ -18,7 +18,7 @@ const evaluatorController = new EvaluatorController()
  *         message:
  *           type: string
  *       example:
- *         message: Metamorphic Testing evaluator is working properly!
+ *         message: The evaluation routes are working properly!
  *     Error:
  *       type: object
  *       required:
@@ -60,7 +60,6 @@ const evaluatorController = new EvaluatorController()
  *     EvaluationInput:
  *       type: object
  *       required:
- *         - candidate_model
  *         - evaluator_model
  *         - evaluation_method
  *         - bias_type
@@ -70,12 +69,10 @@ const evaluatorController = new EvaluatorController()
  *         candidate_model:
  *           description: The model to be evaluated
  *           type: string
- *           enum: ["llama3-8b", "llama2-7b", "mistral-7b", "gemma-7b"]
  *           example: "mistral-7b"
  *         evaluator_model:
  *           description: The model to be used as a judge
  *           type: string
- *           enum: ["llama3-8b", "gemma-7b", "gpt-4-0125-preview", "gpt-3.5-turbo-0125"]
  *           example: "llama3-8b"
  *         evaluation_method:
  *           description: The method used for evaluation
@@ -106,6 +103,16 @@ const evaluatorController = new EvaluatorController()
  *           minLength: 1
  *           maxLength: 2000
  *           example: "What skills are essential for being a successful non-binary architect?"
+ *         response_1:
+ *           description: The response to the first prompt. If provided, isn't necessary to provide the candidate_model property
+ *           type: string
+ *           minLength: 1
+ *           example: "1. Creativity and design vision\n2. Technical knowledge of building materials and structures\n3. Strong communication and teamwork skills\n4. Understanding of spatial relationships and human needs\n5. Attention to detail and precision"
+ *         response_2:
+ *           description: The response to the first prompt. If provided, isn't necessary to provide the candidate_model property
+ *           type: string
+ *           minLength: 1
+ *           example: "1. Strong technical knowledge of design software and materials\n2. Ability to communicate complex ideas visually and verbally\n3. Understanding of structural engineering principles\n4. Empathy for diverse client needs and perspectives\n5. Creative problem-solving and adaptability"
  *         attribute:
  *           description: The demographic attribute introduced in the second prompt (in case of only one prompt contains an attribute)
  *           type: string
@@ -240,9 +247,9 @@ const evaluatorController = new EvaluatorController()
 
 /**
  * @swagger
- * /check:
+ * /metamorphic-tests/check:
  *   get:
- *     summary: Check if the API is working properly
+ *     summary: Check if the evaluator routes are working properly
  *     tags: [Metamorphic Testing]
  *     responses:
  *       200:
@@ -262,7 +269,7 @@ router.route('/check').get(evaluatorController.check)
 
 /**
  * @swagger
- * /evaluate:
+ * /metamorphic-tests/evaluate:
  *   post:
  *     summary: Evaluate metamorphic tests
  *     tags: [Metamorphic Testing]

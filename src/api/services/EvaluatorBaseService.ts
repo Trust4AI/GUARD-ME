@@ -11,7 +11,7 @@ class EvaluatorBaseService {
     }
 
     check() {
-        return { message: 'The evaluation routes work are working properly!' }
+        return { message: 'The evaluation routes are working properly!' }
     }
 
     async evaluate(

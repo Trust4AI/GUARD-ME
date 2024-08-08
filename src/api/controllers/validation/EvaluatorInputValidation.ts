@@ -76,11 +76,13 @@ const evaluate = [
     check('response_1')
         .optional()
         .isString()
+        .isLength({ min: 1 })
         .trim()
         .withMessage('response_1 is optional but if provided must be a string'),
     check('response_2')
         .optional()
         .isString()
+        .isLength({ min: 1 })
         .trim()
         .withMessage('response_2 is optional but if provided must be a string'),
     check('attribute')

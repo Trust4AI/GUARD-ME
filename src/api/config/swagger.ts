@@ -25,11 +25,11 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: `http://localhost:${port}/api/v1/metamorphic-tests/`,
+                url: `http://localhost:${port}/api/v1/`,
             },
         ],
     },
-    apis: ['./api/routes/EvaluatorRoutes.ts'],
+    apis: ['./api/routes/ModelRoutes.ts', './api/routes/EvaluatorRoutes.ts'],
 }
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions)

@@ -79,7 +79,7 @@ To deploy GUARD-ME locally, please follow these steps carefully:
 5. Finally, you can access the API documentation by visiting the following URL in your web browser.
 
     ```
-    http://localhost:8081/api/v1/metamorphic-tests/docs
+    http://localhost:8081/api/v1/docs
     ```
 
 ### ii. Docker deployment
@@ -113,7 +113,7 @@ To deploy GUARD-ME using Docker, please follow these steps carefully.
 4. Finally, you can access the API documentation by visiting the following URL in your web browser.
 
     ```
-    http://localhost:8081/api/v1/metamorphic-tests/docs
+    http://localhost:8081/api/v1/docs
     ```
 
 <p align="right">[⬆️ <a href="#guard-me-ai-guided-evaluator-for-bias-detection-using-metamorphic-testing">Back to top</a>]</p>
@@ -122,16 +122,23 @@ To deploy GUARD-ME using Docker, please follow these steps carefully.
 
 Once GUARD-ME is deployed, requests can be sent to it via the `POST /metamorphic-tests/evaluate` operation. This operation requires a request body, which may contain the following properties:
 
-- `candidate_model`. Mandatory string indicating the name of the model to be evaluated. It is important that the given `candidate_model` is defined in the [candidate models' configuration file](https://github.com/Trust4AI/GUARD-ME/blob/main/src/api/config/candidateModels.ts).
-- `evaluator_model`. Mandatory string indicating the name of the model to be used as a judge. It is important that the given `evaluator_model` is defined in the [evaluator models' configuration file](https://github.com/Trust4AI/GUARD-ME/blob/refactor/src/api/config/evaluatorModels.ts).
+- `candidate_model`. Mandatory string indicating the name of the model to be evaluated. It is important that the given `candidate_model` is defined in the [models' configuration file](https://github.com/Trust4AI/GUARD-ME/blob/main/src/api/config/models.json).
+- `evaluator_model`. Mandatory string indicating the name of the model to be used as a judge. It is important that the given `evaluator_model` is defined in the [models' configuration file](https://github.com/Trust4AI/GUARD-ME/blob/refactor/src/api/config/models.json).
 - `evaluation_method`. Optional string indicating the method used for the test case evaluation. Possible values are: "attributeComparison", "properNamesComparison", and "consistency". The default value is "attributeComparison".
 - `bias_type`: Optional string indicating the bias type of the test to evaluate.
 - `prompt_1`: Mandatory string indicating the first prompt of the test case to evaluate.
 - `prompt_2`: Mandatory string indicating the second prompt of the test case to evaluate.
+- `response_1`: Optional string indicating the response to the first prompt of the test case to evaluate. If provided, isn't necessary to provide the `candidate_model`.
+- `response_2`: Optional string indicating the response to the second prompt of the test case to evaluate. If provided, isn't necessary to provide the `candidate_model`.
 - `attribute`: Optional string indicating the demographic attribute introduced in the second prompt (in case only one prompt contains an attribute).
+- `attribute_1`: Optional string indicating the demographic attribute introduced in the first prompt (in case both prompts contain an attribute).
+- `attribute_2`: Optional string indicating the demographic attribute introduced in the second prompt (in case both prompts contain an attribute).
 - `response_max_length`. Optional integer indicating the maximum number of words that can be used in the prompts response.
 - `list_format_response`. Optional boolean indicating whether to return the prompts response in list format.
 - `exclude_bias_references`. Optional boolean indicating whether to exclude any terms in the response provided for prompts.
+
+> [!NOTE] 
+> Instead of adding the models manually to the configuration file, it is also possible to add the models using the API once the tool is running. More information about such operation can be found in the [OpenAPI specification](https://github.com/Trust4AI/GUARD-ME/blob/main/docs/openapi/spec.yaml).
 
 ### i. Request using _attributeComparison_ as the evaluation method
 
