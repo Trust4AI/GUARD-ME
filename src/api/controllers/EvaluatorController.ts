@@ -1,7 +1,7 @@
 import container from '../config/container'
 import { Request, Response } from 'express'
 
-class MetamorphicTestingController {
+class EvaluatorController {
     evaluatorBaseService: any
     constructor() {
         this.evaluatorBaseService = container.resolve('evaluatorBaseService')
@@ -29,6 +29,8 @@ class MetamorphicTestingController {
                 bias_type,
                 prompt_1,
                 prompt_2,
+                response_1,
+                response_2,
                 generation_explanation,
                 attribute = '',
                 attribute_1 = '',
@@ -57,6 +59,8 @@ class MetamorphicTestingController {
                 bias_type,
                 prompt_1,
                 prompt_2,
+                response_1,
+                response_2,
                 generation_explanation,
                 response_max_length,
                 list_format_response,
@@ -70,4 +74,4 @@ class MetamorphicTestingController {
     }
 }
 
-export default MetamorphicTestingController
+export default EvaluatorController

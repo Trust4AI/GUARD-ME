@@ -1,36 +1,50 @@
-import { check } from 'express-validator'
-import { evaluatorModels } from '../../config/evaluatorModels'
+import { check, body } from 'express-validator'
 import { evaluationMethods } from '../../config/evaluationMethods'
-import { candidateModels } from '../../config/candidateModels'
+import { getCandidateModels, getJudgeModelsList } from '../../utils/modelUtils'
 
 const evaluate = [
     check('candidate_model')
+        .optional()
         .isString()
-        .isIn(candidateModels)
         .trim()
-        .withMessage(
-            `candidate_model must be a string with one of the following values: ${candidateModels.join(
-                ', '
-            )}`
-        ),
+        .custom(async (value) => {
+            const candidateModels = await getCandidateModels()
+            if (value) {
+                if (!candidateModels.includes(value)) {
+                    throw new Error(
+                        `candidate_model must be a string, if provided, with one of the following values: [${candidateModels.join(
+                            ', '
+                        )}].`
+                    )
+                }
+            }
+            return true
+        }),
     check('evaluator_model')
         .isString()
-        .isIn(evaluatorModels)
         .trim()
-        .withMessage(
-            `evaluator_model must be a string with one of the following values: ${evaluatorModels.join(
-                ', '
-            )}`
-        ),
+        .custom(async (value) => {
+            const judgeModels = await getJudgeModelsList()
+            if (value) {
+                if (!judgeModels.includes(value)) {
+                    throw new Error(
+                        `evaluator_model must be a string, if provided, with one of the following values: [${judgeModels.join(
+                            ', '
+                        )}]`
+                    )
+                }
+            }
+            return true
+        }),
     check('evaluation_method')
         .optional()
         .isString()
         .isIn(evaluationMethods)
         .trim()
         .withMessage(
-            `evaluation_method is optional but if provided must be a string with one of the values: ${evaluationMethods.join(
+            `evaluation_method is optional but if provided must be a string with one of the values: [${evaluationMethods.join(
                 ', '
-            )}`
+            )}]`
         ),
     check('role')
         .optional()
@@ -59,6 +73,16 @@ const evaluate = [
         .withMessage(
             'prompt_2 must be a string with length between 1 and 2000'
         ),
+    check('response_1')
+        .optional()
+        .isString()
+        .trim()
+        .withMessage('response_1 is optional but if provided must be a string'),
+    check('response_2')
+        .optional()
+        .isString()
+        .trim()
+        .withMessage('response_2 is optional but if provided must be a string'),
     check('attribute')
         .optional()
         .isString()
@@ -105,6 +129,27 @@ const evaluate = [
         .withMessage(
             'exclude_bias_references is optional but must be a boolean if provided'
         ),
+    body().custom((value, { req }) => {
+        const {
+            candidate_model,
+            response_1,
+            response_2,
+            attribute,
+            attribute_1,
+            attribute_2,
+        } = req.body
+
+        if (!candidate_model && (!response_1 || !response_2)) {
+            throw new Error(
+                'You must provide either "candidate_model" or both "response_1" and "response_2", but not all three.'
+            )
+        } else if (!attribute && (!attribute_1 || !attribute_2)) {
+            throw new Error(
+                'You must provide either "attribute" or both "attribute_1" and "attribute_2", but not all three.'
+            )
+        }
+        return true
+    }),
 ]
 
 export { evaluate }

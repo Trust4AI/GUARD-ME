@@ -6,8 +6,8 @@ import {
 } from '../utils/prompts/userPrompts'
 import { judgeResponseValidation } from '../utils/validation/judgeResponseValidation'
 import container from '../config/container'
-import { geminiModels, openAIModels } from '../config/evaluatorModels'
 import { debugLog } from '../utils/logUtils'
+import { getJudgeModels } from '../utils/modelUtils'
 
 const ajv = new Ajv()
 
@@ -97,9 +97,12 @@ class JudgeModelService {
         let evaluationError: any
         while (attempts < MAX_RETRIES) {
             try {
-                content = await this.getModelService(
+                const modelService = await this.getModelService(evaluatorModel)
+                content = await modelService.fetchModelComparison(
+                    systemPrompt,
+                    userPrompt,
                     evaluatorModel
-                ).fetchModelComparison(systemPrompt, userPrompt, evaluatorModel)
+                )
 
                 if (content && content.includes('{') && content.includes('}')) {
                     const startIndex = content.indexOf('{')
@@ -127,7 +130,10 @@ class JudgeModelService {
         throw new Error(evaluationError.message)
     }
 
-    private getModelService(generatorModel: string) {
+    private async getModelService(generatorModel: string) {
+        const geminiModels = await getJudgeModels('gemini')
+        const openAIModels = await getJudgeModels('openai')
+
         if (openAIModels.includes(generatorModel)) {
             return this.openAIGPTJudgeModelService
         } else if (geminiModels.includes(generatorModel)) {

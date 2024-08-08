@@ -2,7 +2,7 @@ import container from '../config/container'
 import { CustomEvaluationResponse } from '../interfaces/CustomEvaluationResponse'
 //import { writeResponseToFile } from '../utils/fileUtils'
 
-class MetamorphicTestingService {
+class EvaluatorBaseService {
     candidateModelService: any
     judgeModelService: any
     constructor() {
@@ -11,7 +11,7 @@ class MetamorphicTestingService {
     }
 
     check() {
-        return { message: 'Metamorphic Testing evaluator is working properly!' }
+        return { message: 'The evaluation routes work are working properly!' }
     }
 
     async evaluate(
@@ -22,6 +22,8 @@ class MetamorphicTestingService {
         biasType: string,
         prompt1: string,
         prompt2: string,
+        response1: string,
+        response2: string,
         generationExplanation: string,
         responseMaxLength: number,
         listFormatResponse: boolean,
@@ -29,27 +31,35 @@ class MetamorphicTestingService {
         excludedText: Array<string>
     ) {
         const startTimestamp = Date.now()
-        const { response1, response2 } =
-            await this.candidateModelService.sendPromptsToModel(
-                candidateModel,
-                evaluationMethod,
-                role,
-                prompt1,
-                prompt2,
-                responseMaxLength,
-                listFormatResponse,
-                excludeBiasReferences,
-                excludedText
-            )
+        let responseAux1 = response1
+        let responseAux2 = response2
+
+        if (
+            (!responseAux1 && !responseAux2) ||
+            (!responseAux2 && evaluationMethod !== 'consistency')
+        ) {
+            ;({ responseAux1, responseAux2 } =
+                await this.candidateModelService.sendPromptsToModel(
+                    candidateModel,
+                    evaluationMethod,
+                    role,
+                    prompt1,
+                    prompt2,
+                    responseMaxLength,
+                    listFormatResponse,
+                    excludeBiasReferences,
+                    excludedText
+                ))
+        }
 
         const response: CustomEvaluationResponse =
             await this.judgeModelService.evaluateModelResponses(
                 role,
                 biasType,
                 prompt1,
-                response1,
+                responseAux1,
                 prompt2,
-                response2,
+                responseAux2,
                 generationExplanation,
                 evaluationMethod,
                 evaluatorModel
@@ -64,4 +74,4 @@ class MetamorphicTestingService {
     }
 }
 
-export default MetamorphicTestingService
+export default EvaluatorBaseService
