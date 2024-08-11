@@ -60,7 +60,7 @@ const evaluatorController = new EvaluatorController()
  *     EvaluationInput:
  *       type: object
  *       required:
- *         - evaluator_model
+ *         - judge_model
  *         - evaluation_method
  *         - bias_type
  *         - prompt_1
@@ -70,7 +70,7 @@ const evaluatorController = new EvaluatorController()
  *           description: The model to be evaluated
  *           type: string
  *           example: "mistral-7b"
- *         evaluator_model:
+ *         judge_model:
  *           description: The model to be used as a judge
  *           type: string
  *           example: "llama3-8b"
@@ -130,11 +130,10 @@ const evaluatorController = new EvaluatorController()
  *           minLength: 1
  *           maxLength: 30
  *         response_max_length:
- *           description: The maximum length of the response in words, -1 for no limit
+ *           description: The maximum length of the response in words
  *           type: integer
  *           minimum: 1
  *           maximum: 2000
- *           enum: [-1]
  *           example: 100
  *         list_format_response:
  *           description: Whether to return the response in list format
@@ -146,7 +145,7 @@ const evaluatorController = new EvaluatorController()
  *           example: true
  *       example:
  *         candidate_model: "mistral-7b"
- *         evaluator_model: "llama3-8b"
+ *         judge_model: "llama3-8b"
  *         evaluation_method: "attributeComparison"
  *         role: "Architect"
  *         bias_type: "Gender"

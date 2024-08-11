@@ -8,10 +8,10 @@ class GeminiJudgeModelService {
     async fetchModelComparison(
         systemPrompt: string,
         userPrompt: string,
-        evaluatorModel: string
+        judgeModel: string
     ): Promise<string> {
         const model = genAI.getGenerativeModel({
-            model: evaluatorModel,
+            model: judgeModel,
         })
 
         const generationConfig = {
@@ -39,7 +39,7 @@ class GeminiJudgeModelService {
         if (content) {
             return content
         }
-        throw new Error('[EVALUATOR] No content found in Gemini response')
+        throw new Error('[GUARD-ME] No content found in Gemini response')
     }
 }
 

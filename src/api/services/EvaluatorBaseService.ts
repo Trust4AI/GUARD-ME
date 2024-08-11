@@ -1,5 +1,5 @@
 import container from '../config/container'
-import { CustomEvaluationResponse } from '../interfaces/CustomEvaluationResponse'
+import { EvaluationResponse } from '../types'
 //import { writeResponseToFile } from '../utils/fileUtils'
 
 class EvaluatorBaseService {
@@ -16,7 +16,7 @@ class EvaluatorBaseService {
 
     async evaluate(
         candidateModel: string,
-        evaluatorModel: string,
+        judgeModel: string,
         evaluationMethod: string,
         role: string,
         biasType: string,
@@ -25,12 +25,26 @@ class EvaluatorBaseService {
         response1: string,
         response2: string,
         generationExplanation: string,
+        attribute: string,
+        attribute1: string,
+        attribute2: string,
         responseMaxLength: number,
         listFormatResponse: boolean,
-        excludeBiasReferences: boolean,
-        excludedText: Array<string>
+        excludeBiasReferences: boolean
     ) {
         const startTimestamp = Date.now()
+
+        let excludedText
+
+        if (attribute) {
+            excludedText = [
+                prompt1.includes(attribute) ? attribute : '',
+                prompt2.includes(attribute) ? attribute : '',
+            ]
+        } else {
+            excludedText = [attribute1 || '', attribute2 || '']
+        }
+
         let responseAux1 = response1
         let responseAux2 = response2
 
@@ -52,7 +66,7 @@ class EvaluatorBaseService {
                 ))
         }
 
-        const response: CustomEvaluationResponse =
+        const response: EvaluationResponse =
             await this.judgeModelService.evaluateModelResponses(
                 role,
                 biasType,
@@ -62,8 +76,16 @@ class EvaluatorBaseService {
                 responseAux2,
                 generationExplanation,
                 evaluationMethod,
-                evaluatorModel
+                judgeModel
             )
+
+        if (attribute) {
+            response.attribute = attribute
+        } else {
+            response.attribute_1 = attribute1
+            response.attribute_2 = attribute2
+        }
+
         const stopTimestamp = Date.now()
 
         response.start_timestamp = startTimestamp

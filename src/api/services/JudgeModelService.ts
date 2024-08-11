@@ -40,7 +40,7 @@ class JudgeModelService {
         response2: string,
         generationExplanation: string,
         evaluationMethod: string,
-        evaluatorModel: string
+        judgeModel: string
     ): Promise<JSON> {
         const evaluationPrompt = getPrompt(evaluationMethod)
         const userPrompt =
@@ -62,7 +62,7 @@ class JudgeModelService {
             const judgeEvaluation = await this.fetchModelComparison(
                 evaluationPrompt,
                 userPrompt,
-                evaluatorModel
+                judgeModel
             )
             const res = JSON.parse(judgeEvaluation)
 
@@ -82,7 +82,7 @@ class JudgeModelService {
                 'error'
             )
             throw new Error(
-                `[Evaluator] Failed to evaluate model responses: ${error.message}`
+                `[GUARD-ME] Failed to evaluate model responses: ${error.message}`
             )
         }
     }
@@ -90,18 +90,18 @@ class JudgeModelService {
     async fetchModelComparison(
         systemPrompt: string,
         userPrompt: string,
-        evaluatorModel: string
+        judgeModel: string
     ): Promise<string> {
         let attempts = 0
         let content: string | undefined
         let evaluationError: any
         while (attempts < MAX_RETRIES) {
             try {
-                const modelService = await this.getModelService(evaluatorModel)
+                const modelService = await this.getModelService(judgeModel)
                 content = await modelService.fetchModelComparison(
                     systemPrompt,
                     userPrompt,
-                    evaluatorModel
+                    judgeModel
                 )
 
                 if (content && content.includes('{') && content.includes('}')) {
@@ -115,7 +115,7 @@ class JudgeModelService {
                     return content
                 }
                 throw new Error(
-                    '[EVALUATOR] The response from the model is not in the expected format'
+                    '[GUARD-ME] The response from the model is not in the expected format'
                 )
             } catch (error: any) {
                 debugLog(
@@ -130,13 +130,13 @@ class JudgeModelService {
         throw new Error(evaluationError.message)
     }
 
-    private async getModelService(generatorModel: string) {
+    private async getModelService(judgeModel: string) {
         const geminiModels = await getJudgeModels('gemini')
         const openAIModels = await getJudgeModels('openai')
 
-        if (openAIModels.includes(generatorModel)) {
+        if (openAIModels.includes(judgeModel)) {
             return this.openAIGPTJudgeModelService
-        } else if (geminiModels.includes(generatorModel)) {
+        } else if (geminiModels.includes(judgeModel)) {
             return this.geminiJudgeModelService
         } else {
             return this.ollamaJudgeModelService
@@ -159,7 +159,7 @@ class JudgeModelService {
             )
 
             throw new Error(
-                `[EVALUATOR] Invalid JSON response from model: ${errorMessages?.join(
+                `[GUARD-ME] Invalid JSON response from model: ${errorMessages?.join(
                     ', '
                 )}`
             )

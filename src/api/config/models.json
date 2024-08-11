@@ -17,7 +17,9 @@
         ],
         "ollama": [
             "gemma-7b",
-            "llama3-8b"
+            "llama3-8b",
+            "mistral-7b",
+            "llama2-7b"
         ]
     }
 }

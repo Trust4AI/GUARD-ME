@@ -20,7 +20,7 @@ const evaluate = [
             }
             return true
         }),
-    check('evaluator_model')
+    check('judge_model')
         .isString()
         .trim()
         .custom(async (value) => {
@@ -28,7 +28,7 @@ const evaluate = [
             if (value) {
                 if (!judgeModels.includes(value)) {
                     throw new Error(
-                        `evaluator_model must be a string, if provided, with one of the following values: [${judgeModels.join(
+                        `judge_model must be a string, if provided, with one of the following values: [${judgeModels.join(
                             ', '
                         )}]`
                     )
@@ -111,13 +111,9 @@ const evaluate = [
         ),
     check('response_max_length')
         .optional()
-        .custom(
-            (value) =>
-                value === -1 ||
-                (Number.isInteger(value) && value >= 1 && value <= 2000)
-        )
+        .isInt({ min: 1, max: 2000 })
         .withMessage(
-            'response_max_length is optional but must be an integer between 1 and 2000 or -1 if provided'
+            'response_max_length is optional but must be an integer between 1 and 2000 if provided'
         ),
     check('list_format_response')
         .optional()

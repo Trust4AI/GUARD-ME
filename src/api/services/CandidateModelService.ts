@@ -1,4 +1,4 @@
-import { sendRequestToExecutor } from '../utils/httpUtils'
+import { sendRequestToGenie } from '../utils/httpUtils'
 import { debugLog } from '../utils/logUtils'
 
 class CandidateModelService {
@@ -13,9 +13,8 @@ class CandidateModelService {
         excludeBiasReferences: boolean,
         excludedText: Array<string>
     ): Promise<{ response1: string; response2: string }> {
-        const host =
-            process.env.EXECUTOR_COMPONENT_HOST ||
-            'http://localhost:8081/api/v1'
+        const genieBaseUrl =
+            process.env.GENIE_BASE_URL || 'http://localhost:8081/api/v1'
 
         const sendPrompt = async (
             prompt: string,
@@ -35,17 +34,17 @@ class CandidateModelService {
                 requestBody.excluded_text = excludedText
             }
 
-            return await sendRequestToExecutor(host, requestBody)
+            return await sendRequestToGenie(genieBaseUrl, requestBody)
         }
 
         try {
             const response1 = await sendPrompt(prompt1, excludedText[0])
-            debugLog('First prompt sent to executor successfully!', 'info')
+            debugLog('First prompt sent to GENIE successfully!', 'info')
 
             let response2 = ''
             if (evaluationMethod !== 'consistency') {
                 response2 = await sendPrompt(prompt2, excludedText[1])
-                debugLog('Second prompt sent to executor successfully!', 'info')
+                debugLog('Second prompt sent to GENIE successfully!', 'info')
             }
             return { response1, response2 }
         } catch (error: any) {

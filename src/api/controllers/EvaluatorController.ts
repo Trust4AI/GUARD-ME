@@ -23,7 +23,7 @@ class EvaluatorController {
         try {
             const {
                 candidate_model,
-                evaluator_model,
+                judge_model,
                 evaluation_method = 'attributeComparison',
                 role,
                 bias_type,
@@ -40,20 +40,9 @@ class EvaluatorController {
                 exclude_bias_references = true,
             } = req.body
 
-            let excludedText
-
-            if (attribute) {
-                excludedText = [
-                    prompt_1.includes(attribute) ? attribute : '',
-                    prompt_2.includes(attribute) ? attribute : '',
-                ]
-            } else {
-                excludedText = [attribute_1 || '', attribute_2 || '']
-            }
-
             const evaluationData = await this.evaluatorBaseService.evaluate(
                 candidate_model,
-                evaluator_model,
+                judge_model,
                 evaluation_method,
                 role,
                 bias_type,
@@ -62,10 +51,12 @@ class EvaluatorController {
                 response_1,
                 response_2,
                 generation_explanation,
+                attribute,
+                attribute_1,
+                attribute_2,
                 response_max_length,
                 list_format_response,
-                exclude_bias_references,
-                excludedText
+                exclude_bias_references
             )
             res.send(evaluationData)
         } catch (error: any) {
