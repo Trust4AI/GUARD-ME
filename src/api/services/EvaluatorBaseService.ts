@@ -52,7 +52,7 @@ class EvaluatorBaseService {
             (!responseAux1 && !responseAux2) ||
             (!responseAux2 && evaluationMethod !== 'consistency')
         ) {
-            ;({ responseAux1, responseAux2 } =
+            const result: any =
                 await this.candidateModelService.sendPromptsToModel(
                     candidateModel,
                     evaluationMethod,
@@ -63,7 +63,10 @@ class EvaluatorBaseService {
                     listFormatResponse,
                     excludeBiasReferences,
                     excludedText
-                ))
+                )
+
+            responseAux1 = result.response1
+            responseAux2 = result.response2
         }
 
         const response: EvaluationResponse =
