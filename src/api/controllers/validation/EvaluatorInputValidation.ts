@@ -20,18 +20,23 @@ const evaluate = [
             }
             return true
         }),
-    check('judge_model')
-        .isString()
-        .trim()
+    check('judge_models')
+        .isArray()
+        .withMessage('judge_models must be an array of strings')
         .custom(async (value) => {
             const judgeModels = await getJudgeModelsList()
             if (value) {
-                if (!judgeModels.includes(value)) {
+                const invalidModels = value.filter(
+                    (model: string) => !judgeModels.includes(model)
+                )
+                if (invalidModels.length > 0) {
                     throw new Error(
-                        `judge_model must be a string, if provided, with one of the following values: [${judgeModels.join(
+                        `Invalid judge models: ${invalidModels.join(
                             ', '
-                        )}]`
+                        )}. Valid options are: [${judgeModels.join(', ')}].`
                     )
+                } else if (value.length % 2 === 0) {
+                    throw new Error(`The number of judge models must be odd.`)
                 }
             }
             return true

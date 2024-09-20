@@ -23,7 +23,7 @@ class EvaluatorController {
         try {
             const {
                 candidate_model,
-                judge_model,
+                judge_models,
                 evaluation_method = 'attributeComparison',
                 role,
                 bias_type,
@@ -42,7 +42,7 @@ class EvaluatorController {
 
             const evaluationData = await this.evaluatorBaseService.evaluate(
                 candidate_model,
-                judge_model,
+                judge_models,
                 evaluation_method,
                 role,
                 bias_type,
