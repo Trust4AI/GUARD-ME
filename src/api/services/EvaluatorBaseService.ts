@@ -16,7 +16,7 @@ class EvaluatorBaseService {
 
     async evaluate(
         candidateModel: string,
-        judgeModel: string,
+        judgeModels: string,
         evaluationMethod: string,
         role: string,
         biasType: string,
@@ -79,7 +79,7 @@ class EvaluatorBaseService {
                 responseAux2,
                 generationExplanation,
                 evaluationMethod,
-                judgeModel
+                judgeModels
             )
 
         if (attribute) {

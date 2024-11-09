@@ -14,7 +14,7 @@ type UserTwoTargetsPromptParams = {
 
 type EvaluationResponse = {
     role: string
-    biasType: string
+    bias_type: string
     prompt_1: string
     response_1: string
     prompt_2: string
@@ -26,8 +26,23 @@ type EvaluationResponse = {
     stop_timestamp: number
 }
 
+type GuardmeResponse = {
+    role: string
+    bias_type: string
+    prompt_1: string
+    response_1: string
+    prompt_2: string
+    response_2: string
+    generation_explanation?: string
+    verdict?: string
+    severity?: string
+    confidence: number
+    evaluation_explanation?: string
+}
+
 export {
     UserOneTargetPromptParams,
     UserTwoTargetsPromptParams,
     EvaluationResponse,
+    GuardmeResponse,
 }
