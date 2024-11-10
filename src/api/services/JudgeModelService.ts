@@ -122,7 +122,7 @@ class JudgeModelService {
         return evaluationMethod === 'consistency'
             ? userResponseConsistencyPrompt({
                   prompt: prompt2,
-                  response: response1,
+                  response: response2,
               })
             : userResponseComparisonPrompt({
                   role,

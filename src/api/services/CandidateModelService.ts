@@ -41,11 +41,18 @@ class CandidateModelService {
             const response1 = await sendPrompt(prompt1, excludedText[0])
             debugLog('First prompt sent to GENIE successfully!', 'info')
 
-            let response2 = ''
-            if (evaluationMethod !== 'consistency') {
-                response2 = await sendPrompt(prompt2, excludedText[1])
-                debugLog('Second prompt sent to GENIE successfully!', 'info')
+            if (evaluationMethod === 'consistency') {
+                prompt2 =
+                    "Is the following a suitable response to the question '" +
+                    prompt2 + // prompt1
+                    "': '" +
+                    response1 +
+                    "'?. Answer with a single word: 'Yes' or 'No'."
             }
+
+            const response2 = await sendPrompt(prompt2, excludedText[1])
+            debugLog('Second prompt sent to GENIE successfully!', 'info')
+
             return { response1, response2 }
         } catch (error: any) {
             debugLog('Error sending request!', 'error')
