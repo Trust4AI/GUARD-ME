@@ -35,7 +35,7 @@ class EvaluatorController {
                 attribute = '',
                 attribute_1 = '',
                 attribute_2 = '',
-                response_max_length = -1,
+                response_max_length,
                 list_format_response = false,
                 exclude_bias_references = true,
             } = req.body

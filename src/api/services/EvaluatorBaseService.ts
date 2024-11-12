@@ -62,6 +62,8 @@ class EvaluatorBaseService {
                     excludedText
                 )
 
+            prompt1 = result.prompt1
+            prompt2 = result.prompt2
             responseAux1 = result.response1
             responseAux2 = result.response2
         }

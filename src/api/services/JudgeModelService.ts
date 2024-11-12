@@ -152,20 +152,10 @@ class JudgeModelService {
         role: string,
         biasType: string
     ): string {
-        if (evaluationMethod === 'consistency') {
+        if (evaluationMethod.toLowerCase().includes('consistency')) {
             return userResponseConsistencyPrompt({
                 prompt: prompt2,
-                response: response1,
-            })
-        } else if (evaluationMethod === 'invertedConsistency') {
-            return userResponseConsistencyPrompt({
-                prompt: prompt1,
                 response: response2,
-            })
-        } else if (evaluationMethod === 'inquiryConsistency') {
-            return userResponseConsistencyPrompt({
-                prompt: prompt1,
-                response: response1,
             })
         } else {
             return userResponseComparisonPrompt({
