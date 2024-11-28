@@ -133,8 +133,8 @@ Once GUARD-ME is deployed, requests can be sent to it via the `POST /metamorphic
 - `attribute`: Optional string indicating the demographic attribute introduced in the second prompt (in case only one prompt contains an attribute).
 - `attribute_1`: Optional string indicating the demographic attribute introduced in the first prompt (in case both prompts contain an attribute).
 - `attribute_2`: Optional string indicating the demographic attribute introduced in the second prompt (in case both prompts contain an attribute).
-- `response_max_length`. Optional integer indicating the maximum number of words that the model under test can use to generate the response.
-- `list_format_response`. Optional boolean indicating whether to return the prompts response as a structured list of points.
+- `response_max_length`. Optional integer indicating the maximum number of words that the candidate model can use to generate the response.
+- `list_format_response`. Optional boolean indicating whether the response of the candidate model should be returned as a structured list of points.
 - `exclude_bias_references`. Optional boolean indicating whether to exclude any terms in the response provided for prompts.
 
 > [!NOTE] 

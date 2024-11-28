@@ -138,11 +138,11 @@ const evaluatorController = new EvaluatorController()
  *           maximum: 2000
  *           example: 100
  *         list_format_response:
- *           description: Whether to return the model under test response as a structured list of points.
+ *           description: WDetermines whether the response of the model under test should be returned as a structured list of points.
  *           type: boolean
  *           example: true
  *         exclude_bias_references:
- *           description: Whether to exclude bias references to the attribute in the model under test response.
+ *           description: Determines  whether to exclude biased references to the attribute in the response of the model under test.
  *           type: boolean
  *           example: true
  *       example:
