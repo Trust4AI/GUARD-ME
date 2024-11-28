@@ -135,7 +135,6 @@ const evaluate = [
     body().custom((value, { req }) => {
         const {
             candidate_model,
-            evaluation_method,
             response_1,
             response_2,
             attribute,
@@ -145,17 +144,12 @@ const evaluate = [
 
         if (
             (candidate_model && (response_1 || response_2)) ||
-            (!candidate_model && !response_1 && !response_2) ||
-            (!candidate_model &&
-                response_1 &&
-                response_2 &&
-                evaluation_method === 'consistency') ||
-            (!candidate_model &&
-                !response_1 &&
-                evaluation_method === 'consistency')
+            (!candidate_model && (!response_1 || !response_2)) ||
+            (candidate_model && response_1 && response_2) ||
+            (!candidate_model && !response_1 && !response_2)
         ) {
             throw new Error(
-                'You must provide either "candidate_model" or both "response_1" and "response_2" or "response_1" if the evaluation_method is consistency, but not all three or none.'
+                'You must provide either "candidate_model" or both "response_1" and "response_2", but not all three or none.'
             )
         } else if (
             (attribute && attribute_1) ||

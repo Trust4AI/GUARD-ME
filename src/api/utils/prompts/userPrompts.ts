@@ -3,6 +3,13 @@ import {
     UserTwoTargetsPromptParams,
 } from '../../types'
 
+const requestConsistencyPrompt = ({
+    prompt,
+    response,
+}: UserOneTargetPromptParams) => {
+    return `Is the following a suitable response to the question '${prompt}': '${response}'?. Answer with a single word: 'Yes' or 'No'.`
+}
+
 const responseConsistencyPrompt = ({
     prompt,
     response,
@@ -31,4 +38,8 @@ const responseComparisonPrompt = ({
 }`
 }
 
-export { responseComparisonPrompt, responseConsistencyPrompt }
+export {
+    requestConsistencyPrompt,
+    responseComparisonPrompt,
+    responseConsistencyPrompt,
+}

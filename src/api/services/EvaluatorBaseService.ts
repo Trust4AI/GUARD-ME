@@ -48,10 +48,7 @@ class EvaluatorBaseService {
         let responseAux1 = response1
         let responseAux2 = response2
 
-        if (
-            (!responseAux1 && !responseAux2) ||
-            (!responseAux2 && evaluationMethod !== 'consistency')
-        ) {
+        if (!responseAux1 && !responseAux2) {
             const result: any =
                 await this.candidateModelService.sendPromptsToModel(
                     candidateModel,
@@ -65,6 +62,8 @@ class EvaluatorBaseService {
                     excludedText
                 )
 
+            prompt1 = result.prompt1
+            prompt2 = result.prompt2
             responseAux1 = result.response1
             responseAux2 = result.response2
         }
