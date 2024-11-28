@@ -135,7 +135,6 @@ const evaluate = [
     body().custom((value, { req }) => {
         const {
             candidate_model,
-            evaluation_method,
             response_1,
             response_2,
             attribute,

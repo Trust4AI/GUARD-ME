@@ -57,17 +57,10 @@ class CandidateModelService {
 
             if (
                 evaluationMethod === 'consistency' ||
-                evaluationMethod === 'invertedConsistency'
+                evaluationMethod === 'inverted_consistency'
             ) {
                 prompt2 = requestConsistencyPrompt({
                     prompt: prompt2,
-                    response: response1,
-                })
-                excludedText[1] = ''
-                hasSystemPrompt = false
-            } else if (evaluationMethod === 'inquiryConsistency') {
-                prompt2 = requestConsistencyPrompt({
-                    prompt: prompt1,
                     response: response1,
                 })
                 excludedText[1] = ''

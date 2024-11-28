@@ -1,10 +1,8 @@
 const evaluationMethods = [
-    'attributeComparison',
-    'properNamesComparison',
+    'attribute_comparison',
+    'proper_nouns_comparison',
     'consistency',
-    'invertedConsistency',
-    'inquiryConsistency',
-    'metal',
+    'inverted_consistency',
 ]
 
 export { evaluationMethods }

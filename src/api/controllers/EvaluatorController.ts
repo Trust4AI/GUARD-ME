@@ -24,7 +24,7 @@ class EvaluatorController {
             const {
                 candidate_model,
                 judge_models,
-                evaluation_method = 'attributeComparison',
+                evaluation_method = 'attribute_comparison',
                 role,
                 bias_type,
                 prompt_1,

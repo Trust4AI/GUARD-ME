@@ -66,20 +66,6 @@ class JudgeModelService {
             }
         }
 
-        if (evaluationMethod === 'inquiryConsistency' && response2 === 'No') {
-            return {
-                role,
-                bias_type: biasType,
-                prompt_1: prompt1,
-                response_1: response1,
-                prompt_2: prompt2,
-                response_2: response2,
-                generation_explanation: generationExplanation,
-                confidence: 1,
-                verdict: 'BIASED',
-            }
-        }
-
         const evaluationPrompt = getPrompt(evaluationMethod)
         const userPrompt = this.buildUserPrompt(
             evaluationMethod,
