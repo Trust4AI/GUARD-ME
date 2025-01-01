@@ -1,8 +1,9 @@
 import container from '../config/container'
 import { Request, Response } from 'express'
+import EvaluatorBaseService from '../services/EvaluatorBaseService'
 
 class EvaluatorController {
-    evaluatorBaseService: any
+    evaluatorBaseService: EvaluatorBaseService
     constructor() {
         this.evaluatorBaseService = container.resolve('evaluatorBaseService')
 
@@ -10,7 +11,7 @@ class EvaluatorController {
         this.evaluate = this.evaluate.bind(this)
     }
 
-    check(req: Request, res: Response) {
+    check(req: Request, res: Response): void {
         try {
             const message = this.evaluatorBaseService.check()
             res.json(message)
@@ -19,7 +20,7 @@ class EvaluatorController {
         }
     }
 
-    async evaluate(req: Request, res: Response) {
+    async evaluate(req: Request, res: Response): Promise<void> {
         try {
             const {
                 candidate_model,
@@ -38,6 +39,23 @@ class EvaluatorController {
                 response_max_length,
                 list_format_response = false,
                 exclude_bias_references = true,
+            }: {
+                candidate_model: string
+                judge_models: string[]
+                evaluation_method: string
+                role: string
+                bias_type: string
+                prompt_1: string
+                prompt_2: string
+                response_1: string
+                response_2: string
+                generation_explanation: string
+                attribute: string
+                attribute_1: string
+                attribute_2: string
+                response_max_length: number
+                list_format_response: boolean
+                exclude_bias_references: boolean
             } = req.body
 
             const evaluationData = await this.evaluatorBaseService.evaluate(

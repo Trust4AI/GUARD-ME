@@ -1,4 +1,4 @@
-const evaluationMethods = [
+const evaluationMethods: string[] = [
     'attribute_comparison',
     'proper_nouns_comparison',
     'consistency',

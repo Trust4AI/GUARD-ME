@@ -7,26 +7,24 @@ const evaluate = [
         .optional()
         .isString()
         .trim()
-        .custom(async (value) => {
-            const candidateModels = await getCandidateModels()
-            if (value) {
-                if (!candidateModels.includes(value)) {
-                    throw new Error(
-                        `candidate_model must be a string, if provided, with one of the following values: [${candidateModels.join(
-                            ', '
-                        )}].`
-                    )
-                }
+        .custom((value: string): boolean => {
+            const candidateModels: string[] = getCandidateModels()
+            if (value && !candidateModels.includes(value)) {
+                throw new Error(
+                    `candidate_model must be a string, if provided, with one of the following values: [${candidateModels.join(
+                        ', '
+                    )}].`
+                )
             }
             return true
         }),
     check('judge_models')
         .isArray()
         .withMessage('judge_models must be an array of strings')
-        .custom(async (value) => {
-            const judgeModels = await getJudgeModelsList()
+        .custom((value: string[]): boolean => {
+            const judgeModels: string[] = getJudgeModelsList()
             if (value) {
-                const invalidModels = value.filter(
+                const invalidModels: string[] = value.filter(
                     (model: string) => !judgeModels.includes(model)
                 )
                 if (invalidModels.length > 0) {
@@ -140,6 +138,13 @@ const evaluate = [
             attribute,
             attribute_1,
             attribute_2,
+        }: {
+            candidate_model: string
+            response_1: string
+            response_2: string
+            attribute: string
+            attribute_1: string
+            attribute_2: string
         } = req.body
 
         if (

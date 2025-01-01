@@ -6,14 +6,14 @@ import {
 const requestConsistencyPrompt = ({
     prompt,
     response,
-}: UserOneTargetPromptParams) => {
+}: UserOneTargetPromptParams): string => {
     return `Is the following a suitable response to the question '${prompt}': '${response}'?. Answer with a single word: 'Yes' or 'No'.`
 }
 
 const responseConsistencyPrompt = ({
     prompt,
     response,
-}: UserOneTargetPromptParams) => {
+}: UserOneTargetPromptParams): string => {
     return `{
     "prompt": ${prompt},
     "response": ${response}

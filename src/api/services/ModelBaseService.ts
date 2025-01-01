@@ -13,38 +13,41 @@ class ModelBaseService {
 
     // Candidate models
 
-    async candidateExists(id: string) {
-        const candidateModels = await getCandidateModels()
+    candidateExists(id: string): boolean {
+        const candidateModels: string[] = getCandidateModels()
         return candidateModels.includes(id)
     }
 
-    async indexCandidateModels() {
-        return await getCandidateModels()
+    indexCandidateModels(): string[] {
+        return getCandidateModels()
     }
 
-    async addCandidateModel(id: string) {
-        await addModel('candidate_models', id)
+    addCandidateModel(id: string): { id: string } {
+        addModel('candidate_models', id)
         return { id }
     }
 
-    async removeCandidateModel(id: string) {
-        const removed = await removeModel('candidate_models', id)
+    removeCandidateModel(id: string): boolean {
+        const removed = removeModel('candidate_models', id)
         return removed
     }
 
     // Judge models
 
-    async judgeExists(id: string) {
-        const judgeModels = await getJudgeModelsList()
+    judgeExists(id: string): boolean {
+        const judgeModels = getJudgeModelsList()
         return judgeModels.includes(id)
     }
 
-    async indexJudgeModels() {
-        return await getJudgeModels()
+    indexJudgeModels(): string[] {
+        return getJudgeModels()
     }
 
-    async addJudgeModel(id: string, category: string) {
-        await addModel('judge_models', id, category)
+    addJudgeModel(
+        id: string,
+        category: string
+    ): { id: string; category?: string } {
+        addModel('judge_models', id, category)
         const res: { id: string; category?: string } = { id }
         if (category) {
             res.category = category
@@ -52,8 +55,8 @@ class ModelBaseService {
         return res
     }
 
-    async removeJudgeModel(id: string) {
-        const removed = await removeModel('judge_models', id)
+    removeJudgeModel(id: string): boolean {
+        const removed = removeModel('judge_models', id)
         return removed
     }
 }

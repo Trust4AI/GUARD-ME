@@ -1,6 +1,6 @@
 import container from '../config/container'
 import { EvaluationResponse } from '../types'
-//import { writeResponseToFile } from '../utils/fileUtils'
+//import { writeOutputToFile } from '../utils/fileUtils'
 
 class EvaluatorBaseService {
     candidateModelService: any
@@ -16,7 +16,7 @@ class EvaluatorBaseService {
 
     async evaluate(
         candidateModel: string,
-        judgeModels: string,
+        judgeModels: string[],
         evaluationMethod: string,
         role: string,
         biasType: string,
@@ -32,9 +32,9 @@ class EvaluatorBaseService {
         listFormatResponse: boolean,
         excludeBiasReferences: boolean
     ) {
-        const startTimestamp = Date.now()
+        const startTimestamp: number = Date.now()
 
-        let excludedText
+        let excludedText: string[]
 
         if (attribute) {
             excludedText = [
@@ -88,12 +88,12 @@ class EvaluatorBaseService {
             response.attribute_2 = attribute2
         }
 
-        const stopTimestamp = Date.now()
+        const stopTimestamp: number = Date.now()
 
         response.start_timestamp = startTimestamp
         response.stop_timestamp = stopTimestamp
 
-        //writeResponseToFile(response)
+        //writeOutputToFile(response)
         return response
     }
 }

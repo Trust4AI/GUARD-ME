@@ -10,17 +10,20 @@ import { debugLog } from '../utils/logUtils'
 import { getJudgeModels } from '../utils/modelUtils'
 import { mostFrequent } from '../utils/arrayUtils'
 import { GuardmeResponse } from '../types'
+import OllamaJudgeModelService from './OllamaJudgeModelService'
+import OpenAIGPTJudgeModelService from './OpenAIGPTJudgeModelService'
+import GeminiJudgeModelService from './GeminiJudgeModelService'
 
 const ajv = new Ajv()
-const MAX_RETRIES = parseInt(process.env.MAX_RETRIES || '5', 10)
-const SEVERITY_ORDER = ['LOW', 'MODERATE', 'HIGH']
-const VERDICT_UNBIASED = 'UNBIASED'
-const SEVERITY_NA = 'N/A'
+const MAX_RETRIES: number = parseInt(process.env.MAX_RETRIES || '5', 10)
+const SEVERITY_ORDER: string[] = ['LOW', 'MODERATE', 'HIGH']
+const VERDICT_UNBIASED: string = 'UNBIASED'
+const SEVERITY_NA: string = 'N/A'
 
 class JudgeModelService {
-    ollamaJudgeModelService: any
-    openAIGPTJudgeModelService: any
-    geminiJudgeModelService: any
+    ollamaJudgeModelService: OllamaJudgeModelService
+    openAIGPTJudgeModelService: OpenAIGPTJudgeModelService
+    geminiJudgeModelService: GeminiJudgeModelService
     validate: ValidateFunction
 
     constructor() {
@@ -66,8 +69,8 @@ class JudgeModelService {
             }
         }
 
-        const evaluationPrompt = getPrompt(evaluationMethod)
-        const userPrompt = this.buildUserPrompt(
+        const evaluationPrompt: string = getPrompt(evaluationMethod)
+        const userPrompt: string = this.buildUserPrompt(
             evaluationMethod,
             prompt1,
             response1,
@@ -190,7 +193,7 @@ class JudgeModelService {
     }
 
     private calculateConfidence(verdict: string, results: any[]): number {
-        const matchingResults = results.filter(
+        const matchingResults: number = results.filter(
             (result) => result.verdict === verdict
         ).length
         return parseFloat((matchingResults / results.length).toFixed(2))
@@ -201,12 +204,12 @@ class JudgeModelService {
         userPrompt: string,
         judgeModel: string
     ): Promise<any> {
-        let attempts = 0
+        let attempts: number = 0
         let evaluationError: any
 
         while (attempts < MAX_RETRIES) {
             try {
-                const modelService = await this.getModelService(judgeModel)
+                const modelService = this.getModelService(judgeModel)
                 let content = await modelService.fetchModelComparison(
                     systemPrompt,
                     userPrompt,
@@ -217,7 +220,7 @@ class JudgeModelService {
                 const jsonContent = JSON.parse(content)
 
                 this.addMissingSeverity(jsonContent)
-                await this.validateResponse(jsonContent)
+                this.validateResponse(jsonContent)
                 jsonContent.judge_model = judgeModel
 
                 return jsonContent
@@ -238,8 +241,8 @@ class JudgeModelService {
     }
 
     private extractValidJson(content: string): string {
-        const startIndex = content.indexOf('{')
-        const endIndex = content.lastIndexOf('}')
+        const startIndex: number = content.indexOf('{')
+        const endIndex: number = content.lastIndexOf('}')
         if (startIndex === -1 || endIndex === -1) {
             throw new Error(
                 '[GUARD-ME] The response from the model is not in the expected format'
@@ -248,9 +251,9 @@ class JudgeModelService {
         return content.slice(startIndex, endIndex + 1)
     }
 
-    private async getModelService(judgeModel: string) {
-        const geminiModels = await getJudgeModels('gemini')
-        const openAIModels = await getJudgeModels('openai')
+    private getModelService(judgeModel: string) {
+        const geminiModels = getJudgeModels('gemini')
+        const openAIModels = getJudgeModels('openai')
 
         if (openAIModels.includes(judgeModel)) {
             return this.openAIGPTJudgeModelService
@@ -267,7 +270,7 @@ class JudgeModelService {
         }
     }
 
-    private async validateResponse(jsonContent: any): Promise<void> {
+    private validateResponse(jsonContent: any): void {
         if (!this.validate(jsonContent)) {
             const errorMessages = this.validate.errors
                 ?.map((error) => error.message)

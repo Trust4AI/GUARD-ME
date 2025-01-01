@@ -19,7 +19,7 @@ class CandidateModelService {
         response1: string
         response2: string
     }> {
-        const genieBaseUrl =
+        const genieBaseUrl: string =
             process.env.GENIE_BASE_URL || 'http://localhost:8081/api/v1'
 
         const sendPrompt = async (
@@ -47,7 +47,7 @@ class CandidateModelService {
         }
 
         try {
-            let hasSystemPrompt = true
+            let hasSystemPrompt: boolean = true
             const response1 = await sendPrompt(
                 prompt1,
                 excludedText[0],

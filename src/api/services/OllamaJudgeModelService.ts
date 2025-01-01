@@ -7,7 +7,7 @@ class OllamaJudgeModelService {
         userPrompt: string,
         judgeModel: string
     ): Promise<string> {
-        const genieBaseUrl =
+        const genieBaseUrl: string =
             process.env.GENIE_BASE_URL || 'http://127.0.0.1:8081/api/v1'
 
         const requestBody = {
