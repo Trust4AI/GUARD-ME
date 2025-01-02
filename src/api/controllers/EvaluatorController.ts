@@ -26,7 +26,6 @@ class EvaluatorController {
                 candidate_model,
                 judge_models,
                 evaluation_method = 'attribute_comparison',
-                role,
                 bias_type,
                 prompt_1,
                 prompt_2,
@@ -43,7 +42,6 @@ class EvaluatorController {
                 candidate_model: string
                 judge_models: string[]
                 evaluation_method: string
-                role: string
                 bias_type: string
                 prompt_1: string
                 prompt_2: string
@@ -62,7 +60,6 @@ class EvaluatorController {
                 candidate_model,
                 judge_models,
                 evaluation_method,
-                role,
                 bias_type,
                 prompt_1,
                 prompt_2,

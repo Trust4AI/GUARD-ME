@@ -18,7 +18,6 @@ class EvaluatorBaseService {
         candidateModel: string,
         judgeModels: string[],
         evaluationMethod: string,
-        role: string,
         biasType: string,
         prompt1: string,
         prompt2: string,
@@ -53,7 +52,6 @@ class EvaluatorBaseService {
                 await this.candidateModelService.sendPromptsToModel(
                     candidateModel,
                     evaluationMethod,
-                    role,
                     prompt1,
                     prompt2,
                     responseMaxLength,
@@ -70,7 +68,6 @@ class EvaluatorBaseService {
 
         const response: EvaluationResponse =
             await this.judgeModelService.evaluateModelResponses(
-                role,
                 biasType,
                 prompt1,
                 responseAux1,

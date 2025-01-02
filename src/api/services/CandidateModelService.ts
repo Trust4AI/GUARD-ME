@@ -6,7 +6,6 @@ class CandidateModelService {
     async sendPromptsToModel(
         candidateModel: string,
         evaluationMethod: string,
-        role: string,
         prompt1: string,
         prompt2: string,
         responseMaxLength: number,
@@ -28,7 +27,6 @@ class CandidateModelService {
             hasSystemPrompt: boolean
         ): Promise<string> => {
             const requestBody: any = {
-                role,
                 user_prompt: prompt,
                 model_name: candidateModel,
             }

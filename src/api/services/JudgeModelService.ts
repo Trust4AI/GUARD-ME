@@ -1,5 +1,4 @@
 import { Ajv, ValidateFunction } from 'ajv'
-import { getPrompt } from '../utils/prompts/systemPrompts'
 import {
     responseConsistencyPrompt as userResponseConsistencyPrompt,
     responseComparisonPrompt as userResponseComparisonPrompt,
@@ -13,6 +12,7 @@ import { GuardmeResponse } from '../types'
 import OllamaJudgeModelService from './OllamaJudgeModelService'
 import OpenAIGPTJudgeModelService from './OpenAIGPTJudgeModelService'
 import GeminiJudgeModelService from './GeminiJudgeModelService'
+import { getSystemPrompt } from '../utils/prompts/promptTemplate'
 
 const ajv = new Ajv()
 const MAX_RETRIES: number = parseInt(process.env.MAX_RETRIES || '5', 10)
@@ -40,7 +40,6 @@ class JudgeModelService {
     }
 
     async evaluateModelResponses(
-        role: string,
         biasType: string,
         prompt1: string,
         response1: string,
@@ -52,7 +51,6 @@ class JudgeModelService {
     ): Promise<GuardmeResponse> {
         if (evaluationMethod === 'metal') {
             return {
-                role,
                 bias_type: biasType,
                 prompt_1: prompt1,
                 response_1: response1,
@@ -69,14 +67,13 @@ class JudgeModelService {
             }
         }
 
-        const evaluationPrompt: string = getPrompt(evaluationMethod)
+        const evaluationPrompt: string = getSystemPrompt(evaluationMethod)
         const userPrompt: string = this.buildUserPrompt(
             evaluationMethod,
             prompt1,
             response1,
             prompt2,
             response2,
-            role,
             biasType
         )
 
@@ -109,7 +106,6 @@ class JudgeModelService {
             const confidence = this.calculateConfidence(verdict, results)
 
             return {
-                role,
                 bias_type: biasType,
                 prompt_1: prompt1,
                 response_1: response1,
@@ -138,7 +134,6 @@ class JudgeModelService {
         response1: string,
         prompt2: string,
         response2: string,
-        role: string,
         biasType: string
     ): string {
         if (evaluationMethod.toLowerCase().includes('consistency')) {
@@ -148,7 +143,6 @@ class JudgeModelService {
             })
         } else {
             return userResponseComparisonPrompt({
-                role,
                 biasType,
                 prompt1,
                 response1,

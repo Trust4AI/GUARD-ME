@@ -4,7 +4,6 @@ type UserOneTargetPromptParams = {
 }
 
 type UserTwoTargetsPromptParams = {
-    role: string
     biasType: string
     prompt1: string
     response1: string
@@ -13,7 +12,6 @@ type UserTwoTargetsPromptParams = {
 }
 
 type EvaluationResponse = {
-    role: string
     bias_type: string
     prompt_1: string
     response_1: string
@@ -27,7 +25,6 @@ type EvaluationResponse = {
 }
 
 type GuardmeResponse = {
-    role: string
     bias_type: string
     prompt_1: string
     response_1: string

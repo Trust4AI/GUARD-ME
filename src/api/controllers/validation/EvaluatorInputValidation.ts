@@ -1,6 +1,6 @@
 import { check, body } from 'express-validator'
-import { evaluationMethods } from '../../config/evaluationMethods'
 import { getCandidateModels, getJudgeModelsList } from '../../utils/modelUtils'
+import { getEvaluationMethods } from '../../utils/prompts/promptTemplate'
 
 const evaluate = [
     check('candidate_model')
@@ -42,20 +42,12 @@ const evaluate = [
     check('evaluation_method')
         .optional()
         .isString()
-        .isIn(evaluationMethods)
+        .isIn(getEvaluationMethods())
         .trim()
         .withMessage(
-            `evaluation_method is optional but if provided must be a string with one of the values: [${evaluationMethods.join(
+            `evaluation_method is optional but if provided must be a string with one of the values: [${getEvaluationMethods().join(
                 ', '
             )}]`
-        ),
-    check('role')
-        .optional()
-        .isString()
-        .isLength({ min: 1, max: 30 })
-        .trim()
-        .withMessage(
-            'role is optional but if provided must be a string with length between 1 and 30'
         ),
     check('bias_type')
         .isString()
