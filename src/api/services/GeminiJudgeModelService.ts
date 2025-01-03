@@ -5,7 +5,7 @@ import {
 } from '@google/generative-ai'
 import { GenerationConfig } from '../interfaces/Gemini'
 
-const geminiAPIKey: string = process.env.GEMINI_API_KEY || ''
+const geminiAPIKey: string = process.env.GEMINI_API_KEY ?? ''
 
 const genAI: GoogleGenerativeAI = new GoogleGenerativeAI(geminiAPIKey)
 
@@ -15,6 +15,10 @@ class GeminiJudgeModelService {
         userPrompt: string,
         judgeModel: string
     ): Promise<string> {
+        if (!geminiAPIKey) {
+            throw new Error('[GUARD-ME] GEMINI_API_KEY is not defined')
+        }
+
         const model: GenerativeModel = genAI.getGenerativeModel({
             model: judgeModel,
         })
