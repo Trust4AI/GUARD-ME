@@ -122,6 +122,12 @@ const evaluate = [
         .withMessage(
             'exclude_bias_references is optional but must be a boolean if provided'
         ),
+    check('temperature')
+        .optional()
+        .isFloat({ min: 0.0, max: 1.0 })
+        .withMessage(
+            'temperature is optional but must be a float between 0.0 and 1.0 if provided'
+        ),
     body().custom((value, { req }) => {
         const {
             candidate_model,

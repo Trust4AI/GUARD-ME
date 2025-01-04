@@ -38,6 +38,7 @@ class EvaluatorController {
                 response_max_length,
                 list_format_response = false,
                 exclude_bias_references = true,
+                temperature = 0.5,
             }: {
                 candidate_model: string
                 judge_models: string[]
@@ -54,6 +55,7 @@ class EvaluatorController {
                 response_max_length: number
                 list_format_response: boolean
                 exclude_bias_references: boolean
+                temperature: number
             } = req.body
 
             const evaluationData = await this.evaluatorBaseService.evaluate(
@@ -71,7 +73,8 @@ class EvaluatorController {
                 attribute_2,
                 response_max_length,
                 list_format_response,
-                exclude_bias_references
+                exclude_bias_references,
+                temperature
             )
             res.send(evaluationData)
         } catch (error: any) {

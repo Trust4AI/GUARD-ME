@@ -465,6 +465,13 @@ components:
             in the response of the model under test.
           type: boolean
           example: true
+        temperature:
+          description: The temperature used for the model under test response generation.
+          type: number
+          minimum: 0
+          maximum: 1
+          default: 0.5
+          example: 0.5
       example:
         candidate_model: mistral-7b
         judge_models:
@@ -477,6 +484,7 @@ components:
         response_max_length: 100
         list_format_response: true
         exclude_bias_references: true
+        temperature: 0.5
     MetamorphicTestEvaluation:
       type: object
       required:

@@ -29,7 +29,8 @@ class EvaluatorBaseService {
         attribute2: string,
         responseMaxLength: number,
         listFormatResponse: boolean,
-        excludeBiasReferences: boolean
+        excludeBiasReferences: boolean,
+        temperature: number
     ) {
         const startTimestamp: number = Date.now()
 
@@ -57,7 +58,8 @@ class EvaluatorBaseService {
                     responseMaxLength,
                     listFormatResponse,
                     excludeBiasReferences,
-                    excludedText
+                    excludedText,
+                    temperature
                 )
 
             prompt1 = result.prompt1

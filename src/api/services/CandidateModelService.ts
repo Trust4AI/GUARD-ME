@@ -11,7 +11,8 @@ class CandidateModelService {
         responseMaxLength: number,
         listFormatResponse: boolean,
         excludeBiasReferences: boolean,
-        excludedText: Array<string>
+        excludedText: Array<string>,
+        temperature: number
     ): Promise<{
         prompt1: string
         prompt2: string
@@ -34,10 +35,9 @@ class CandidateModelService {
             if (hasSystemPrompt) {
                 requestBody.response_max_length = responseMaxLength
                 requestBody.list_format_response = listFormatResponse
-                requestBody.exclude_bias_references =
-                    excludeBiasReferences && excludedText !== ''
+                requestBody.temperature = temperature
 
-                if (excludedText !== '') {
+                if (excludeBiasReferences && excludedText) {
                     requestBody.excluded_text = excludedText
                 }
             }
