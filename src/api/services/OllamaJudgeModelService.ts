@@ -1,3 +1,4 @@
+import config from '../config/config'
 import { sendRequestToGenie } from '../utils/httpUtils'
 import { debugLog } from '../utils/logUtils'
 
@@ -7,8 +8,7 @@ class OllamaJudgeModelService {
         userPrompt: string,
         judgeModel: string
     ): Promise<string> {
-        const genieBaseUrl: string =
-            process.env.GENIE_BASE_URL || 'http://127.0.0.1:8081/api/v1'
+        const genieBaseUrl: string = config.genieBaseUrl
 
         const requestBody = {
             user_prompt: userPrompt,
