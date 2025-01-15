@@ -1,5 +1,6 @@
 import container from '../config/container'
 import { EvaluationResponse } from '../types'
+import { EvaluateResponsesDTO } from '../utils/objects/EvaluateResponsesDTO'
 import { EvaluateTestDTO } from '../utils/objects/EvaluateTestDTO'
 import { SendPromptsDTO } from '../utils/objects/SendPromptsDTO'
 import CandidateModelService from './CandidateModelService'
@@ -80,7 +81,7 @@ class EvaluatorBaseService {
             responseAux2 = result.response2
         }
 
-        const evaluateResponsesDTO = new EvaluateTestDTO({
+        const evaluateResponsesDTO = new EvaluateResponsesDTO({
             biasType,
             prompt1: promptAux1,
             response1: responseAux1,
