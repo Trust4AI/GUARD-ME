@@ -1,4 +1,4 @@
-import { createContainer, asClass } from 'awilix'
+import { createContainer, asClass, AwilixContainer } from 'awilix'
 
 import EvaluatorBaseService from '../services/EvaluatorBaseService'
 import CandidateModelService from '../services/CandidateModelService.js'
@@ -8,8 +8,8 @@ import OpenAIGPTJudgeModelService from '../services/OpenAIGPTJudgeModelService'
 import GeminiJudgeModelService from '../services/GeminiJudgeModelService'
 import ModelBaseService from '../services/ModelBaseService'
 
-function initContainer() {
-    const container = createContainer()
+function initContainer(): AwilixContainer {
+    const container: AwilixContainer = createContainer()
 
     container.register({
         evaluatorBaseService: asClass(EvaluatorBaseService).singleton(),
@@ -25,6 +25,6 @@ function initContainer() {
     return container
 }
 
-const container = initContainer()
+const container: AwilixContainer = initContainer()
 
 export default container

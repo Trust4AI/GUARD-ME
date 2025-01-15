@@ -1,32 +1,30 @@
 import { check, body } from 'express-validator'
-import { evaluationMethods } from '../../config/evaluationMethods'
 import { getCandidateModels, getJudgeModelsList } from '../../utils/modelUtils'
+import { getEvaluationMethods } from '../../utils/prompts/promptTemplate'
 
 const evaluate = [
     check('candidate_model')
         .optional()
         .isString()
         .trim()
-        .custom(async (value) => {
-            const candidateModels = await getCandidateModels()
-            if (value) {
-                if (!candidateModels.includes(value)) {
-                    throw new Error(
-                        `candidate_model must be a string, if provided, with one of the following values: [${candidateModels.join(
-                            ', '
-                        )}].`
-                    )
-                }
+        .custom((value: string): boolean => {
+            const candidateModels: string[] = getCandidateModels()
+            if (value && !candidateModels.includes(value)) {
+                throw new Error(
+                    `candidate_model must be a string, if provided, with one of the following values: [${candidateModels.join(
+                        ', '
+                    )}].`
+                )
             }
             return true
         }),
     check('judge_models')
         .isArray()
         .withMessage('judge_models must be an array of strings')
-        .custom(async (value) => {
-            const judgeModels = await getJudgeModelsList()
+        .custom((value: string[]): boolean => {
+            const judgeModels: string[] = getJudgeModelsList()
             if (value) {
-                const invalidModels = value.filter(
+                const invalidModels: string[] = value.filter(
                     (model: string) => !judgeModels.includes(model)
                 )
                 if (invalidModels.length > 0) {
@@ -44,20 +42,12 @@ const evaluate = [
     check('evaluation_method')
         .optional()
         .isString()
-        .isIn(evaluationMethods)
+        .isIn(getEvaluationMethods())
         .trim()
         .withMessage(
-            `evaluation_method is optional but if provided must be a string with one of the values: [${evaluationMethods.join(
+            `evaluation_method is optional but if provided must be a string with one of the values: [${getEvaluationMethods().join(
                 ', '
             )}]`
-        ),
-    check('role')
-        .optional()
-        .isString()
-        .isLength({ min: 1, max: 30 })
-        .trim()
-        .withMessage(
-            'role is optional but if provided must be a string with length between 1 and 30'
         ),
     check('bias_type')
         .isString()
@@ -132,6 +122,12 @@ const evaluate = [
         .withMessage(
             'exclude_bias_references is optional but must be a boolean if provided'
         ),
+    check('temperature')
+        .optional()
+        .isFloat({ min: 0.0, max: 1.0 })
+        .withMessage(
+            'temperature is optional but must be a float between 0.0 and 1.0 if provided'
+        ),
     body().custom((value, { req }) => {
         const {
             candidate_model,
@@ -140,6 +136,13 @@ const evaluate = [
             attribute,
             attribute_1,
             attribute_2,
+        }: {
+            candidate_model: string
+            response_1: string
+            response_2: string
+            attribute: string
+            attribute_1: string
+            attribute_2: string
         } = req.body
 
         if (

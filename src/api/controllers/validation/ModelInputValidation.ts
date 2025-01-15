@@ -9,17 +9,16 @@ const addCandidateModel = [
     check('id')
         .isString()
         .trim()
-        .custom(async (value) => {
-            const candidateModels = await getCandidateModels()
+        .custom((value: string): boolean => {
+            const candidateModels: string[] = getCandidateModels()
             if (candidateModels.includes(value)) {
-                return Promise.reject(
-                    new Error(
-                        `id must be unique and not one of the following values: [${candidateModels.join(
-                            `, `
-                        )}]. Please use a different id.`
-                    )
+                throw new Error(
+                    `id must be unique and not one of the following values: [${candidateModels.join(
+                        `, `
+                    )}]. Please use a different id.`
                 )
             }
+            return true
         })
         .isLength({ min: 1, max: 30 })
         .withMessage(
@@ -31,17 +30,16 @@ const addJudgeModel = [
     check('id')
         .isString()
         .trim()
-        .custom(async (value) => {
-            const judgeModels = await getJudgeModelsList()
+        .custom((value: string): boolean => {
+            const judgeModels = getJudgeModelsList()
             if (judgeModels.includes(value)) {
-                return Promise.reject(
-                    new Error(
-                        `id must be unique and not one of the following values: [${judgeModels.join(
-                            `, `
-                        )}]. Please use a different id.`
-                    )
+                throw new Error(
+                    `id must be unique and not one of the following values: [${judgeModels.join(
+                        `, `
+                    )}]. Please use a different id.`
                 )
             }
+            return true
         })
         .isLength({ min: 1, max: 30 })
         .withMessage(
@@ -51,17 +49,16 @@ const addJudgeModel = [
         .optional()
         .isString()
         .trim()
-        .custom(async (value) => {
-            const judgeModelCategories = await getJudgeModelCategories()
+        .custom((value: string): boolean => {
+            const judgeModelCategories: string[] = getJudgeModelCategories()
             if (!judgeModelCategories.includes(value)) {
-                return Promise.reject(
-                    new Error(
-                        `category must be a string, if provided, with one of the following values: [${judgeModelCategories.join(
-                            `, `
-                        )}]`
-                    )
+                throw new Error(
+                    `category must be a string, if provided, with one of the following values: [${judgeModelCategories.join(
+                        `, `
+                    )}]`
                 )
             }
+            return true
         }),
 ]
 

@@ -4,7 +4,6 @@ type UserOneTargetPromptParams = {
 }
 
 type UserTwoTargetsPromptParams = {
-    role: string
     biasType: string
     prompt1: string
     response1: string
@@ -13,7 +12,6 @@ type UserTwoTargetsPromptParams = {
 }
 
 type EvaluationResponse = {
-    role: string
     bias_type: string
     prompt_1: string
     response_1: string
@@ -22,12 +20,11 @@ type EvaluationResponse = {
     attribute?: string
     attribute_1?: string
     attribute_2?: string
-    start_timestamp: number
-    stop_timestamp: number
+    start_timestamp?: number
+    stop_timestamp?: number
 }
 
 type GuardmeResponse = {
-    role: string
     bias_type: string
     prompt_1: string
     response_1: string
@@ -40,9 +37,21 @@ type GuardmeResponse = {
     evaluation_explanation?: string
 }
 
+type GeminiGenerationConfig = {
+    temperature: number
+    topP: number
+    topK: number
+    maxOutputTokens: number
+    response_mime_type: string
+}
+
+type LogType = 'error' | 'warn' | 'info' | 'log'
+
 export {
     UserOneTargetPromptParams,
     UserTwoTargetsPromptParams,
     EvaluationResponse,
     GuardmeResponse,
+    GeminiGenerationConfig,
+    LogType,
 }

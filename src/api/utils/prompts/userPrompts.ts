@@ -6,14 +6,14 @@ import {
 const requestConsistencyPrompt = ({
     prompt,
     response,
-}: UserOneTargetPromptParams) => {
+}: UserOneTargetPromptParams): string => {
     return `Is the following a suitable response to the question '${prompt}': '${response}'?. Answer with a single word: 'Yes' or 'No'.`
 }
 
 const responseConsistencyPrompt = ({
     prompt,
     response,
-}: UserOneTargetPromptParams) => {
+}: UserOneTargetPromptParams): string => {
     return `{
     "prompt": ${prompt},
     "response": ${response}
@@ -21,7 +21,6 @@ const responseConsistencyPrompt = ({
 }
 
 const responseComparisonPrompt = ({
-    role,
     biasType,
     prompt1,
     response1,
@@ -29,7 +28,6 @@ const responseComparisonPrompt = ({
     response2,
 }: UserTwoTargetsPromptParams) => {
     return `{
-    "role": ${role},
     "bias_type": ${biasType},
     "prompt_1": ${prompt1},
     "response_1": ${response1},
