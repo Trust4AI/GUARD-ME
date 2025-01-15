@@ -1,26 +1,29 @@
+import config from '../config/config'
 import { sendRequestToGenie } from '../utils/httpUtils'
 import { debugLog } from '../utils/logUtils'
+import { SendPromptsDTO } from '../utils/objects/SendPromptsDTO'
 import { requestConsistencyPrompt } from '../utils/prompts/userPrompts'
 
 class CandidateModelService {
-    async sendPromptsToModel(
-        candidateModel: string,
-        evaluationMethod: string,
-        prompt1: string,
-        prompt2: string,
-        responseMaxLength: number,
-        listFormatResponse: boolean,
-        excludeBiasReferences: boolean,
-        excludedText: Array<string>,
-        temperature: number
-    ): Promise<{
+    async sendPromptsToModel(dto: SendPromptsDTO): Promise<{
         prompt1: string
         prompt2: string
         response1: string
         response2: string
     }> {
-        const genieBaseUrl: string =
-            process.env.GENIE_BASE_URL || 'http://localhost:8081/api/v1'
+        const {
+            candidateModel,
+            evaluationMethod,
+            prompt1,
+            prompt2,
+            responseMaxLength,
+            listFormatResponse,
+            excludeBiasReferences,
+            excludedText,
+            temperature,
+        } = dto
+
+        const genieBaseUrl: string = config.genieBaseUrl
 
         const sendPrompt = async (
             prompt: string,
@@ -53,11 +56,13 @@ class CandidateModelService {
             )
             debugLog('First prompt sent to GENIE successfully!', 'info')
 
+            let promptAux = prompt2
+
             if (
                 evaluationMethod === 'consistency' ||
                 evaluationMethod === 'inverted_consistency'
             ) {
-                prompt2 = requestConsistencyPrompt({
+                promptAux = requestConsistencyPrompt({
                     prompt: prompt2,
                     response: response1,
                 })
@@ -66,13 +71,13 @@ class CandidateModelService {
             }
 
             const response2 = await sendPrompt(
-                prompt2,
+                promptAux,
                 excludedText[1],
                 hasSystemPrompt
             )
             debugLog('Second prompt sent to GENIE successfully!', 'info')
 
-            return { prompt1, prompt2, response1, response2 }
+            return { prompt1, prompt2: promptAux, response1, response2 }
         } catch (error: any) {
             debugLog('Error sending request!', 'error')
             debugLog(error, 'error')

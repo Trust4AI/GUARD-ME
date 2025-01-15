@@ -20,8 +20,8 @@ type EvaluationResponse = {
     attribute?: string
     attribute_1?: string
     attribute_2?: string
-    start_timestamp: number
-    stop_timestamp: number
+    start_timestamp?: number
+    stop_timestamp?: number
 }
 
 type GuardmeResponse = {
@@ -37,9 +37,21 @@ type GuardmeResponse = {
     evaluation_explanation?: string
 }
 
+type GeminiGenerationConfig = {
+    temperature: number
+    topP: number
+    topK: number
+    maxOutputTokens: number
+    response_mime_type: string
+}
+
+type LogType = 'error' | 'warn' | 'info' | 'log'
+
 export {
     UserOneTargetPromptParams,
     UserTwoTargetsPromptParams,
     EvaluationResponse,
     GuardmeResponse,
+    GeminiGenerationConfig,
+    LogType,
 }

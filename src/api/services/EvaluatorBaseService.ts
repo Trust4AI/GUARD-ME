@@ -1,10 +1,14 @@
 import container from '../config/container'
 import { EvaluationResponse } from '../types'
+import { EvaluateTestDTO } from '../utils/objects/EvaluateTestDTO'
+import { SendPromptsDTO } from '../utils/objects/SendPromptsDTO'
+import CandidateModelService from './CandidateModelService'
+import JudgeModelService from './JudgeModelService'
 //import { writeOutputToFile } from '../utils/fileUtils'
 
 class EvaluatorBaseService {
-    candidateModelService: any
-    judgeModelService: any
+    candidateModelService: CandidateModelService
+    judgeModelService: JudgeModelService
     constructor() {
         this.candidateModelService = container.resolve('candidateModelService')
         this.judgeModelService = container.resolve('judgeModelService')
@@ -14,24 +18,26 @@ class EvaluatorBaseService {
         return { message: 'The evaluation routes are working properly!' }
     }
 
-    async evaluate(
-        candidateModel: string,
-        judgeModels: string[],
-        evaluationMethod: string,
-        biasType: string,
-        prompt1: string,
-        prompt2: string,
-        response1: string,
-        response2: string,
-        generationExplanation: string,
-        attribute: string,
-        attribute1: string,
-        attribute2: string,
-        responseMaxLength: number,
-        listFormatResponse: boolean,
-        excludeBiasReferences: boolean,
-        temperature: number
-    ) {
+    async evaluate(dto: EvaluateTestDTO) {
+        const {
+            candidateModel,
+            evaluationMethod,
+            prompt1,
+            response1,
+            prompt2,
+            response2,
+            attribute,
+            attribute1,
+            attribute2,
+            biasType,
+            generationExplanation,
+            judgeModels,
+            responseMaxLength,
+            listFormatResponse,
+            excludeBiasReferences,
+            temperature,
+        } = dto
+
         const startTimestamp: number = Date.now()
 
         let excludedText: string[]
@@ -45,39 +51,49 @@ class EvaluatorBaseService {
             excludedText = [attribute1 || '', attribute2 || '']
         }
 
+        let promptAux1 = prompt1
+        let promptAux2 = prompt2
         let responseAux1 = response1
         let responseAux2 = response2
 
         if (!responseAux1 && !responseAux2) {
+            const sendPromptsDTO: SendPromptsDTO = new SendPromptsDTO({
+                candidateModel: candidateModel,
+                evaluationMethod: evaluationMethod,
+                prompt1: prompt1,
+                prompt2: prompt2,
+                responseMaxLength: responseMaxLength,
+                listFormatResponse: listFormatResponse,
+                excludeBiasReferences: excludeBiasReferences,
+                excludedText: excludedText,
+                temperature: temperature,
+            })
+
             const result: any =
                 await this.candidateModelService.sendPromptsToModel(
-                    candidateModel,
-                    evaluationMethod,
-                    prompt1,
-                    prompt2,
-                    responseMaxLength,
-                    listFormatResponse,
-                    excludeBiasReferences,
-                    excludedText,
-                    temperature
+                    sendPromptsDTO
                 )
 
-            prompt1 = result.prompt1
-            prompt2 = result.prompt2
+            promptAux1 = result.prompt1
+            promptAux2 = result.prompt2
             responseAux1 = result.response1
             responseAux2 = result.response2
         }
 
+        const evaluateResponsesDTO = new EvaluateTestDTO({
+            biasType,
+            prompt1: promptAux1,
+            response1: responseAux1,
+            prompt2: promptAux2,
+            response2: responseAux2,
+            generationExplanation,
+            evaluationMethod,
+            judgeModels,
+        })
+
         const response: EvaluationResponse =
             await this.judgeModelService.evaluateModelResponses(
-                biasType,
-                prompt1,
-                responseAux1,
-                prompt2,
-                responseAux2,
-                generationExplanation,
-                evaluationMethod,
-                judgeModels
+                evaluateResponsesDTO
             )
 
         if (attribute) {

@@ -1,6 +1,7 @@
 import OpenAI from 'openai'
+import config from '../config/config'
 
-const openaiAPIKey: string = process.env.OPENAI_API_KEY ?? ''
+const openaiAPIKey: string = config.openaiAPIKey
 
 const openai: OpenAI = new OpenAI({
     apiKey: openaiAPIKey,
