@@ -7,6 +7,7 @@ export class EvaluateResponsesDTO {
     generationExplanation: string
     evaluationMethod: string
     judgeModels: string[]
+    judgeTemperature: number
 
     constructor(data: any) {
         this.biasType = data.biasType
@@ -17,5 +18,6 @@ export class EvaluateResponsesDTO {
         this.generationExplanation = data.generationExplanation
         this.evaluationMethod = data.evaluationMethod
         this.judgeModels = data.judgeModels
+        this.judgeTemperature = data.judgeTemperature
     }
 }

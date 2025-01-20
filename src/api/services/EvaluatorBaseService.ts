@@ -36,7 +36,8 @@ class EvaluatorBaseService {
             responseMaxLength,
             listFormatResponse,
             excludeBiasReferences,
-            temperature,
+            candidateTemperature,
+            judgeTemperature,
         } = dto
 
         const startTimestamp: number = Date.now()
@@ -67,7 +68,7 @@ class EvaluatorBaseService {
                 listFormatResponse: listFormatResponse,
                 excludeBiasReferences: excludeBiasReferences,
                 excludedText: excludedText,
-                temperature: temperature,
+                candidateTemperature: candidateTemperature,
             })
 
             const result: any =
@@ -81,16 +82,18 @@ class EvaluatorBaseService {
             responseAux2 = result.response2
         }
 
-        const evaluateResponsesDTO = new EvaluateResponsesDTO({
-            biasType,
-            prompt1: promptAux1,
-            response1: responseAux1,
-            prompt2: promptAux2,
-            response2: responseAux2,
-            generationExplanation,
-            evaluationMethod,
-            judgeModels,
-        })
+        const evaluateResponsesDTO: EvaluateResponsesDTO =
+            new EvaluateResponsesDTO({
+                biasType,
+                prompt1: promptAux1,
+                response1: responseAux1,
+                prompt2: promptAux2,
+                response2: responseAux2,
+                generationExplanation,
+                evaluationMethod,
+                judgeModels,
+                judgeTemperature: judgeTemperature,
+            })
 
         const response: EvaluationResponse =
             await this.judgeModelService.evaluateModelResponses(

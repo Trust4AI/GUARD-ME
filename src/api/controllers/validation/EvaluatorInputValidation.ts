@@ -51,56 +51,60 @@ const evaluate = [
         ),
     check('bias_type')
         .isString()
-        .isLength({ min: 1, max: 30 })
         .trim()
+        .isLength({ min: 1, max: 30 })
         .withMessage('bias_type must be a string with length between 1 and 30'),
     check('prompt_1')
         .isString()
-        .isLength({ min: 1, max: 2000 })
         .trim()
+        .isLength({ min: 1, max: 2000 })
         .withMessage(
             'prompt_1 must be a string with length between 1 and 2000'
         ),
     check('prompt_2')
         .isString()
-        .isLength({ min: 1, max: 2000 })
         .trim()
+        .isLength({ min: 1, max: 2000 })
         .withMessage(
             'prompt_2 must be a string with length between 1 and 2000'
         ),
     check('response_1')
         .optional()
         .isString()
-        .isLength({ min: 1 })
         .trim()
-        .withMessage('response_1 is optional but if provided must be a string'),
+        .isLength({ min: 1 })
+        .withMessage(
+            'response_1 is optional but if provided must be a string with a minimum length of 1'
+        ),
     check('response_2')
         .optional()
         .isString()
-        .isLength({ min: 1 })
         .trim()
-        .withMessage('response_2 is optional but if provided must be a string'),
+        .isLength({ min: 1 })
+        .withMessage(
+            'response_2 is optional but if provided must be a string with a minimum length of 1'
+        ),
     check('attribute')
         .optional()
         .isString()
-        .isLength({ min: 1, max: 30 })
         .trim()
+        .isLength({ min: 1, max: 30 })
         .withMessage(
             'attribute is optional but if provided must be a string with length between 1 and 30'
         ),
     check('attribute_1')
         .optional()
         .isString()
-        .isLength({ min: 1, max: 30 })
         .trim()
+        .isLength({ min: 1, max: 30 })
         .withMessage(
             'attribute_1 is optional but if provided must be a string with length between 1 and 30'
         ),
     check('attribute_2')
         .optional()
         .isString()
-        .isLength({ min: 1, max: 30 })
         .trim()
+        .isLength({ min: 1, max: 30 })
         .withMessage(
             'attribute_2 is optional but if provided must be a string with length between 1 and 30'
         ),
@@ -122,11 +126,17 @@ const evaluate = [
         .withMessage(
             'exclude_bias_references is optional but must be a boolean if provided'
         ),
-    check('temperature')
+    check('candidate_temperature')
         .optional()
         .isFloat({ min: 0.0, max: 1.0 })
         .withMessage(
-            'temperature is optional but must be a float between 0.0 and 1.0 if provided'
+            'candidate_temperature is optional but must be a float between 0.0 and 1.0 if provided'
+        ),
+    check('judge_temperature')
+        .optional()
+        .isFloat({ min: 0.0, max: 1.0 })
+        .withMessage(
+            'judge_temperature is optional but must be a float between 0.0 and 1.0 if provided'
         ),
     body().custom((value, { req }) => {
         const {
@@ -136,6 +146,7 @@ const evaluate = [
             attribute,
             attribute_1,
             attribute_2,
+            candidate_temperature,
         }: {
             candidate_model: string
             response_1: string
@@ -143,6 +154,7 @@ const evaluate = [
             attribute: string
             attribute_1: string
             attribute_2: string
+            candidate_temperature: number
         } = req.body
 
         if (
@@ -162,6 +174,10 @@ const evaluate = [
         ) {
             throw new Error(
                 'You must provide either "attribute" or both "attribute_1" and "attribute_2", but not all three or none.'
+            )
+        } else if (!candidate_model && candidate_temperature) {
+            throw new Error(
+                'You must provide "candidate_model" if you want to set "candidate_temperature".'
             )
         }
         return true

@@ -8,10 +8,11 @@ const openai: OpenAI = new OpenAI({
 })
 
 class OpenAIGPTJudgeModelService {
-    async fetchModelComparison(
+    async fetchModelJudgment(
         systemPrompt: string,
         userPrompt: string,
-        judgeModel: string
+        judgeModel: string,
+        judgeTemperature: number
     ): Promise<string> {
         if (!openaiAPIKey) {
             throw new Error('[GUARD-ME] OPENAI_API_KEY is not defined')
@@ -32,6 +33,7 @@ class OpenAIGPTJudgeModelService {
             response_format: {
                 type: 'json_object',
             },
+            temperature: judgeTemperature,
         })
         const content = completion.choices[0].message.content
 
