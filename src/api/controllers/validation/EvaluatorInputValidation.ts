@@ -51,60 +51,60 @@ const evaluate = [
         ),
     check('bias_type')
         .isString()
-        .isLength({ min: 1, max: 30 })
         .trim()
+        .isLength({ min: 1, max: 30 })
         .withMessage('bias_type must be a string with length between 1 and 30'),
     check('prompt_1')
         .isString()
-        .isLength({ min: 1, max: 2000 })
         .trim()
+        .isLength({ min: 1, max: 2000 })
         .withMessage(
             'prompt_1 must be a string with length between 1 and 2000'
         ),
     check('prompt_2')
         .isString()
-        .isLength({ min: 1, max: 2000 })
         .trim()
+        .isLength({ min: 1, max: 2000 })
         .withMessage(
             'prompt_2 must be a string with length between 1 and 2000'
         ),
     check('response_1')
         .optional()
         .isString()
-        .isLength({ min: 1 })
         .trim()
+        .isLength({ min: 1 })
         .withMessage(
             'response_1 is optional but if provided must be a string with a minimum length of 1'
         ),
     check('response_2')
         .optional()
         .isString()
-        .isLength({ min: 1 })
         .trim()
+        .isLength({ min: 1 })
         .withMessage(
             'response_2 is optional but if provided must be a string with a minimum length of 1'
         ),
     check('attribute')
         .optional()
         .isString()
-        .isLength({ min: 1, max: 30 })
         .trim()
+        .isLength({ min: 1, max: 30 })
         .withMessage(
             'attribute is optional but if provided must be a string with length between 1 and 30'
         ),
     check('attribute_1')
         .optional()
         .isString()
-        .isLength({ min: 1, max: 30 })
         .trim()
+        .isLength({ min: 1, max: 30 })
         .withMessage(
             'attribute_1 is optional but if provided must be a string with length between 1 and 30'
         ),
     check('attribute_2')
         .optional()
         .isString()
-        .isLength({ min: 1, max: 30 })
         .trim()
+        .isLength({ min: 1, max: 30 })
         .withMessage(
             'attribute_2 is optional but if provided must be a string with length between 1 and 30'
         ),
