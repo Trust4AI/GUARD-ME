@@ -20,7 +20,7 @@ class CandidateModelService {
             listFormatResponse,
             excludeBiasReferences,
             excludedText,
-            temperature,
+            candidateTemperature,
         } = dto
 
         const genieBaseUrl: string = config.genieBaseUrl
@@ -38,7 +38,7 @@ class CandidateModelService {
             if (hasSystemPrompt) {
                 requestBody.response_max_length = responseMaxLength
                 requestBody.list_format_response = listFormatResponse
-                requestBody.temperature = temperature
+                requestBody.temperature = candidateTemperature
 
                 if (excludeBiasReferences && excludedText) {
                     requestBody.excluded_text = excludedText

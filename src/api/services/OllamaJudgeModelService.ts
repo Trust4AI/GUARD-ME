@@ -3,10 +3,11 @@ import { sendRequestToGenie } from '../utils/httpUtils'
 import { debugLog } from '../utils/logUtils'
 
 class OllamaJudgeModelService {
-    async fetchModelComparison(
+    async fetchModelJudgment(
         systemPrompt: string,
         userPrompt: string,
-        judgeModel: string
+        judgeModel: string,
+        judgeTemperature: number
     ): Promise<string> {
         const genieBaseUrl: string = config.genieBaseUrl
 
@@ -17,6 +18,7 @@ class OllamaJudgeModelService {
             list_format_response: false,
             exclude_bias_references: false,
             format: 'json',
+            temperature: judgeTemperature,
         }
 
         try {

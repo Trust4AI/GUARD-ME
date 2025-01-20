@@ -7,7 +7,7 @@ export class SendPromptsDTO {
     listFormatResponse: boolean
     excludeBiasReferences: boolean
     excludedText: string[]
-    temperature: number
+    candidateTemperature: number
 
     constructor(data: any) {
         this.candidateModel = data.candidateModel
@@ -18,6 +18,6 @@ export class SendPromptsDTO {
         this.listFormatResponse = data.listFormatResponse
         this.excludeBiasReferences = data.excludeBiasReferences
         this.excludedText = data.excludedText
-        this.temperature = data.temperature
+        this.candidateTemperature = data.candidateTemperature
     }
 }

@@ -53,6 +53,7 @@ class JudgeModelService {
             generationExplanation,
             evaluationMethod,
             judgeModels,
+            judgeTemperature,
         } = dto
         if (evaluationMethod === 'metal') {
             return {
@@ -85,10 +86,11 @@ class JudgeModelService {
         try {
             const results = await Promise.all(
                 judgeModels.map((judgeModel) =>
-                    this.fetchModelComparison(
+                    this.fetchModelJudgment(
                         evaluationPrompt,
                         userPrompt,
-                        judgeModel
+                        judgeModel,
+                        judgeTemperature
                     )
                 )
             )
@@ -198,10 +200,11 @@ class JudgeModelService {
         return parseFloat((matchingResults / results.length).toFixed(2))
     }
 
-    async fetchModelComparison(
+    async fetchModelJudgment(
         systemPrompt: string,
         userPrompt: string,
-        judgeModel: string
+        judgeModel: string,
+        judgeTemperature: number
     ): Promise<any> {
         let attempts: number = 0
         let evaluationError: any
@@ -209,10 +212,11 @@ class JudgeModelService {
         while (attempts < MAX_RETRIES) {
             try {
                 const modelService = this.getModelService(judgeModel)
-                let content = await modelService.fetchModelComparison(
+                let content = await modelService.fetchModelJudgment(
                     systemPrompt,
                     userPrompt,
-                    judgeModel
+                    judgeModel,
+                    judgeTemperature
                 )
 
                 content = this.extractValidJson(content)
