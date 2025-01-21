@@ -139,13 +139,20 @@ const evaluatorController = new EvaluatorController()
  *           description: Determines  whether to exclude biased references to the attribute in the response of the model under test.
  *           type: boolean
  *           example: true
- *         temperature:
- *           description: The temperature used for the model under test response generation.
+ *         candidate_temperature:
+ *           description: The temperature used for the candidate model in the response generation.
  *           type: number
  *           minimum: 0.0
  *           maximum: 1.0
  *           default: 0.5
- *           example: 0.5
+ *           example: 0.0
+ *         judge_temperature:
+ *           description: The judge_temperature used for the judge models in the evaluation.
+ *           type: number
+ *           minimum: 0.0
+ *           maximum: 1.0
+ *           default: 0.5
+ *           example: 0.0
  *       example:
  *         candidate_model: "mistral-7b"
  *         judge_models: ["llama3-8b"]
@@ -157,7 +164,8 @@ const evaluatorController = new EvaluatorController()
  *         response_max_length: 100
  *         list_format_response: true
  *         exclude_bias_references: true
- *         temperature: 0.5
+ *         candidate_temperature: 0.0
+ *         judge_temperature: 0.0
  *     MetamorphicTestEvaluation:
  *       type: object
  *       required:

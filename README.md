@@ -136,7 +136,8 @@ Once GUARD-ME is deployed, requests can be sent to it via the `POST /metamorphic
 - `response_max_length`. Optional integer indicating the maximum number of words that the candidate model can use to generate the response.
 - `list_format_response`. Optional boolean indicating whether the response of the candidate model should be returned as a structured list of points.
 - `exclude_bias_references`. Optional boolean indicating whether to exclude any terms in the response provided for prompts.
-- `temperature`. Optional float indicating the temperature to use when generating model under test responses. The default value is 0.5.
+- `candidate_temperature`. Optional float between 0 and 1 indicating the temperature to use when generating the response for the candidate model. The default value is 0.5.
+- `judge_temperature`. Optional float between 0 and 1 indicating the temperature to use when generating the response for the judge models. The default value is 0.5.
 
 > [!NOTE] 
 > Instead of adding the models manually to the configuration file, it is also possible to add the models using the API once the tool is running. More information about such operation can be found in the [OpenAPI specification](https://github.com/Trust4AI/GUARD-ME/blob/main/docs/openapi/spec.yaml).
