@@ -1,11 +1,20 @@
 import OpenAI from 'openai'
 import config from '../config/config'
+import { HttpsProxyAgent } from 'https-proxy-agent'
 
 const openaiAPIKey: string = config.openaiAPIKey
 
-const openai: OpenAI = new OpenAI({
+const proxyURL: string = config.proxyURL
+
+const openaiConfig: { apiKey: string; httpAgent?: HttpsProxyAgent<string> } = {
     apiKey: openaiAPIKey,
-})
+}
+
+if (proxyURL) {
+    openaiConfig.httpAgent = new HttpsProxyAgent(proxyURL)
+}
+
+const openai: OpenAI = new OpenAI(openaiConfig)
 
 class OpenAIGPTJudgeModelService {
     async fetchModelJudgment(
