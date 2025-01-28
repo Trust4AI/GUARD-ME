@@ -56,6 +56,9 @@ class GeminiJudgeModelService {
 
         const content = await fetch(url, fetchContent).then((res) => res.json())
 
+        if (content.error) {
+            throw new Error(`[GUARD-ME] ${content.error.message}`)
+        }
         const response = content.candidates[0].content.parts[0].text
 
         if (response) {
