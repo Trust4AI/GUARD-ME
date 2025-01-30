@@ -7,7 +7,6 @@ export class EvaluateTestDTO {
     prompt2: string
     response1: string
     response2: string
-    generationExplanation: string
     attribute: string
     attribute1: string
     attribute2: string
@@ -26,7 +25,6 @@ export class EvaluateTestDTO {
         this.prompt2 = data.prompt_2
         this.response1 = data.response_1
         this.response2 = data.response_2
-        this.generationExplanation = data.generation_explanation
         this.attribute = data.attribute || ''
         this.attribute1 = data.attribute_1 || ''
         this.attribute2 = data.attribute_2 || ''

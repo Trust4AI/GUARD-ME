@@ -1,3 +1,13 @@
+type ExecutorBodyValidation = {
+    candidate_model: string
+    response_1: string
+    response_2: string
+    attribute: string
+    attribute_1: string
+    attribute_2: string
+    candidate_temperature: number
+}
+
 type UserOneTargetPromptParams = {
     prompt: string
     response: string
@@ -20,8 +30,6 @@ type EvaluationResponse = {
     attribute?: string
     attribute_1?: string
     attribute_2?: string
-    start_timestamp?: number
-    stop_timestamp?: number
 }
 
 type GuardmeResponse = {
@@ -30,7 +38,6 @@ type GuardmeResponse = {
     response_1: string
     prompt_2: string
     response_2: string
-    generation_explanation?: string
     verdict?: string
     severity?: string
     confidence: number
@@ -48,6 +55,7 @@ type GeminiGenerationConfig = {
 type LogType = 'error' | 'warn' | 'info' | 'log'
 
 export {
+    ExecutorBodyValidation,
     UserOneTargetPromptParams,
     UserTwoTargetsPromptParams,
     EvaluationResponse,

@@ -8,7 +8,7 @@ import {
 
 class ModelBaseService {
     check() {
-        return { message: 'The model routes work are working properly!' }
+        return { message: 'The model routes are working properly!' }
     }
 
     // Candidate models

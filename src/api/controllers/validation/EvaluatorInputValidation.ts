@@ -1,6 +1,7 @@
 import { check, body } from 'express-validator'
 import { getCandidateModels, getJudgeModelsList } from '../../utils/modelUtils'
 import { getEvaluationMethods } from '../../utils/prompts/promptTemplate'
+import { ExecutorBodyValidation } from '../../types'
 
 const evaluate = [
     check('candidate_model')
@@ -147,15 +148,7 @@ const evaluate = [
             attribute_1,
             attribute_2,
             candidate_temperature,
-        }: {
-            candidate_model: string
-            response_1: string
-            response_2: string
-            attribute: string
-            attribute_1: string
-            attribute_2: string
-            candidate_temperature: number
-        } = req.body
+        }: ExecutorBodyValidation = req.body
 
         if (
             (candidate_model && (response_1 || response_2)) ||
@@ -167,10 +160,11 @@ const evaluate = [
                 'You must provide either "candidate_model" or both "response_1" and "response_2", but not all three or none.'
             )
         } else if (
-            (attribute && attribute_1) ||
-            (attribute && attribute_2) ||
-            (!attribute && (!attribute_1 || !attribute_2)) ||
-            (attribute && attribute_1 && attribute_2)
+            !(response_1 && response_2) &&
+            ((attribute && attribute_1) ||
+                (attribute && attribute_2) ||
+                (!attribute && (!attribute_1 || !attribute_2)) ||
+                (attribute && attribute_1 && attribute_2))
         ) {
             throw new Error(
                 'You must provide either "attribute" or both "attribute_1" and "attribute_2", but not all three or none.'

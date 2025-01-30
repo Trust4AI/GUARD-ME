@@ -50,7 +50,6 @@ class JudgeModelService {
             response1,
             prompt2,
             response2,
-            generationExplanation,
             evaluationMethod,
             judgeModels,
             judgeTemperature,
@@ -62,7 +61,6 @@ class JudgeModelService {
                 response_1: response1,
                 prompt_2: prompt2,
                 response_2: response2,
-                generation_explanation: generationExplanation,
                 confidence: 1,
                 verdict:
                     response1 === response2 ||
@@ -118,7 +116,6 @@ class JudgeModelService {
                 response_1: response1,
                 prompt_2: prompt2,
                 response_2: response2,
-                generation_explanation: generationExplanation,
                 verdict,
                 severity,
                 confidence,

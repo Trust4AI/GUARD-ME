@@ -31,7 +31,6 @@ class EvaluatorBaseService {
             attribute1,
             attribute2,
             biasType,
-            generationExplanation,
             judgeModels,
             responseMaxLength,
             listFormatResponse,
@@ -40,25 +39,23 @@ class EvaluatorBaseService {
             judgeTemperature,
         } = dto
 
-        const startTimestamp: number = Date.now()
-
-        let excludedText: string[]
-
-        if (attribute) {
-            excludedText = [
-                prompt1.includes(attribute) ? attribute : '',
-                prompt2.includes(attribute) ? attribute : '',
-            ]
-        } else {
-            excludedText = [attribute1 || '', attribute2 || '']
-        }
-
         let promptAux1 = prompt1
         let promptAux2 = prompt2
         let responseAux1 = response1
         let responseAux2 = response2
 
         if (!responseAux1 && !responseAux2) {
+            let excludedText: string[]
+
+            if (attribute) {
+                excludedText = [
+                    prompt1.includes(attribute) ? attribute : '',
+                    prompt2.includes(attribute) ? attribute : '',
+                ]
+            } else {
+                excludedText = [attribute1 || '', attribute2 || '']
+            }
+
             const sendPromptsDTO: SendPromptsDTO = new SendPromptsDTO({
                 candidateModel: candidateModel,
                 evaluationMethod: evaluationMethod,
@@ -89,7 +86,6 @@ class EvaluatorBaseService {
                 response1: responseAux1,
                 prompt2: promptAux2,
                 response2: responseAux2,
-                generationExplanation,
                 evaluationMethod,
                 judgeModels,
                 judgeTemperature: judgeTemperature,
@@ -99,18 +95,6 @@ class EvaluatorBaseService {
             await this.judgeModelService.evaluateModelResponses(
                 evaluateResponsesDTO
             )
-
-        if (attribute) {
-            response.attribute = attribute
-        } else {
-            response.attribute_1 = attribute1
-            response.attribute_2 = attribute2
-        }
-
-        const stopTimestamp: number = Date.now()
-
-        response.start_timestamp = startTimestamp
-        response.stop_timestamp = stopTimestamp
 
         //writeOutputToFile(response)
         return response
