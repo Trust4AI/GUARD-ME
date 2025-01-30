@@ -13,7 +13,10 @@ services:
       - .env
     networks:
       - guard-me-network
+      - global-network
 
 networks:
   guard-me-network:
     driver: bridge
+  global-network:
+    external: true

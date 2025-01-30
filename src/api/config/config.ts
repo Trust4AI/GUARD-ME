@@ -2,6 +2,7 @@ import './loadEnv'
 
 const config = {
     port: process.env.PORT || '8001',
+    proxyURL: process.env.PROXY_URL || '',
     maxRetries: process.env.MAX_RETRIES || '5',
     debugMode: process.env.DEBUG_MODE === 'true',
     geminiAPIKey: process.env.GEMINI_API_KEY || '',
