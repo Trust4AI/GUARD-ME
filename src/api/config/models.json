@@ -30,7 +30,7 @@
         "ollama": [
             "llama3.1-8b",
             "mistral-7b",
-            "qwen2-7b",
+            "qwen2.5-7b",
             "gemma2-9b",
             "orca-mini-7b",
             "vicuna-7b",
