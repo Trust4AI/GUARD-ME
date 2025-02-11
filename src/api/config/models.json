@@ -1,31 +1,40 @@
 {
     "candidate_models": [
-        "gemma-7b",
+        "llama3.1-8b",
         "mistral-7b",
-        "llama2-7b",
-        "llama3-8b",
-        "gemini-1.0-pro",
-        "gemini-1.5-flash",
+        "qwen2-7b",
+        "gemma2-9b",
+        "orca-mini-7b",
+        "vicuna-7b",
+        "deepseek-r1-8b",
         "gemini-1.5-flash-8b",
-        "gemini-2.0-flash-exp"
+        "gemini-1.5-flash",
+        "gemini-2.0-flash-lite-preview-02-05",
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-thinking-exp-01-21",
+        "gpt-4o-mini",
+        "gpt-4o"
     ],
     "judge_models": {
         "openai": [
-            "gpt-4-0125-preview",
-            "gpt-3.5-turbo-0125"
+            "gpt-4o-mini",
+            "gpt-4o"
         ],
         "gemini": [
-            "gemini-1.0-pro",
-            "gemini-1.5-flash",
-            "gemini-1.5-pro",
             "gemini-1.5-flash-8b",
-            "gemini-2.0-flash-exp"
+            "gemini-1.5-flash",
+            "gemini-2.0-flash-lite-preview-02-05",
+            "gemini-2.0-flash",
+            "gemini-2.0-flash-thinking-exp-01-21"
         ],
         "ollama": [
-            "gemma-7b",
-            "llama3-8b",
+            "llama3.1-8b",
             "mistral-7b",
-            "llama2-7b"
+            "qwen2-7b",
+            "gemma2-9b",
+            "orca-mini-7b",
+            "vicuna-7b",
+            "deepseek-r1-8b"
         ]
     }
 }
