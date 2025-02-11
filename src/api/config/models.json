@@ -1,5 +1,6 @@
 {
     "candidate_models": [
+        "llama3-8b",
         "llama3.1-8b",
         "mistral-7b",
         "qwen2-7b",
