@@ -32,6 +32,6 @@ export class EvaluateTestDTO {
         this.listFormatResponse = data.list_format_response || false
         this.excludeBiasReferences = data.exclude_bias_references || true
         this.candidateTemperature = data.candidate_temperature || 0.5
-        this.judgeTemperature = data.judge_temperature || 0.5
+        this.judgeTemperature = data.judge_temperature || 0.0
     }
 }
