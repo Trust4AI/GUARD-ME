@@ -3,6 +3,7 @@ import cors from 'cors'
 import swaggerui from 'swagger-ui-express'
 import modelRoutes from './routes/ModelRoutes'
 import evaluatorRoutes from './routes/EvaluatorRoutes'
+import metricRoutes from './routes/MetricRoutes'
 import { swaggerDocs } from './config/swagger'
 import './config/loadEnv'
 
@@ -20,5 +21,6 @@ app.use(
 )
 app.use(`${API_VERSION}/models`, modelRoutes)
 app.use(`${API_VERSION}/metamorphic-tests`, evaluatorRoutes)
+app.use(`${API_VERSION}/metric`, metricRoutes)
 
 module.exports = app
