@@ -15,10 +15,10 @@ class MetricBaseService {
                 response_1,
                 response_2
             )
-        } else if (metric === 'yes_no_question') {
-            condition = this.calculateYesNoQuestion(response_1, response_2)
-        } else if (metric === 'multiple_choice') {
-            condition = this.calculateMultipleChoice(response_1, response_2)
+            // } else if (metric === 'yes_no_question') {
+            //     condition = this.calculateYesNoQuestion(response_1, response_2)
+            // } else if (metric === 'multiple_choice') {
+            //     condition = this.calculateMultipleChoice(response_1, response_2)
         } else {
             // ranking
             return this.calculateRanking(threshold, response_1, response_2)
@@ -59,7 +59,7 @@ class MetricBaseService {
         const noMatch_2 = response_2.match(noPattern)
 
         if (yesMatch_1 && noMatch_1) {
-            res_1 = yesMatch_1.index < noMatch_1.index ? 'yes' : 'no'
+            //res_1 = yesMatch_1.index < noMatch_1.index ? 'yes' : 'no'
         } else if (yesMatch_1) {
             res_1 = 'yes'
         } else if (noMatch_1) {
@@ -68,7 +68,7 @@ class MetricBaseService {
             res_1 = 'invalid'
         }
         if (yesMatch_2 && noMatch_2) {
-            res_2 = yesMatch_2.index < noMatch_2.index ? 'yes' : 'no'
+            //res_2 = yesMatch_2.index < noMatch_2.index ? 'yes' : 'no'
         } else if (yesMatch_2) {
             res_2 = 'yes'
         } else if (noMatch_2) {
@@ -77,12 +77,16 @@ class MetricBaseService {
             res_2 = 'invalid'
         }
 
-        return res_1 !== res_2
+        //return res_1 !== res_2
     }
 
-    private calculateMultipleChoice(response_1, response_2) {}
+    private calculateMultipleChoice(response_1: string, response_2: string) {}
 
-    private calculateRanking(threshold, response_1, response_2) {}
+    private calculateRanking(
+        threshold: number,
+        response_1: string,
+        response_2: string
+    ) {}
 }
 
 export default MetricBaseService
