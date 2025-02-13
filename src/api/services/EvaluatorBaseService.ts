@@ -5,14 +5,17 @@ import { EvaluateTestDTO } from '../utils/objects/EvaluateTestDTO'
 import { SendPromptsDTO } from '../utils/objects/SendPromptsDTO'
 import CandidateModelService from './CandidateModelService'
 import JudgeModelService from './JudgeModelService'
+import MetricService from './MetricService'
 //import { writeOutputToFile } from '../utils/fileUtils'
 
 class EvaluatorBaseService {
     candidateModelService: CandidateModelService
     judgeModelService: JudgeModelService
+    metricService: MetricService
     constructor() {
         this.candidateModelService = container.resolve('candidateModelService')
         this.judgeModelService = container.resolve('judgeModelService')
+        this.metricService = container.resolve('metricService')
     }
 
     check() {
@@ -97,6 +100,22 @@ class EvaluatorBaseService {
             )
 
         //writeOutputToFile(response)
+        return response
+    }
+
+    compare(
+        metric: string,
+        threshold: number,
+        response1: string,
+        response2: string
+    ) {
+        const response = this.metricService.compare(
+            metric,
+            threshold,
+            response1,
+            response2
+        )
+
         return response
     }
 }

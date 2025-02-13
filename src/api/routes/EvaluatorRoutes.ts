@@ -308,4 +308,12 @@ router
         evaluatorController.evaluate
     )
 
+router
+    .route('/compare')
+    .post(
+        EvaluatorInputValidation.compare,
+        handleValidation,
+        evaluatorController.compare
+    )
+
 export default router

@@ -1,7 +1,7 @@
-class MetricBaseService {
+class MetricService {
     constructor() {}
 
-    async evaluate(
+    compare(
         metric: string,
         threshold: number,
         response_1: string,
@@ -151,6 +151,7 @@ class MetricBaseService {
         response_2: string
     ): { condition: boolean; metric_value: string } {
         return this.calculateSpearmanRank(threshold, response_1, response_2)
+        // TODO: change if it is preferred to use Kendall Tau
         // return this.calculateKendallTau(threshold, response_1, response_2)
     }
 
@@ -235,4 +236,4 @@ class MetricBaseService {
     }
 }
 
-export default MetricBaseService
+export default MetricService

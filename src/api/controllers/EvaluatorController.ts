@@ -31,6 +31,22 @@ class EvaluatorController {
             res.status(500).send({ error: error.message })
         }
     }
+
+    compare(req: Request, res: Response): void {
+        try {
+            const { metric, threshold, response_1, response_2 } = req.body
+
+            const evaluationData = this.evaluatorBaseService.compare(
+                metric,
+                threshold,
+                response_1,
+                response_2
+            )
+            res.send(evaluationData)
+        } catch (error: any) {
+            res.status(500).send({ error: error.message })
+        }
+    }
 }
 
 export default EvaluatorController
