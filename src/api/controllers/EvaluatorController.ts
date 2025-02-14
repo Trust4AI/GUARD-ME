@@ -10,6 +10,7 @@ class EvaluatorController {
 
         this.check = this.check.bind(this)
         this.evaluate = this.evaluate.bind(this)
+        this.compare = this.compare.bind(this)
     }
 
     check(req: Request, res: Response): void {

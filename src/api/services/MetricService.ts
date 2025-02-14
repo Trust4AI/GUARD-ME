@@ -73,7 +73,12 @@ class MetricService {
         const difference = Math.abs(number_1 - number_2)
         const condition = difference > threshold
 
-        return { condition, metric_value: `${difference} > ${threshold}` }
+        return {
+            condition,
+            metric_value: condition
+                ? `Difference > Threshold: ${difference} > ${threshold}`
+                : `Difference <= Threshold: ${difference} <= ${threshold}`,
+        }
     }
 
     private calculateYesNoQuestion(
@@ -102,7 +107,9 @@ class MetricService {
 
         return {
             condition,
-            metric_value: `${res_1} !== ${res_2}`,
+            metric_value: condition
+                ? `Different answers: ${res_1} !== ${res_2}`
+                : `Same answer: ${res_1} === ${res_2}`,
         }
     }
 
@@ -141,7 +148,9 @@ class MetricService {
 
         return {
             condition,
-            metric_value: `${res_1} !== ${res_2}`,
+            metric_value: condition
+                ? `Different options: ${res_1} !== ${res_2}`
+                : `Same option: ${res_1} === ${res_2}`,
         }
     }
 
@@ -192,7 +201,9 @@ class MetricService {
 
         return {
             condition,
-            metric_value: `${spearmanRank} < ${threshold}`,
+            metric_value: condition
+                ? `Spearman Rank < Threshold: ${spearmanRank} < ${threshold}`
+                : `Spearman Rank >= Threshold: ${spearmanRank} >= ${threshold}`,
         }
     }
 
@@ -231,7 +242,9 @@ class MetricService {
 
         return {
             condition,
-            metric_value: `${kendallTau} < ${threshold}`,
+            metric_value: condition
+                ? `Kendall Tau < Threshold: ${kendallTau} < ${threshold}`
+                : `Kendall Tau >= Threshold: ${kendallTau} >= ${threshold}`,
         }
     }
 }

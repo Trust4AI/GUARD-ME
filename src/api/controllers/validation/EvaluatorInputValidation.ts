@@ -208,17 +208,14 @@ const compare = [
         .isNumeric()
         .withMessage('threshold must be a number')
         .custom((value, { req }) => {
-            if (
-                req.body.metric === 'difference' &&
-                (value < 0.1 || value > 0.9)
-            ) {
+            if (req.body.metric === 'difference' && (value < 1 || value > 4)) {
                 throw new Error(
-                    'For "difference", threshold must be between 0.1 and 0.9'
+                    'For "difference", threshold must be between 1 and 4'
                 )
             }
-            if (req.body.metric === 'ranking' && (value < 1 || value > 4)) {
+            if (req.body.metric === 'ranking' && (value < 0.1 || value > 0.9)) {
                 throw new Error(
-                    'For "ranking", threshold must be between 1 and 4'
+                    'For "ranking", threshold must be between 0.1 and 0.9'
                 )
             }
             return true
