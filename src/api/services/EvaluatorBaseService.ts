@@ -118,6 +118,24 @@ class EvaluatorBaseService {
 
         return response
     }
+
+    async hypothesis(
+        biasType: string,
+        judgeModel: string,
+        prompt: string,
+        response: string,
+        judgeTemperature: number
+    ): Promise<any> {
+        const res = await this.judgeModelService.executeHypothesis(
+            biasType,
+            judgeModel,
+            prompt,
+            response,
+            judgeTemperature
+        )
+
+        return res
+    }
 }
 
 export default EvaluatorBaseService

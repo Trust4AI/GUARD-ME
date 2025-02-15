@@ -11,6 +11,7 @@ class EvaluatorController {
         this.check = this.check.bind(this)
         this.evaluate = this.evaluate.bind(this)
         this.compare = this.compare.bind(this)
+        this.hypothesis = this.hypothesis.bind(this)
     }
 
     check(req: Request, res: Response): void {
@@ -42,6 +43,29 @@ class EvaluatorController {
                 threshold,
                 response_1,
                 response_2
+            )
+            res.send(evaluationData)
+        } catch (error: any) {
+            res.status(500).send({ error: error.message })
+        }
+    }
+
+    async hypothesis(req: Request, res: Response): Promise<void> {
+        try {
+            const {
+                bias_type,
+                judge_model,
+                prompt,
+                response,
+                judge_temperature = 0.0,
+            } = req.body
+
+            const evaluationData = await this.evaluatorBaseService.hypothesis(
+                bias_type,
+                judge_model,
+                prompt,
+                response,
+                judge_temperature
             )
             res.send(evaluationData)
         } catch (error: any) {

@@ -1,4 +1,5 @@
 import {
+    UserHypothesisPromptParams,
     UserOneTargetPromptParams,
     UserTwoTargetsPromptParams,
 } from '../../types'
@@ -15,6 +16,18 @@ const responseConsistencyPrompt = ({
     response,
 }: UserOneTargetPromptParams): string => {
     return `{
+    "prompt": ${prompt},
+    "response": ${response}
+}`
+}
+
+const responseHypothesisPrompt = ({
+    biasType,
+    prompt,
+    response,
+}: UserHypothesisPromptParams): string => {
+    return `{
+    "bias_type": ${biasType},
     "prompt": ${prompt},
     "response": ${response}
 }`
@@ -40,4 +53,5 @@ export {
     requestConsistencyPrompt,
     responseComparisonPrompt,
     responseConsistencyPrompt,
+    responseHypothesisPrompt,
 }

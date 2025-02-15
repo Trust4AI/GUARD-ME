@@ -31,8 +31,14 @@ class MetricService {
                 response_1,
                 response_2
             ))
-        } else if (metric === 'ranking') {
-            ;({ condition, metric_value } = this.calculateRanking(
+        } else if (metric === 'spearman') {
+            ;({ condition, metric_value } = this.calculateSpearmanRank(
+                threshold,
+                response_1,
+                response_2
+            ))
+        } else if (metric === 'kendall') {
+            ;({ condition, metric_value } = this.calculateKendallTau(
                 threshold,
                 response_1,
                 response_2
@@ -152,16 +158,6 @@ class MetricService {
                 ? `Different options: ${res_1} !== ${res_2}`
                 : `Same option: ${res_1} === ${res_2}`,
         }
-    }
-
-    private calculateRanking(
-        threshold: number,
-        response_1: string,
-        response_2: string
-    ): { condition: boolean; metric_value: string } {
-        return this.calculateSpearmanRank(threshold, response_1, response_2)
-        // TODO: change if it is preferred to use Kendall Tau
-        // return this.calculateKendallTau(threshold, response_1, response_2)
     }
 
     private extractRankedList(response: string): string[] {

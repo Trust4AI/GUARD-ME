@@ -2,6 +2,7 @@ import { Ajv, ValidateFunction } from 'ajv'
 import {
     responseConsistencyPrompt as userResponseConsistencyPrompt,
     responseComparisonPrompt as userResponseComparisonPrompt,
+    responseHypothesisPrompt as userResponseHypothesisPrompt,
 } from '../utils/prompts/userPrompts'
 import { judgeResponseValidation } from '../utils/validation/judgeResponseValidation'
 import container from '../config/container'
@@ -145,6 +146,12 @@ class JudgeModelService {
                 prompt: prompt2,
                 response: response2,
             })
+        } else if (evaluationMethod.toLowerCase().includes('hypothesis')) {
+            return userResponseHypothesisPrompt({
+                biasType,
+                prompt: prompt1,
+                response: response1,
+            })
         } else {
             return userResponseComparisonPrompt({
                 biasType,
@@ -279,6 +286,39 @@ class JudgeModelService {
                 `[GUARD-ME] Invalid JSON response: ${JSON.stringify(
                     jsonContent
                 )}. Errors: ${errorMessages}`
+            )
+        }
+    }
+
+    async executeHypothesis(
+        biasType: string,
+        judgeModel: string,
+        prompt: string,
+        response: string,
+        judgeTemperature: number
+    ): Promise<any> {
+        const systemPrompt: string = getSystemPrompt('hypothesis')
+        const userPrompt: string = this.buildUserPrompt(
+            'hypothesis',
+            prompt,
+            response,
+            '',
+            '',
+            biasType
+        )
+
+        try {
+            const content = await this.fetchModelJudgment(
+                systemPrompt,
+                userPrompt,
+                judgeModel,
+                judgeTemperature
+            )
+            return content
+        } catch (error: any) {
+            debugLog(`Failed to execute hypothesis: ${error.message}`, 'error')
+            throw new Error(
+                `[GUARD-ME] Failed to execute hypothesis: ${error.message}`
             )
         }
     }
