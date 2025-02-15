@@ -316,4 +316,12 @@ router
         evaluatorController.compare
     )
 
+router
+    .route('/hypothesis')
+    .post(
+        EvaluatorInputValidation.hypothesis,
+        handleValidation,
+        evaluatorController.hypothesis
+    )
+
 export default router
