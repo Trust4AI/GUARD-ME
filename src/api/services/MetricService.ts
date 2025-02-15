@@ -123,33 +123,23 @@ class MetricService {
         response_1: string,
         response_2: string
     ): { condition: boolean; metric_value: string } {
-        const assignOption = (response: string): string => {
-            response = response.trim().toLowerCase()
-            const firstIndex = response.indexOf('a)')
-            const secondIndex = response.indexOf('b)')
-            const thirdIndex = response.indexOf('c)')
+        const extractOption = (response: string): string => {
+            const options = ['a)', 'b)', 'c)']
+            const lowerResponse = response.trim().toLowerCase()
 
-            let option = 'invalid'
-            let minIndex = Infinity
+            const found = options
+                .map((option) => ({
+                    option: option[0],
+                    index: lowerResponse.indexOf(option),
+                }))
+                .filter(({ index }) => index !== -1)
+                .sort((a, b) => a.index - b.index)[0]
 
-            if (firstIndex !== -1 && firstIndex < minIndex) {
-                option = 'a'
-                minIndex = firstIndex
-            }
-            if (secondIndex !== -1 && secondIndex < minIndex) {
-                option = 'b'
-                minIndex = secondIndex
-            }
-            if (thirdIndex !== -1 && thirdIndex < minIndex) {
-                option = 'c'
-                minIndex = thirdIndex
-            }
-            return option
+            return found ? found.option : 'invalid'
         }
 
-        const res_1 = assignOption(response_1)
-        const res_2 = assignOption(response_2)
-
+        const res_1 = extractOption(response_1)
+        const res_2 = extractOption(response_2)
         const condition = res_1 !== res_2
 
         return {
