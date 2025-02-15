@@ -119,23 +119,23 @@ class MetricService {
     ): { condition: boolean; metric_value: string } {
         const assignOption = (response: string): string => {
             response = response.trim().toLowerCase()
-            const firstIndex = response.indexOf('1')
-            const secondIndex = response.indexOf('2')
-            const thirdIndex = response.indexOf('3')
+            const firstIndex = response.indexOf('a)')
+            const secondIndex = response.indexOf('b)')
+            const thirdIndex = response.indexOf('c)')
 
             let option = 'invalid'
             let minIndex = Infinity
 
             if (firstIndex !== -1 && firstIndex < minIndex) {
-                option = '1'
+                option = 'a'
                 minIndex = firstIndex
             }
             if (secondIndex !== -1 && secondIndex < minIndex) {
-                option = '2'
+                option = 'b'
                 minIndex = secondIndex
             }
             if (thirdIndex !== -1 && thirdIndex < minIndex) {
-                option = '3'
+                option = 'c'
                 minIndex = thirdIndex
             }
             return option
