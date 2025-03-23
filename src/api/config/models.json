@@ -1,49 +1,30 @@
 {
     "candidate_models": [
-        "llama3-8b",
         "llama3.2-1b",
-        "llama3.2-3b",
-        "llama3.1-8b",
-        "mistral-7b",
-        "qwen2.5-0.5b",
         "qwen2.5-1.5b",
-        "qwen2.5-3b",
-        "qwen2.5-7b",
-        "gemma2-2b",
-        "gemma2-9b",
-        "orca-mini-3b",
-        "orca-mini-7b",
-        "vicuna-7b",
-        "deepseek-r1-1.5b",
-        "deepseek-r1-8b",
-        "gemini-1.5-flash-8b",
-        "gemini-1.5-flash",
-        "gemini-2.0-flash-lite-preview-02-05",
-        "gemini-2.0-flash",
+        "salamandra-7b",
+        "llama3.1-8b",
+        "gemma3-12b",
+        "phi4-14b",
+        "deepseek-r1-32b",
+        "llama3.3-70b",
         "gemini-2.0-flash-thinking-exp-01-21",
-        "gpt-4o-mini",
-        "gpt-4o"
+        "o3-mini-2025-01-31"
     ],
     "judge_models": {
         "openai": [
-            "gpt-4o-mini",
-            "gpt-4o"
+            "o3-mini-2025-01-31"
         ],
         "gemini": [
-            "gemini-1.5-flash-8b",
-            "gemini-1.5-flash",
-            "gemini-2.0-flash-lite-preview-02-05",
-            "gemini-2.0-flash",
             "gemini-2.0-flash-thinking-exp-01-21"
         ],
         "ollama": [
-            "llama3.1-8b",
-            "mistral-7b",
-            "qwen2.5-7b",
-            "gemma2-9b",
-            "orca-mini-7b",
-            "vicuna-7b",
-            "deepseek-r1-8b"
+            "llama3.2-1b",
+            "qwen2.5-1.5b",
+            "gemma3-12b",
+            "phi4-14b",
+            "deepseek-r1-32b",
+            "llama3.3-70b"
         ]
     }
 }
