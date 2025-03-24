@@ -10,30 +10,30 @@ const geminiAPIKey: string = config.geminiAPIKey
 
 const genAI: GoogleGenerativeAI = new GoogleGenerativeAI(geminiAPIKey)
 
-class GeminiJudgeModelService {
-    async fetchModelJudgment(
+class GeminiModelService {
+    async sendRequest(
         systemPrompt: string,
         userPrompt: string,
-        judgeModel: string,
-        judgeTemperature: number
+        model: string,
+        temperature: number
     ): Promise<string> {
         if (!geminiAPIKey) {
             throw new Error('[GUARD-ME] GEMINI_API_KEY is not defined')
         }
 
-        const model: GenerativeModel = genAI.getGenerativeModel({
-            model: judgeModel,
+        const geminiModel: GenerativeModel = genAI.getGenerativeModel({
+            model: model,
         })
 
         const generationConfig: GeminiGenerationConfig = {
-            temperature: judgeTemperature,
+            temperature: temperature,
             topP: 0.95,
             topK: 40,
             maxOutputTokens: 8192,
             response_mime_type: 'text/plain',
         }
 
-        const chatSession: ChatSession = model.startChat({
+        const chatSession: ChatSession = geminiModel.startChat({
             generationConfig,
             history: [
                 {
@@ -54,4 +54,4 @@ class GeminiJudgeModelService {
     }
 }
 
-export default GeminiJudgeModelService
+export default GeminiModelService
