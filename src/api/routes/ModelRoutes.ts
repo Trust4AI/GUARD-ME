@@ -13,7 +13,7 @@ const modelBaseService = container.resolve('modelBaseService')
  * @swagger
  * components:
  *   schemas:
- *     Message:
+ *     ModelMessage:
  *       type: object
  *       required:
  *         - message
@@ -141,7 +141,7 @@ const modelBaseService = container.resolve('modelBaseService')
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Message'
+ *               $ref: '#/components/schemas/ModelMessage'
  *       500:
  *         description: Server Error
  *         content:

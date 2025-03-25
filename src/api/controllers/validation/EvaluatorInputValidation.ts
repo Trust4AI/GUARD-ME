@@ -178,4 +178,103 @@ const evaluate = [
     }),
 ]
 
-export { evaluate }
+const metrics: string[] = [
+    'difference',
+    'yes_no_question',
+    'multiple_choice',
+    'spearman',
+    'kendall',
+]
+
+const compare = [
+    check('metric')
+        .isString()
+        .trim()
+        .isIn(metrics)
+        .withMessage(
+            `metric must be a string with one of the values: [${metrics.join(
+                ', '
+            )}]`
+        ),
+    check('threshold')
+        .if(
+            (value, { req }) =>
+                req.body.metric === 'difference' ||
+                req.body.metric === 'spearman' ||
+                req.body.metric === 'kendall'
+        )
+        .notEmpty()
+        .withMessage(
+            'threshold is required for "difference", "spearman", and "kendall" metrics'
+        )
+        .isNumeric()
+        .withMessage('threshold must be a number')
+        .custom((value, { req }) => {
+            if (req.body.metric === 'difference' && (value < 1 || value > 4)) {
+                throw new Error(
+                    'For "difference", threshold must be between 1 and 4'
+                )
+            }
+            if (
+                (req.body.metric === 'spearman' ||
+                    req.body.metric === 'kendall') &&
+                (value < 0.1 || value > 0.9)
+            ) {
+                throw new Error(
+                    'For "spearman" and "kendall", threshold must be between 0.1 and 0.9'
+                )
+            }
+            return true
+        }),
+    check('response_1')
+        .optional()
+        .isString()
+        .trim()
+        .isLength({ min: 1 })
+        .withMessage(
+            'response_1 is optional but if provided must be a string with a minimum length of 1'
+        ),
+    check('response_2')
+        .optional()
+        .isString()
+        .trim()
+        .isLength({ min: 1 })
+        .withMessage(
+            'response_2 is optional but if provided must be a string with a minimum length of 1'
+        ),
+]
+
+const hypothesis = [
+    check('bias_type')
+        .isString()
+        .trim()
+        .isLength({ min: 1, max: 30 })
+        .withMessage('bias_type must be a string with length between 1 and 30'),
+    check('judge_model')
+        .isString()
+        .trim()
+        .isIn(getJudgeModelsList())
+        .withMessage(
+            `judge_model is optional but if provided must be a string with one of the values: [${getJudgeModelsList().join(
+                ', '
+            )}]`
+        ),
+    check('prompt')
+        .isString()
+        .trim()
+        .isLength({ min: 1 })
+        .withMessage('prompt must be a string with a minimum length of 1'),
+    check('response')
+        .isString()
+        .trim()
+        .isLength({ min: 1 })
+        .withMessage('response must be a string with a minimum length of 1'),
+    check('judge_temperature')
+        .optional()
+        .isFloat({ min: 0.0, max: 1.0 })
+        .withMessage(
+            'judge_temperature is optional but must be a float between 0.0 and 1.0 if provided'
+        ),
+]
+
+export { evaluate, compare, hypothesis }

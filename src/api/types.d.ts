@@ -13,6 +13,12 @@ type UserOneTargetPromptParams = {
     response: string
 }
 
+type UserHypothesisPromptParams = {
+    biasType: string
+    prompt: string
+    response: string
+}
+
 type UserTwoTargetsPromptParams = {
     biasType: string
     prompt1: string
@@ -57,6 +63,7 @@ type LogType = 'error' | 'warn' | 'info' | 'log'
 export {
     ExecutorBodyValidation,
     UserOneTargetPromptParams,
+    UserHypothesisPromptParams,
     UserTwoTargetsPromptParams,
     EvaluationResponse,
     GuardmeResponse,

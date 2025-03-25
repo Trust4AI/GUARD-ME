@@ -73,13 +73,13 @@ To deploy GUARD-ME locally, please follow these steps carefully:
 4. To verify that the tool is running, you can check the status of the server by running the following command.
 
     ```bash
-    curl -X GET "http://localhost:8081/api/v1/metamorphic-tests/check" -H  "accept: application/json"
+    curl -X GET "http://localhost:8001/api/v1/metamorphic-tests/check" -H  "accept: application/json"
     ```
 
 5. Finally, you can access the API documentation by visiting the following URL in your web browser.
 
     ```
-    http://localhost:8081/api/v1/docs
+    http://localhost:8001/api/v1/docs
     ```
 
 ### ii. Docker deployment
@@ -107,13 +107,13 @@ To deploy GUARD-ME using Docker, please follow these steps carefully.
 3. To verify that the tool is running, you can check the status of the server by running the following command.
 
     ```bash
-    curl -X GET "http://localhost:8081/api/v1/metamorphic-tests/check" -H  "accept: application/json"
+    curl -X GET "http://localhost:8001/api/v1/metamorphic-tests/check" -H  "accept: application/json"
     ```
 
 4. Finally, you can access the API documentation by visiting the following URL in your web browser.
 
     ```
-    http://localhost:8081/api/v1/docs
+    http://localhost:8001/api/v1/docs
     ```
 
 <p align="right">[⬆️ <a href="#guard-me-ai-guided-evaluator-for-bias-detection-using-metamorphic-testing">Back to top</a>]</p>
@@ -167,7 +167,7 @@ To send this request via _curl_, you can use the following command.
 
 ```bash
 curl -X 'POST' \
-  'http://localhost:8081/api/v1/metamorphic-tests/evaluate' \
+  'http://localhost:8001/api/v1/metamorphic-tests/evaluate' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{

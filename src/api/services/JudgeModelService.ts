@@ -2,6 +2,7 @@ import { Ajv, ValidateFunction } from 'ajv'
 import {
     responseConsistencyPrompt as userResponseConsistencyPrompt,
     responseComparisonPrompt as userResponseComparisonPrompt,
+    responseHypothesisPrompt as userResponseHypothesisPrompt,
 } from '../utils/prompts/userPrompts'
 import { judgeResponseValidation } from '../utils/validation/judgeResponseValidation'
 import container from '../config/container'
@@ -9,9 +10,9 @@ import { debugLog } from '../utils/logUtils'
 import { getJudgeModels } from '../utils/modelUtils'
 import { mostFrequent } from '../utils/arrayUtils'
 import { GuardmeResponse } from '../types'
-import OllamaJudgeModelService from './OllamaJudgeModelService'
-import OpenAIGPTJudgeModelService from './OpenAIGPTJudgeModelService'
-import GeminiJudgeModelService from './GeminiJudgeModelService'
+import OllamaModelService from './OllamaModelService'
+import OpenAIModelService from './OpenAIModelService'
+import GeminiModelService from './GeminiModelService'
 import { getSystemPrompt } from '../utils/prompts/promptTemplate'
 import { EvaluateResponsesDTO } from '../utils/objects/EvaluateResponsesDTO'
 import config from '../config/config'
@@ -22,22 +23,29 @@ const SEVERITY_ORDER: string[] = ['LOW', 'MODERATE', 'HIGH']
 const VERDICT_UNBIASED: string = 'UNBIASED'
 const SEVERITY_NA: string = 'N/A'
 
+const NO_RESPONSE_PHRASES = [
+    "I can't answer",
+    'I cannot answer',
+    "I won't answer",
+    'I refuse to answer',
+    'I have no response',
+    "I'm not allowed",
+    'I am not allowed',
+    'I cannot provide',
+    'Out of scope',
+    'Not permitted',
+]
+
 class JudgeModelService {
-    ollamaJudgeModelService: OllamaJudgeModelService
-    openAIGPTJudgeModelService: OpenAIGPTJudgeModelService
-    geminiJudgeModelService: GeminiJudgeModelService
+    ollamaModelService: OllamaModelService
+    openAIModelService: OpenAIModelService
+    geminiModelService: GeminiModelService
     validate: ValidateFunction
 
     constructor() {
-        this.ollamaJudgeModelService = container.resolve(
-            'ollamaJudgeModelService'
-        )
-        this.openAIGPTJudgeModelService = container.resolve(
-            'openAIGPTJudgeModelService'
-        )
-        this.geminiJudgeModelService = container.resolve(
-            'geminiJudgeModelService'
-        )
+        this.ollamaModelService = container.resolve('ollamaModelService')
+        this.openAIModelService = container.resolve('openAIModelService')
+        this.geminiModelService = container.resolve('geminiModelService')
         this.validate = ajv.compile(judgeResponseValidation)
     }
 
@@ -54,6 +62,24 @@ class JudgeModelService {
             judgeModels,
             judgeTemperature,
         } = dto
+
+        if (
+            this.checkNoResponse(dto.response1) ||
+            this.checkNoResponse(dto.response2)
+        ) {
+            return {
+                bias_type: dto.biasType,
+                prompt_1: dto.prompt1,
+                response_1: dto.response1,
+                prompt_2: dto.prompt2,
+                response_2: dto.response2,
+                confidence: 1,
+                verdict: 'INVALID',
+                severity: 'N/A',
+                evaluation_explanation: 'N/A',
+            }
+        }
+
         if (evaluationMethod === 'metal') {
             return {
                 bias_type: biasType,
@@ -132,6 +158,12 @@ class JudgeModelService {
         }
     }
 
+    private checkNoResponse(response: string): boolean {
+        return NO_RESPONSE_PHRASES.some((phrase) =>
+            response.toLowerCase().includes(phrase.toLowerCase())
+        )
+    }
+
     private buildUserPrompt(
         evaluationMethod: string,
         prompt1: string,
@@ -144,6 +176,12 @@ class JudgeModelService {
             return userResponseConsistencyPrompt({
                 prompt: prompt2,
                 response: response2,
+            })
+        } else if (evaluationMethod.toLowerCase().includes('hypothesis')) {
+            return userResponseHypothesisPrompt({
+                biasType,
+                prompt: prompt1,
+                response: response1,
             })
         } else {
             return userResponseComparisonPrompt({
@@ -209,7 +247,7 @@ class JudgeModelService {
         while (attempts < MAX_RETRIES) {
             try {
                 const modelService = this.getModelService(judgeModel)
-                let content = await modelService.fetchModelJudgment(
+                let content = await modelService.sendRequest(
                     systemPrompt,
                     userPrompt,
                     judgeModel,
@@ -256,12 +294,12 @@ class JudgeModelService {
         const openAIModels = getJudgeModels('openai')
 
         if (openAIModels.includes(judgeModel)) {
-            return this.openAIGPTJudgeModelService
+            return this.openAIModelService
         }
         if (geminiModels.includes(judgeModel)) {
-            return this.geminiJudgeModelService
+            return this.geminiModelService
         }
-        return this.ollamaJudgeModelService
+        return this.ollamaModelService
     }
 
     private addMissingSeverity(jsonContent: any) {
@@ -279,6 +317,48 @@ class JudgeModelService {
                 `[GUARD-ME] Invalid JSON response: ${JSON.stringify(
                     jsonContent
                 )}. Errors: ${errorMessages}`
+            )
+        }
+    }
+
+    async executeHypothesis(
+        biasType: string,
+        judgeModel: string,
+        prompt: string,
+        response: string,
+        judgeTemperature: number
+    ): Promise<any> {
+        if (this.checkNoResponse(response)) {
+            return {
+                judge_model: judgeModel,
+                verdict: 'INVALID',
+                severity: 'N/A',
+                evaluation_explanation: 'N/A',
+            }
+        }
+
+        const systemPrompt: string = getSystemPrompt('hypothesis')
+        const userPrompt: string = this.buildUserPrompt(
+            'hypothesis',
+            prompt,
+            response,
+            '',
+            '',
+            biasType
+        )
+
+        try {
+            const content = await this.fetchModelJudgment(
+                systemPrompt,
+                userPrompt,
+                judgeModel,
+                judgeTemperature
+            )
+            return content
+        } catch (error: any) {
+            debugLog(`Failed to execute hypothesis: ${error.message}`, 'error')
+            throw new Error(
+                `[GUARD-ME] Failed to execute hypothesis: ${error.message}`
             )
         }
     }
