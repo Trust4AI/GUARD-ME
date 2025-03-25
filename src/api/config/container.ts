@@ -3,9 +3,9 @@ import { createContainer, asClass, AwilixContainer } from 'awilix'
 import EvaluatorBaseService from '../services/EvaluatorBaseService'
 import CandidateModelService from '../services/CandidateModelService.js'
 import JudgeModelService from '../services/JudgeModelService'
-import OllamaJudgeModelService from '../services/OllamaJudgeModelService'
-import OpenAIGPTJudgeModelService from '../services/OpenAIGPTJudgeModelService'
-import GeminiJudgeModelService from '../services/GeminiJudgeModelService'
+import OllamaModelService from '../services/OllamaModelService'
+import OpenAIModelService from '../services/OpenAIModelService'
+import GeminiModelService from '../services/GeminiModelService'
 import ModelBaseService from '../services/ModelBaseService'
 import MetricService from '../services/MetricService'
 
@@ -18,11 +18,9 @@ function initContainer(): AwilixContainer {
         metricService: asClass(MetricService).singleton(),
         candidateModelService: asClass(CandidateModelService).singleton(),
         judgeModelService: asClass(JudgeModelService).singleton(),
-        ollamaJudgeModelService: asClass(OllamaJudgeModelService).singleton(),
-        openAIGPTJudgeModelService: asClass(
-            OpenAIGPTJudgeModelService
-        ).singleton(),
-        geminiJudgeModelService: asClass(GeminiJudgeModelService).singleton(),
+        ollamaModelService: asClass(OllamaModelService).singleton(),
+        openAIModelService: asClass(OpenAIModelService).singleton(),
+        geminiModelService: asClass(GeminiModelService).singleton(),
     })
     return container
 }

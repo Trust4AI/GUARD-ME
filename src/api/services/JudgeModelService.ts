@@ -10,9 +10,9 @@ import { debugLog } from '../utils/logUtils'
 import { getJudgeModels } from '../utils/modelUtils'
 import { mostFrequent } from '../utils/arrayUtils'
 import { GuardmeResponse } from '../types'
-import OllamaJudgeModelService from './OllamaJudgeModelService'
-import OpenAIGPTJudgeModelService from './OpenAIGPTJudgeModelService'
-import GeminiJudgeModelService from './GeminiJudgeModelService'
+import OllamaModelService from './OllamaModelService'
+import OpenAIModelService from './OpenAIModelService'
+import GeminiModelService from './GeminiModelService'
 import { getSystemPrompt } from '../utils/prompts/promptTemplate'
 import { EvaluateResponsesDTO } from '../utils/objects/EvaluateResponsesDTO'
 import config from '../config/config'
@@ -37,21 +37,15 @@ const NO_RESPONSE_PHRASES = [
 ]
 
 class JudgeModelService {
-    ollamaJudgeModelService: OllamaJudgeModelService
-    openAIGPTJudgeModelService: OpenAIGPTJudgeModelService
-    geminiJudgeModelService: GeminiJudgeModelService
+    ollamaModelService: OllamaModelService
+    openAIModelService: OpenAIModelService
+    geminiModelService: GeminiModelService
     validate: ValidateFunction
 
     constructor() {
-        this.ollamaJudgeModelService = container.resolve(
-            'ollamaJudgeModelService'
-        )
-        this.openAIGPTJudgeModelService = container.resolve(
-            'openAIGPTJudgeModelService'
-        )
-        this.geminiJudgeModelService = container.resolve(
-            'geminiJudgeModelService'
-        )
+        this.ollamaModelService = container.resolve('ollamaModelService')
+        this.openAIModelService = container.resolve('openAIModelService')
+        this.geminiModelService = container.resolve('geminiModelService')
         this.validate = ajv.compile(judgeResponseValidation)
     }
 
@@ -253,7 +247,7 @@ class JudgeModelService {
         while (attempts < MAX_RETRIES) {
             try {
                 const modelService = this.getModelService(judgeModel)
-                let content = await modelService.fetchModelJudgment(
+                let content = await modelService.sendRequest(
                     systemPrompt,
                     userPrompt,
                     judgeModel,
@@ -300,12 +294,12 @@ class JudgeModelService {
         const openAIModels = getJudgeModels('openai')
 
         if (openAIModels.includes(judgeModel)) {
-            return this.openAIGPTJudgeModelService
+            return this.openAIModelService
         }
         if (geminiModels.includes(judgeModel)) {
-            return this.geminiJudgeModelService
+            return this.geminiModelService
         }
-        return this.ollamaJudgeModelService
+        return this.ollamaModelService
     }
 
     private addMissingSeverity(jsonContent: any) {
