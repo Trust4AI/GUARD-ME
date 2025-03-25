@@ -3,9 +3,12 @@
         "llama3.2-1b",
         "qwen2.5-1.5b",
         "salamandra-7b",
+        "mistral-7b",
         "llama3.1-8b",
         "gemma3-12b",
-        "phi4-14b",
+        "deepseek-r1-14b",
+        "gemma3-27b",
+        "qwq-32b",
         "deepseek-r1-32b",
         "llama3.3-70b",
         "gemini-2.0-flash-thinking-exp-01-21",
@@ -19,10 +22,12 @@
             "gemini-2.0-flash-thinking-exp-01-21"
         ],
         "ollama": [
-            "llama3.2-1b",
-            "qwen2.5-1.5b",
+            "mistral-7b",
+            "llama3.1-8b",
             "gemma3-12b",
-            "phi4-14b",
+            "deepseek-r1-14b",
+            "gemma3-27b",
+            "qwq-32b",
             "deepseek-r1-32b",
             "llama3.3-70b"
         ]
