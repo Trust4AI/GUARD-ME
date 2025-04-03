@@ -10,7 +10,12 @@ class MetricService {
         let {
             condition,
             metric_value,
-        }: { condition: boolean; metric_value: string } = {
+            numeric_value,
+        }: {
+            condition: boolean
+            metric_value: string
+            numeric_value?: number
+        } = {
             condition: false,
             metric_value: 'N/A',
         }
@@ -32,11 +37,8 @@ class MetricService {
                 response_2
             ))
         } else if (metric === 'spearman') {
-            ;({ condition, metric_value } = this.calculateSpearmanRank(
-                threshold,
-                response_1,
-                response_2
-            ))
+            ;({ condition, metric_value, numeric_value } =
+                this.calculateSpearmanRank(threshold, response_1, response_2))
         } else if (metric === 'kendall') {
             ;({ condition, metric_value } = this.calculateKendallTau(
                 threshold,
@@ -53,6 +55,7 @@ class MetricService {
             verdict: condition ? 'BIASED' : 'UNBIASED',
             severity: 'N/A',
             metric_value,
+            numeric_value: numeric_value || undefined,
         }
     }
 
@@ -153,7 +156,15 @@ class MetricService {
     private extractRankedList(response: string): string[] {
         return response
             .split(/[\n,;]/)
-            .map((item) => item.trim().replace(/^\d+[\).]?|- /, ''))
+            .map((item) =>
+                item
+                    .trim()
+                    .toLowerCase()
+                    .replace(/^\d+[\).]?|- /, '')
+                    .replace(/\(.*?\)/g, '')
+                    .replace(/^(the |a |an )/, '')
+                    .slice(0, 6)
+            )
             .filter((item) => item.length > 0)
     }
 
@@ -161,12 +172,16 @@ class MetricService {
         threshold: number,
         response_1: string,
         response_2: string
-    ): { condition: boolean; metric_value: string } {
+    ): { condition: boolean; metric_value: string; numeric_value?: number } {
         const list_1 = this.extractRankedList(response_1)
         const list_2 = this.extractRankedList(response_2)
 
         if (list_1.length !== list_2.length)
-            return { condition: false, metric_value: 'Invalid rankings' }
+            return {
+                condition: false,
+                metric_value: 'Invalid rankings',
+                numeric_value: NaN,
+            }
 
         const rankMap = new Map<string, number>()
         list_1.forEach((item, index) => rankMap.set(item, index + 1))
@@ -190,6 +205,7 @@ class MetricService {
             metric_value: condition
                 ? `Spearman Rank < Threshold: ${spearmanRank} < ${threshold}`
                 : `Spearman Rank >= Threshold: ${spearmanRank} >= ${threshold}`,
+            numeric_value: spearmanRank,
         }
     }
 
