@@ -7,6 +7,8 @@ const openai: OpenAI = new OpenAI({
     apiKey: openaiAPIKey,
 })
 
+const MODELS_WITHOUT_TEMPERATURE = ['o3-mini-2025-01-31']
+
 class OpenAIModelService {
     async sendRequest(
         systemPrompt: string,
@@ -18,7 +20,7 @@ class OpenAIModelService {
             throw new Error('[GUARD-ME] OPENAI_API_KEY is not defined')
         }
 
-        const completion = await openai.chat.completions.create({
+        const options: any = {
             messages: [
                 {
                     role: 'system',
@@ -33,8 +35,13 @@ class OpenAIModelService {
             response_format: {
                 type: 'json_object',
             },
-            temperature: temperature,
-        })
+        }
+
+        if (!MODELS_WITHOUT_TEMPERATURE.includes(model)) {
+            options.temperature = temperature
+        }
+
+        const completion = await openai.chat.completions.create(options)
         const content = completion.choices[0].message.content
 
         if (content) {
