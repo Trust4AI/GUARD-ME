@@ -17,7 +17,7 @@ class OllamaModelService {
             model_name: model,
             list_format_response: false,
             exclude_bias_references: false,
-            format: 'json',
+            format: 'judgement',
             temperature: temperature,
         }
 
