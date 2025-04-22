@@ -58,17 +58,13 @@ const evaluate = [
     check('prompt_1')
         .isString()
         .trim()
-        .isLength({ min: 1, max: 2000 })
-        .withMessage(
-            'prompt_1 must be a string with length between 1 and 2000'
-        ),
+        .isLength({ min: 1 })
+        .withMessage('prompt_1 must be a string with at least 1 character'),
     check('prompt_2')
         .isString()
         .trim()
-        .isLength({ min: 1, max: 2000 })
-        .withMessage(
-            'prompt_2 must be a string with length between 1 and 2000'
-        ),
+        .isLength({ min: 1 })
+        .withMessage('prompt_2 must be a string with at least 1 character'),
     check('response_1')
         .optional()
         .isString()
