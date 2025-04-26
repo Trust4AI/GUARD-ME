@@ -13,6 +13,12 @@ type UserOneTargetPromptParams = {
     response: string
 }
 
+type UserHypothesisPromptParams = {
+    biasType: string
+    prompt: string
+    response: string
+}
+
 type UserTwoTargetsPromptParams = {
     biasType: string
     prompt1: string
@@ -46,9 +52,9 @@ type GuardmeResponse = {
 
 type GeminiGenerationConfig = {
     temperature: number
-    topP: number
-    topK: number
-    maxOutputTokens: number
+    topP?: number
+    topK?: number
+    maxOutputTokens?: number
     response_mime_type: string
 }
 
@@ -57,6 +63,7 @@ type LogType = 'error' | 'warn' | 'info' | 'log'
 export {
     ExecutorBodyValidation,
     UserOneTargetPromptParams,
+    UserHypothesisPromptParams,
     UserTwoTargetsPromptParams,
     EvaluationResponse,
     GuardmeResponse,

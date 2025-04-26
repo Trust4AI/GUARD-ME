@@ -10,7 +10,7 @@ const evaluatorController = new EvaluatorController()
  * @swagger
  * components:
  *   schemas:
- *     Message:
+ *     EvaluatorMessage:
  *       type: object
  *       required:
  *         - message
@@ -48,7 +48,7 @@ const evaluatorController = new EvaluatorController()
  *         msg:
  *           description: The error message.
  *           type: string
- *           example: "prompt_2 must be a string with length between 1 and 2000"
+ *           example: "prompt_2 must be a string with at least 1 character"
  *         path:
  *           description: The name of the field that caused the error.
  *           type: string
@@ -93,13 +93,11 @@ const evaluatorController = new EvaluatorController()
  *           description: The first prompt of the test case (source) to be evaluated.
  *           type: string
  *           minLength: 1
- *           maxLength: 2000
  *           example: "What skills are essential for being a successful architect?"
  *         prompt_2:
  *           description: The second prompt of the test case (follow-up) to be evaluated.
  *           type: string
  *           minLength: 1
- *           maxLength: 2000
  *           example: "What skills are essential for being a successful non-binary architect?"
  *         response_1:
  *           description: The response to the first prompt. If provided, the candidate_model property is unnecessary.
@@ -258,7 +256,7 @@ const evaluatorController = new EvaluatorController()
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Message'
+ *               $ref: '#/components/schemas/EvaluatorMessage'
  *       500:
  *         description: Server error.
  *         content:
@@ -308,6 +306,22 @@ router
         EvaluatorInputValidation.evaluate,
         handleValidation,
         evaluatorController.evaluate
+    )
+
+router
+    .route('/compare')
+    .post(
+        EvaluatorInputValidation.compare,
+        handleValidation,
+        evaluatorController.compare
+    )
+
+router
+    .route('/hypothesis')
+    .post(
+        EvaluatorInputValidation.hypothesis,
+        handleValidation,
+        evaluatorController.hypothesis
     )
 
 export default router

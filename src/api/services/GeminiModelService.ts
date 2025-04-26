@@ -4,18 +4,18 @@ import { ProxyAgent } from 'undici'
 const geminiAPIKey: string = config.geminiAPIKey
 const proxyURL: string = config.proxyURL
 
-class GeminiJudgeModelService {
-    async fetchModelJudgment(
+class GeminiModelService {
+    async sendRequest(
         systemPrompt: string,
         userPrompt: string,
-        judgeModel: string,
-        judgeTemperature: number
+        model: string,
+        temperature: number
     ): Promise<string> {
         if (!geminiAPIKey) {
             throw new Error('[GUARD-ME] GEMINI_API_KEY is not defined')
         }
 
-        const url: string = `https://generativelanguage.googleapis.com/v1beta/models/${judgeModel}:generateContent?key=${geminiAPIKey}`
+        const url: string = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiAPIKey}`
 
         const headers: Record<string, string> = {
             'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ class GeminiJudgeModelService {
                 },
             ],
             generationConfig: {
-                temperature: judgeTemperature,
+                temperature: temperature,
                 topP: 0.95,
                 topK: 40,
                 maxOutputTokens: 8192,
@@ -68,4 +68,4 @@ class GeminiJudgeModelService {
     }
 }
 
-export default GeminiJudgeModelService
+export default GeminiModelService

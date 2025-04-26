@@ -13,7 +13,7 @@ const modelBaseService = container.resolve('modelBaseService')
  * @swagger
  * components:
  *   schemas:
- *     Message:
+ *     ModelMessage:
  *       type: object
  *       required:
  *         - message
@@ -51,7 +51,7 @@ const modelBaseService = container.resolve('modelBaseService')
  *         msg:
  *           description: The error message
  *           type: string
- *           example: "prompt_2 must be a string with length between 1 and 2000"
+ *           example: "prompt_2 must be a string with at least 1 character"
  *         path:
  *           description: The name of the field
  *           type: string
@@ -141,7 +141,7 @@ const modelBaseService = container.resolve('modelBaseService')
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Message'
+ *               $ref: '#/components/schemas/ModelMessage'
  *       500:
  *         description: Server Error
  *         content:
