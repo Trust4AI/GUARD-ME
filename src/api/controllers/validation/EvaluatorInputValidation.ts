@@ -8,6 +8,12 @@ const evaluate = [
         .optional()
         .isString()
         .trim()
+        .isLength({ min: 1 })
+        .withMessage(
+            `candidate_model must be a string with at least 1 character, and one of the following values: [${getCandidateModels().join(
+                ', '
+            )}]`
+        )
         .custom((value: string): boolean => {
             const candidateModels: string[] = getCandidateModels()
             if (value && !candidateModels.includes(value)) {
