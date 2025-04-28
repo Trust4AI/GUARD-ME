@@ -1,8 +1,12 @@
 const sendRequestToGenie = async (
     genieBaseUrl: string,
-    requestBody: object
+    requestBody: { temperature?: number; [key: string]: any }
 ): Promise<string> => {
     let response: Response
+
+    if (requestBody.temperature === -1) {
+        delete requestBody.temperature
+    }
 
     try {
         response = await fetch(`${genieBaseUrl}/models/execute`, {
