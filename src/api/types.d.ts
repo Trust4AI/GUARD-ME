@@ -51,7 +51,7 @@ type GuardmeResponse = {
 }
 
 type GeminiGenerationConfig = {
-    temperature: number
+    temperature?: number
     topP?: number
     topK?: number
     maxOutputTokens?: number
