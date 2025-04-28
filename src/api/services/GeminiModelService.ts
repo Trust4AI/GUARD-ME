@@ -26,11 +26,15 @@ class GeminiModelService {
         })
 
         const generationConfig: GeminiGenerationConfig = {
-            temperature: temperature,
             // topP: 0.95,
             // topK: 40,
             // maxOutputTokens: 8192,
+            temperature: 0.5, // default value
             response_mime_type: 'text/plain',
+        }
+
+        if (temperature !== -1) {
+            generationConfig.temperature = temperature
         }
 
         const chatSession: ChatSession = geminiModel.startChat({
