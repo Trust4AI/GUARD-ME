@@ -1,5 +1,6 @@
 import config from '../config/config'
 import { ProxyAgent } from 'undici'
+import { GeminiGenerationConfig } from '../types'
 
 const geminiAPIKey: string = config.geminiAPIKey
 const proxyURL: string = config.proxyURL
@@ -32,13 +33,10 @@ class GeminiModelService {
                     parts: [{ text: userPrompt }],
                 },
             ],
-            generationConfig: {
-                temperature: temperature,
-                topP: 0.95,
-                topK: 40,
-                maxOutputTokens: 8192,
-                response_mime_type: 'text/plain',
-            },
+            generationConfig: this.getGenerationConfig(
+                'text/plain',
+                temperature
+            ),
         }
 
         const fetchContent: RequestInit & {
@@ -65,6 +63,24 @@ class GeminiModelService {
             return response
         }
         throw new Error('[GUARD-ME] No content found in Gemini response')
+    }
+
+    private getGenerationConfig(
+        format: string,
+        temperature: number
+    ): GeminiGenerationConfig {
+        const config: GeminiGenerationConfig = {
+            // topP: 0.95,
+            // topK: 40,
+            // maxOutputTokens: 8192,
+            response_mime_type: format,
+        }
+
+        if (temperature !== -1) {
+            config['temperature'] = temperature
+        }
+
+        return config
     }
 }
 

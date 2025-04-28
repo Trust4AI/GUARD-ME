@@ -46,7 +46,7 @@ class OpenAIModelService {
             },
         }
 
-        if (!MODELS_WITHOUT_TEMPERATURE.includes(model)) {
+        if (!MODELS_WITHOUT_TEMPERATURE.includes(model) && temperature !== -1) {
             options.temperature = temperature
         }
 

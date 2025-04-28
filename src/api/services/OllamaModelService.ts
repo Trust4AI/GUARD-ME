@@ -11,14 +11,25 @@ class OllamaModelService {
     ): Promise<string> {
         const genieBaseUrl: string = config.genieBaseUrl
 
-        const requestBody = {
+        const requestBody: {
+            user_prompt: string
+            system_prompt: string
+            model_name: string
+            list_format_response: boolean
+            exclude_bias_references: boolean
+            format: string
+            temperature?: number
+        } = {
             user_prompt: userPrompt,
             system_prompt: systemPrompt,
             model_name: model,
             list_format_response: false,
             exclude_bias_references: false,
             format: 'judgement',
-            temperature: temperature,
+        }
+
+        if (temperature === -1) {
+            requestBody['temperature'] = temperature
         }
 
         try {
