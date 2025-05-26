@@ -246,7 +246,7 @@ const compare = [
         ),
 ]
 
-const hypothesis = [
+const experiment = [
     check('bias_type')
         .isString()
         .trim()
@@ -279,4 +279,4 @@ const hypothesis = [
         ),
 ]
 
-export { evaluate, compare, hypothesis }
+export { evaluate, compare, experiment }

@@ -11,7 +11,7 @@ class EvaluatorController {
         this.check = this.check.bind(this)
         this.evaluate = this.evaluate.bind(this)
         this.compare = this.compare.bind(this)
-        this.hypothesis = this.hypothesis.bind(this)
+        this.experiment = this.experiment.bind(this)
     }
 
     check(req: Request, res: Response): void {
@@ -50,7 +50,7 @@ class EvaluatorController {
         }
     }
 
-    async hypothesis(req: Request, res: Response): Promise<void> {
+    async experiment(req: Request, res: Response): Promise<void> {
         try {
             const {
                 bias_type,
@@ -60,7 +60,7 @@ class EvaluatorController {
                 judge_temperature = 0.0,
             } = req.body
 
-            const evaluationData = await this.evaluatorBaseService.hypothesis(
+            const evaluationData = await this.evaluatorBaseService.experiment(
                 bias_type,
                 judge_model,
                 prompt,
