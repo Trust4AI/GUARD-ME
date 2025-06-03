@@ -121,6 +121,7 @@ class EvaluatorBaseService {
 
     async experiment(
         biasType: string,
+        evaluationMethod: string,
         judgeModel: string,
         prompt: string,
         response: string,
@@ -128,6 +129,7 @@ class EvaluatorBaseService {
     ): Promise<any> {
         const res = await this.judgeModelService.executeExperiment(
             biasType,
+            evaluationMethod,
             judgeModel,
             prompt,
             response,

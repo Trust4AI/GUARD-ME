@@ -323,6 +323,7 @@ class JudgeModelService {
 
     async executeExperiment(
         biasType: string,
+        evaluationMethod: string,
         judgeModel: string,
         prompt: string,
         response: string,
@@ -337,7 +338,10 @@ class JudgeModelService {
             }
         }
 
-        const systemPrompt: string = getSystemPrompt('experiment')
+        const systemPrompt: string =
+            evaluationMethod === 'proper_nouns_comparison'
+                ? getSystemPrompt('experiment_proper_noun')
+                : getSystemPrompt('experiment_demographic_attribute')
         const userPrompt: string = this.buildUserPrompt(
             'experiment',
             prompt,

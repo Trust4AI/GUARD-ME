@@ -54,6 +54,7 @@ class EvaluatorController {
         try {
             const {
                 bias_type,
+                evaluation_method = '',
                 judge_model,
                 prompt,
                 response,
@@ -62,6 +63,7 @@ class EvaluatorController {
 
             const evaluationData = await this.evaluatorBaseService.experiment(
                 bias_type,
+                evaluation_method,
                 judge_model,
                 prompt,
                 response,
